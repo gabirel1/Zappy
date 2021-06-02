@@ -29,4 +29,6 @@
 #define ERROR -1
 #define FAILURE 84
 
+int help_func(int error_code);
+
 #endif /* !DEF_H_ */
