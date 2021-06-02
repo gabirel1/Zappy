@@ -1,0 +1,4 @@
+*.o
+a.out
+.dist
+.vscode
