@@ -18,6 +18,24 @@ typedef struct game_info_s
 typedef struct game_info_s
 {
     int port;
+    int max_client;
+    int nb_teams;
 } server_info_t;
+
+typedef struct server_s
+{
+    int serverfd;
+    fd_set write_fd_set;
+    fd_set read_fd_set;
+    fd_set active_fd_set;
+    struct sockaddr_in server_address;
+    time_t timeout;
+} server_t;
+
+typedef struct client_s
+{
+    int fd;
+    struct client_s *next;
+} client_t;
 
 #endif /* !SERVER_H_ */

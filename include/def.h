@@ -8,6 +8,23 @@
 #ifndef DEF_H_
 #define DEF_H_
 
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <stdbool.h>
+#include <ctype.h>
+#include <limits.h>
+#include <sys/wait.h>
+
 #define SUCCESS 0
 #define ERROR -1
 #define FAILURE 84
