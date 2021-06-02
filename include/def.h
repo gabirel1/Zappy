@@ -9,5 +9,7 @@
 #define DEF_H_
 
 #define SUCCESS 0
+#define ERROR -1
+#define FAILURE 84
 
 #endif /* !DEF_H_ */
