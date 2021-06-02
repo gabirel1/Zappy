@@ -11,7 +11,7 @@ CC = gcc
 
 DEBUG = g3
 
-TARGET = myteams_cli
+TARGET = zappy_server
 
 CFLAGS = -W -Wall -Wextra -I./include
 
