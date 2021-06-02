@@ -5,7 +5,7 @@
 ** main.c
 */
 
-#include "def.h"
+#include "server/server.h"
 
 int main(int ac, char *av[])
 {
