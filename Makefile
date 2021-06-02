@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC = 	$(wildcard src/*.c)	\
+SRC = 	$(wildcard src/server/*.c)	\
 
 CC = gcc
 
