@@ -9,13 +9,14 @@
 #define SERVER_H_
 
 #include "def.h"
+#include "common/garbage_collector.h"
 
 typedef struct game_info_s
 {
 
 } game_info_t;
 
-typedef struct game_info_s
+typedef struct server_info_s
 {
     int port;
     int max_client;
@@ -29,7 +30,7 @@ typedef struct server_s
     fd_set read_fd_set;
     fd_set active_fd_set;
     struct sockaddr_in server_address;
-    time_t timeout;
+    struct timeval timeout;
 } server_t;
 
 typedef struct client_s
@@ -37,5 +38,8 @@ typedef struct client_s
     int fd;
     struct client_s *next;
 } client_t;
+
+bool add_client(client_t *next);
+bool delete_client(client_t *client);
 
 #endif /* !SERVER_H_ */

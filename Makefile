@@ -6,6 +6,7 @@
 ##
 
 SRC = 	$(wildcard src/server/*.c)	\
+		$(wildcard src/common/*.c)	\
 
 CC = gcc
 
