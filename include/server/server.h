@@ -72,7 +72,7 @@ typedef struct player_s
     char team_uuid[37];
     orientation_t orientation;
     int inventory[THYSTAME + 1];
-    struct player_s next;
+    struct player_s *next;
 } player_t;
 
 typedef struct team_s
