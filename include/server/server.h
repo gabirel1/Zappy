@@ -106,6 +106,9 @@ char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
 client_t *client);
 
+int setup_infos(int ac, char *av[], server_info_t *server_info, \
+game_info_t *game_info);
+
 static const func_t func_tab[] = {
     // {"msz", &map_size},
     // {"bct", &tilecontent},
