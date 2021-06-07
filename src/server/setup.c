@@ -8,9 +8,9 @@
 #include "server/server.h"
 
 int handle_connection(server_t *server, server_info_t *server_in, \
-game_info_t *game, int i)
+game_board_t *game, int i)
 {
-    char rcv[1024] = { 0 };
+    char *buff = NULL;
     client_t *new = NULL;
     size_t len = sizeof(server->server_address);
 
@@ -26,14 +26,21 @@ game_info_t *game, int i)
         FD_SET(new->fd, &server->active_fd_set);
         add_client(new);
     } else {
-        read(i, rcv, 1024);
-        printf("[%s]\n", rcv);
+        buff = read_from_fd(i, &(server->read_fd_set));
+        if (!buff) {
+            fprintf(stderr, "Error while reading from client\n");
+            return ERROR;
+        }
+        printf("[%s]\n", buff);
+        interpret_cmd(buff, server, game, get_client_by_socket(i));
     }
     return SUCCESS;
 }
 
-int launch_server(server_t server, server_info_t server_in, game_info_t game)
+int launch_server(server_t server, server_info_t server_in, game_info_t game_info)
 {
+    game_board_t game = create_game_board(&game_info);
+
     while (1) {
         server.read_fd_set = server.active_fd_set;
         server.write_fd_set = server.active_fd_set;

@@ -24,11 +24,15 @@
 #include <ctype.h>
 #include <limits.h>
 #include <sys/wait.h>
+#include <dlfcn.h>
+#include <uuid/uuid.h>
+#include <signal.h>
 
 #define SUCCESS 0
 #define ERROR -1
 #define FAILURE 84
 
 int help_func(int error_code);
+char **str_to_word_array(char *str, char *delim);
 
 #endif /* !DEF_H_ */
