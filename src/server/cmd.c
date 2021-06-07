@@ -21,4 +21,5 @@ client_t *client)
     }
     if (!passed)
         dprintf(client->fd, "ko\n");
+    return SUCCESS;
 }
