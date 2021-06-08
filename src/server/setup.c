@@ -37,7 +37,8 @@ game_board_t *game, int i)
     return SUCCESS;
 }
 
-int launch_server(server_t server, server_info_t server_in, game_info_t game_info)
+int launch_server(server_t server, server_info_t server_in, \
+game_info_t game_info)
 {
     game_board_t game = create_game_board(&game_info);
 

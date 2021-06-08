@@ -9,8 +9,19 @@
 
 int main(int ac, char *av[])
 {
-    (void)ac;
-    (void)av;
+    server_info_t server_info;
+    game_info_t game_info;
+    int res = 0;
 
-    return help_func(SUCCESS);
+    setup_default(&server_info, &game_info);
+    if ((res = setup_infos(ac, av, &server_info, &game_info)) == ERROR) {
+        if (game_info.team_names != NULL)
+            free(game_info.team_names);
+        return help_func(FAILURE);
+    }
+    if (res == 42)
+        free_tab(game_info.team_names);
+    else if (game_info.team_names != NULL)
+        free(game_info.team_names);
+    return SUCCESS;
 }

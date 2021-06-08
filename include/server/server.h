@@ -13,7 +13,9 @@
 
 typedef struct game_info_s
 {
-
+    char **team_names;
+    int width;
+    int height;
 } game_info_t;
 
 typedef struct game_board_s
@@ -26,6 +28,7 @@ typedef struct server_info_s
     int port;
     int max_client;
     int nb_teams;
+    int freq;
 } server_info_t;
 
 typedef struct server_s
@@ -95,6 +98,9 @@ typedef struct func_s
 } func_t;
 
 char *my_strdup(char *cpy);
+int get_tab_len(char *tab[]);
+bool is_full_digits(char *string);
+void free_tab(char *tab[]);
 
 game_board_t create_game_board(game_info_t *game_info);
 
@@ -108,6 +114,13 @@ client_t *client);
 
 int setup_infos(int ac, char *av[], server_info_t *server_info, \
 game_info_t *game_info);
+void setup_default(server_info_t *s_info, game_info_t *g_info);
+int f_case(server_info_t *server_info);
+int c_case(server_info_t *server_info);
+int y_case(game_info_t *g_info);
+int x_case(game_info_t *g_info);
+
+
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},
