@@ -69,8 +69,8 @@ typedef enum orientation
 typedef struct player_s
 {
     char uuid[37];
-    int posX;
-    int posY;
+    int posx;
+    int posy;
     int level;
     char team_uuid[37];
     orientation_t orientation;
@@ -86,8 +86,8 @@ typedef struct team_s
 
 typedef struct tile_s
 {
-    int posX;
-    int posY;
+    int posx;
+    int posy;
     int content[THYSTAME + 1];
 } tile_t;
 
@@ -107,6 +107,10 @@ game_board_t create_game_board(game_info_t *game_info);
 bool add_client(client_t *next);
 bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
+
+player_t **player_container(void);
+bool add_player(player_t *next);
+bool delete_player(player_t *player);
 
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \

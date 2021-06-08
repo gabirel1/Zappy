@@ -16,7 +16,7 @@ TARGET = zappy_server
 
 CFLAGS = -W -Wall -Wextra -I./include
 
-LDFLAGS =
+LDFLAGS = -luuid
 
 OBJ	=	$(SRC:.c=.o)
 
