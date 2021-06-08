@@ -13,6 +13,7 @@ int main(int ac, char *av[])
     game_info_t game_info;
     int res = 0;
 
+    srand(time(NULL));
     setup_default(&server_info, &game_info);
     if ((res = setup_infos(ac, av, &server_info, &game_info)) == ERROR) {
         if (game_info.team_names != NULL)
