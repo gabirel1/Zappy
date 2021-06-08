@@ -19,10 +19,31 @@ typedef struct game_info_s
     int freq;
 } game_info_t;
 
+typedef enum item
+{
+    FOOD = 0,
+    LINEMATE,
+    DERAUMERE,
+    SIBUR,
+    MENDIANE,
+    PHIRAS,
+    THYSTAME
+} item_t;
+
+typedef struct tile_s
+{
+    int ressources[THYSTAME + 1];
+    int posx;
+    int posy;
+} tile_t;
+
 typedef struct game_board_s
 {
+    char **team_names;
     int width;
     int height;
+    int freq;
+    tile_t **map;
 } game_board_t;
 
 typedef struct server_info_s
@@ -45,19 +66,9 @@ typedef struct server_s
 typedef struct client_s
 {
     int fd;
+    bool is_graphic;
     struct client_s *next;
 } client_t;
-
-typedef enum item
-{
-    FOOD = 0,
-    LINEMATE,
-    DERAUMERE,
-    SIBUR,
-    MENDIANE,
-    PHIRAS,
-    THYSTAME
-} item_t;
 
 typedef enum orientation
 {
@@ -85,13 +96,6 @@ typedef struct team_s
     char *name;
 } team_t;
 
-typedef struct tile_s
-{
-    int posx;
-    int posy;
-    int content[THYSTAME + 1];
-} tile_t;
-
 typedef struct func_s
 {
     char *cmd;
@@ -103,7 +107,7 @@ int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
 void free_tab(char *tab[]);
 
-game_board_t create_game_board(game_info_t *game_info);
+game_board_t *create_game_board(game_info_t *game_info);
 
 bool add_client(client_t *next);
 bool delete_client(client_t *client);

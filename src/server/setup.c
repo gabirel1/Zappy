@@ -7,7 +7,7 @@
 
 #include "server/server.h"
 
-int handle_connection(server_t *server, server_info_t *server_in, \
+int handle_connection(server_t *server, UNSD server_info_t *server_in, \
 game_board_t *game, int i)
 {
     char *buff = NULL;
@@ -40,7 +40,7 @@ game_board_t *game, int i)
 int launch_server(server_t server, server_info_t *server_in, \
 game_info_t *game_info)
 {
-    game_board_t game = create_game_board(game_info);
+    game_board_t *game = create_game_board(game_info);
 
     while (1) {
         server.read_fd_set = server.active_fd_set;
@@ -52,7 +52,7 @@ game_info_t *game_info)
         }
         for (int i = 0; i < FD_SETSIZE; i += 1) {
             if (FD_ISSET(i, &server.read_fd_set))
-                handle_connection(&server, server_in, &game, i);
+                handle_connection(&server, server_in, game, i);
         }
     }
 }
