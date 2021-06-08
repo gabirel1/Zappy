@@ -17,6 +17,9 @@ int main(int ac, char *av[])
     if ((res = setup_infos(ac, av, &server_info, &game_info)) == ERROR) {
         if (game_info.team_names != NULL)
             free(game_info.team_names);
+    }
+    if (res == 21) {
+        free_tab(game_info.team_names);
         return help_func(FAILURE);
     }
     if (res == 42)

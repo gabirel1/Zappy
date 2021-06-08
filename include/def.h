@@ -34,6 +34,7 @@
 #define ERROR -1
 #define FAILURE 84
 #define UNSD __attribute__((unused))
+#define S_CHAR sizeof(char *)
 
 int help_func(int error_code);
 char **str_to_word_array(char *str, char *delim);

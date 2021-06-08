@@ -22,10 +22,12 @@ int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
 {
     int index = 0;
     int len = 0;
-    printf("opt n == %s\n", optarg);
 
     index = optind - 1;
-
+    free_tab(g_info->team_names);
+    g_info->team_names = NULL;
+    g_info->team_names = malloc(sizeof(char *));
+    g_info->team_names[0] = NULL;
     for (; index < ac; index++) {
         if (av[index][0] == '-') {
             optind = index - 1;
@@ -33,13 +35,12 @@ int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
         }
         printf("opt n nb ==  %s\n", av[index]);
         len = get_tab_len(g_info->team_names);
-        g_info->team_names = realloc(g_info->team_names, \
-        (sizeof(char *) * (len + 2)));
+        g_info->team_names = realloc(g_info->team_names, (S_CHAR * (len + 2)));
         g_info->team_names[len + 1] = NULL;
         g_info->team_names[len] = my_strdup(av[index]);
     }
     s_info->nb_teams = get_tab_len(g_info->team_names);
-    return SUCCESS;
+    return 42;
 }
 
 int switch_opt(server_info_t *s_info, game_info_t *g_info, \
@@ -68,19 +69,22 @@ game_info_t *game_info)
 {
     int opt = 0;
     bool done = false;
+    int res = 0;
+    bool n_done = false;
 
     while ((opt = getopt(ac, av, "p:x:y:n:c:f:")) != EOF) {
         if (done == false) {
-            free_tab(game_info->team_names);
-            game_info->team_names = NULL;
-            game_info->team_names = malloc(sizeof(char *));
-            game_info->team_names[0] = NULL;
             done = true;
         }
-        if (switch_opt(server_info, game_info, (int [2]){opt, ac}, av) == ERROR)
+        res = switch_opt(server_info, game_info, (int [2]){opt, ac}, av);
+        if (res == ERROR && n_done == true)
             return ERROR;
+        else if (res == ERROR && n_done == false)
+            return 21;
+        if (res == 42)
+            n_done = true;
     }
-    if (done == false)
+    if (done == false || n_done == false)
         return 42;
     return SUCCESS;
 }
