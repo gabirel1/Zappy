@@ -37,10 +37,10 @@ game_board_t *game, int i)
     return SUCCESS;
 }
 
-int launch_server(server_t server, server_info_t server_in, \
-game_info_t game_info)
+int launch_server(server_t server, server_info_t *server_in, \
+game_info_t *game_info)
 {
-    game_board_t game = create_game_board(&game_info);
+    game_board_t game = create_game_board(game_info);
 
     while (1) {
         server.read_fd_set = server.active_fd_set;
@@ -52,20 +52,20 @@ game_info_t game_info)
         }
         for (int i = 0; i < FD_SETSIZE; i += 1) {
             if (FD_ISSET(i, &server.read_fd_set))
-                handle_connection(&server, &server_in, &game, i);
+                handle_connection(&server, server_in, &game, i);
         }
     }
 }
 
-int setup_server(server_t server, server_info_t server_info, game_info_t game)
+int setup_server(server_t server, server_info_t *server_info, game_info_t *game)
 {
     if (bind(server.serverfd, (struct sockaddr *) &server.server_address, \
     sizeof(server.server_address)) == -1) {
         fprintf(stderr, "Error while binding socket\n");
         return ERROR;
     }
-    if (listen(server.serverfd, server_info.max_client * \
-    server_info.nb_teams + 1) == -1) {
+    if (listen(server.serverfd, server_info->max_client * \
+    server_info->nb_teams + 1) == -1) {
         fprintf(stderr, "Error while listening on server");
         return ERROR;
     }
@@ -76,7 +76,7 @@ int setup_server(server_t server, server_info_t server_info, game_info_t game)
     return (launch_server(server, server_info, game));
 }
 
-int create_server(server_info_t server_info, game_info_t game)
+int create_server(server_info_t *server_info, game_info_t *game)
 {
     server_t server = { 0 };
     int opt = 1;
@@ -93,6 +93,6 @@ int create_server(server_info_t server_info, game_info_t game)
     }
     server.server_address.sin_family = AF_INET;
     server.server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server.server_address.sin_port = htons(server_info.port);
+    server.server_address.sin_port = htons(server_info->port);
     return (setup_server(server, server_info, game));
 }

@@ -21,7 +21,8 @@ typedef struct game_info_s
 
 typedef struct game_board_s
 {
-
+    int width;
+    int height;
 } game_board_t;
 
 typedef struct server_info_s
@@ -124,7 +125,7 @@ int c_case(server_info_t *server_info);
 int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
-
+int create_server(server_info_t *server_info, game_info_t *sgame);
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},
