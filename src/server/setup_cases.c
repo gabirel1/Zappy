@@ -42,7 +42,7 @@ int c_case(server_info_t *server_info)
     return SUCCESS;
 }
 
-int f_case(server_info_t *server_info)
+int f_case(game_info_t *game_info)
 {
     printf("opt f == %s\n", optarg);
     if (is_full_digits(optarg) == false
@@ -50,6 +50,6 @@ int f_case(server_info_t *server_info)
         printf("-f option only accepts integer values between 2 and 10000\n");
         return ERROR;
     }
-    server_info->freq = atoi(optarg);
+    game_info->freq = atoi(optarg);
     return SUCCESS;
 }
