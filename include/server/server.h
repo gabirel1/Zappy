@@ -16,6 +16,7 @@ typedef struct game_info_s
     char **team_names;
     int width;
     int height;
+    int freq;
 } game_info_t;
 
 typedef struct game_board_s
@@ -28,7 +29,6 @@ typedef struct server_info_s
     int port;
     int max_client;
     int nb_teams;
-    int freq;
 } server_info_t;
 
 typedef struct server_s
@@ -119,7 +119,7 @@ client_t *client);
 int setup_infos(int ac, char *av[], server_info_t *server_info, \
 game_info_t *game_info);
 void setup_default(server_info_t *s_info, game_info_t *g_info);
-int f_case(server_info_t *server_info);
+int f_case(game_info_t *game_info);
 int c_case(server_info_t *server_info);
 int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);

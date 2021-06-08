@@ -58,7 +58,7 @@ int opt_ac[2], char *av[])
         case 'c':
             return c_case(s_info);
         case 'f':
-            return f_case(s_info);
+            return f_case(g_info);
         default :
             return ERROR;
     }
