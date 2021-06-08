@@ -44,6 +44,7 @@ typedef struct server_s
 typedef struct client_s
 {
     int fd;
+    bool is_graphic;
     struct client_s *next;
 } client_t;
 
@@ -57,6 +58,13 @@ typedef enum item
     PHIRAS,
     THYSTAME
 } item_t;
+
+typedef struct tile_s
+{
+    int ressources[THYSTAME + 1];
+    int posx;
+    int posy;
+} tile_t;
 
 typedef enum orientation
 {
