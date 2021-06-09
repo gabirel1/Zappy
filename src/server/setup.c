@@ -7,6 +7,13 @@
 
 #include "server/server.h"
 
+void init_new_client(client_t *client)
+{
+    client->is_graphic = false;
+    client->is_ia = false;
+    memset(client->uuid, 0, 37);
+}
+
 int handle_connection(server_t *server, UNSD server_info_t *server_in, \
 game_board_t *game, int i)
 {
@@ -24,7 +31,11 @@ game_board_t *game, int i)
         }
         printf("new connection\n");
         FD_SET(new->fd, &server->active_fd_set);
+        init_new_client(new);
         add_client(new);
+        if (FD_ISSET(new->fd, &server->write_fd_set)) {
+            dprintf(new->fd, "WELCOME\n");
+        }
     } else {
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {

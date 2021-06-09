@@ -14,6 +14,7 @@
 typedef struct game_info_s
 {
     char **team_names;
+    char (*team_uuids)[37];
     int width;
     int height;
     int freq;
@@ -67,6 +68,8 @@ typedef struct client_s
 {
     int fd;
     bool is_graphic;
+    bool is_ia;
+    char uuid[37];
     struct client_s *next;
 } client_t;
 
@@ -116,6 +119,12 @@ client_t *get_client_by_socket(int fd);
 player_t **player_container(void);
 bool add_player(player_t *next);
 bool delete_player(player_t *player);
+
+player_t *get_player_by_uuid(char *uuid);
+bool delete_player(player_t *player);
+bool add_player(player_t *next);
+player_t *init_player(char *team_uuid, int posx, int posy);
+player_t **player_container(void);
 
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
