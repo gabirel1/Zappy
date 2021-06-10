@@ -147,11 +147,16 @@ int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
 int create_server(server_info_t *server_info, game_info_t *sgame);
+void stop_client(int fd, server_t *server, int *res);
+void delete_client_from_list(client_t *client);
 
 int graphic_send_first_batch(game_board_t *g_board, \
 client_t *client, server_t *server);
 int ia_send_first_batch(game_board_t *g_board, \
 client_t *client, server_t *server);
+
+void my_sighandler(UNSD int signal);
+int my_handler(int nb, bool change);
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},
