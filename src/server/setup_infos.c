@@ -18,26 +18,46 @@ int p_case(server_info_t *server_info)
     return SUCCESS;
 }
 
+void n_case_next(game_info_t *g_info, char *name)
+{
+    int len = 0;
+    uuid_t tmp;
+    char buffer[37] = {0};
+
+    printf("opt n nb ==  %s\n", name);
+    uuid_generate(tmp);
+    uuid_unparse_lower(tmp, buffer);
+
+    len = get_tab_len(g_info->team_names);
+    g_info->team_names = realloc(g_info->team_names, (S_CHAR * (len + 2)));
+    g_info->team_names[len + 1] = NULL;
+    g_info->team_names[len] = my_strdup(name);
+
+    len = get_tab_len(g_info->team_uuids);
+    g_info->team_uuids = realloc(g_info->team_uuids, (S_CHAR * (len + 2)));
+    g_info->team_uuids[len + 1] = NULL;
+    g_info->team_uuids[len] = my_strdup(buffer);
+}
+
 int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
 {
     int index = 0;
-    int len = 0;
 
     index = optind - 1;
     free_tab(g_info->team_names);
+    free_tab(g_info->team_uuids);
     g_info->team_names = NULL;
     g_info->team_names = malloc(sizeof(char *));
     g_info->team_names[0] = NULL;
+    g_info->team_uuids = NULL;
+    g_info->team_uuids = malloc(sizeof(char *));
+    g_info->team_uuids[0] = NULL;
     for (; index < ac; index++) {
         if (av[index][0] == '-') {
             optind = index - 1;
             break;
         }
-        printf("opt n nb ==  %s\n", av[index]);
-        len = get_tab_len(g_info->team_names);
-        g_info->team_names = realloc(g_info->team_names, (S_CHAR * (len + 2)));
-        g_info->team_names[len + 1] = NULL;
-        g_info->team_names[len] = my_strdup(av[index]);
+        n_case_next(g_info, av[index]);
     }
     s_info->nb_teams = get_tab_len(g_info->team_names);
     return 42;

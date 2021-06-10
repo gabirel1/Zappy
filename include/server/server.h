@@ -14,7 +14,7 @@
 typedef struct game_info_s
 {
     char **team_names;
-    char (*team_uuids)[37];
+    char **team_uuids;
     int width;
     int height;
     int freq;
@@ -41,6 +41,7 @@ typedef struct tile_s
 typedef struct game_board_s
 {
     char **team_names;
+    char **team_uuids;
     int width;
     int height;
     int freq;
