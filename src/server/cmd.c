@@ -19,17 +19,18 @@ static void make_link_client_to_new_player(client_t *client, char *team_uuid)
 }
 
 int check_first_client_send(char *buff, game_board_t *game, \
-client_t *client)
+client_t *client, server_t *server)
 {
     team_t *team = get_team_by_name(buff);
 
     if (strcmp(buff, "GRAPHIC") == 0) {
         client->is_graphic = true;
-        return SUCCESS;
+        return graphic_send_first_batch(game, client, server);
     }
     if (team != NULL) {
         make_link_client_to_new_player(client, team->team_uuid);
-        return SUCCESS;
+        team->client_max -= 1;
+        return ia_send_first_batch(game, client, server);
     }
     return ERROR;
 }
@@ -47,7 +48,7 @@ client_t *client)
         }
     }
     if (!passed) {
-        if (check_first_client_send(buff, game, client) == ERROR)
+        if (check_first_client_send(buff, game, client, server) == ERROR)
             dprintf(client->fd, "ko\n");
     }
     return SUCCESS;

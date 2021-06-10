@@ -18,7 +18,7 @@ int p_case(server_info_t *server_info)
     return SUCCESS;
 }
 
-void n_case_next(game_info_t *g_info, server_info_t *s_info, char *name)
+void n_case_next(server_info_t *s_info, char *name)
 {
     uuid_t tmp;
     char buffer[37] = {0};
@@ -52,9 +52,10 @@ int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
             optind = index - 1;
             break;
         }
-        n_case_next(g_info, s_info, av[index]);
+        n_case_next(s_info, av[index]);
         count++;
     }
+    g_info->teams = *team_container();
     s_info->nb_teams = count;
     return SUCCESS;
 }

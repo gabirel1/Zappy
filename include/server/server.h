@@ -40,7 +40,7 @@ typedef enum item
 
 typedef struct tile_s
 {
-    int ressources[THYSTAME + 1];
+    int resources[THYSTAME + 1];
     int posx;
     int posy;
 } tile_t;
@@ -107,6 +107,9 @@ typedef struct func_s
     int (*fun)(char **, server_t *, game_board_t *, client_t *);
 } func_t;
 
+#define TILE_CONTENT g_board->map[y_index][x_index]
+#define TILE_CONTENT_R g_board->map[y_index][x_index].resources
+
 char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
@@ -144,6 +147,11 @@ int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
 int create_server(server_info_t *server_info, game_info_t *sgame);
+
+int graphic_send_first_batch(game_board_t *g_board, \
+client_t *client, server_t *server);
+int ia_send_first_batch(game_board_t *g_board, \
+client_t *client, server_t *server);
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},
