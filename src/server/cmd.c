@@ -21,15 +21,15 @@ static void make_link_client_to_new_player(client_t *client, char *team_uuid)
 int check_first_client_send(char *buff, game_board_t *game, \
 client_t *client)
 {
+    team_t *team = get_team_by_name(buff);
+
     if (strcmp(buff, "GRAPHIC") == 0) {
         client->is_graphic = true;
         return SUCCESS;
     }
-    for (int index = 0; game->team_names[index]; index++) {
-        if (strcmp(buff, game->team_names[index]) == 0) {
-            make_link_client_to_new_player(client, game->team_uuids[index]);
-            return SUCCESS;
-        }
+    if (team != NULL) {
+        make_link_client_to_new_player(client, team->team_uuid);
+        return SUCCESS;
     }
     return ERROR;
 }

@@ -11,10 +11,17 @@
 #include "def.h"
 #include "common/garbage_collector.h"
 
+typedef struct team_s
+{
+    char team_uuid[37];
+    char *team_name;
+    int client_max;
+    struct team_s *next;
+} team_t;
+
 typedef struct game_info_s
 {
-    char **team_names;
-    char **team_uuids;
+    team_t *teams;
     int width;
     int height;
     int freq;
@@ -40,8 +47,7 @@ typedef struct tile_s
 
 typedef struct game_board_s
 {
-    char **team_names;
-    char **team_uuids;
+    team_t *teams;
     int width;
     int height;
     int freq;
@@ -94,11 +100,6 @@ typedef struct player_s
     struct player_s *next;
 } player_t;
 
-typedef struct team_s
-{
-    char team_uuid[37];
-    char *name;
-} team_t;
 
 typedef struct func_s
 {
@@ -118,14 +119,17 @@ bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
 
 player_t **player_container(void);
-bool add_player(player_t *next);
-bool delete_player(player_t *player);
-
 player_t *get_player_by_uuid(char *uuid);
-bool delete_player(player_t *player);
 bool add_player(player_t *next);
+bool delete_player(player_t *player);
 player_t *init_player(char *team_uuid, int posx, int posy);
-player_t **player_container(void);
+
+team_t **team_container(void);
+team_t *get_team_by_uuid(char *uuid);
+team_t *init_team(char team_uuid[37], char *team_name, int max_client);
+bool add_team(team_t *next);
+bool delete_team(team_t *team);
+team_t *get_team_by_name(char *name);
 
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \

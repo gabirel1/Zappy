@@ -30,8 +30,7 @@ game_board_t *create_game_board(game_info_t *game_info)
     board->width = game_info->width;
     board->height = game_info->height;
     board->freq = game_info->freq;
-    board->team_names = game_info->team_names;
-    board->team_uuids = game_info->team_uuids;
+    board->teams = team_container();
     board->map = my_malloc(sizeof(tile_t *) * (board->height + 1));
     for (int i = 0; i < board->height; i += 1) {
         board->map[i] = my_malloc(sizeof(tile_t) * (board->width));
