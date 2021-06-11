@@ -18,11 +18,13 @@ player_t *init_player(char *team_uuid, int posx, int posy)
 {
     player_t *player = my_malloc(sizeof(player_t));
     uuid_t new_uuid;
+    static int nb = 1;
 
     uuid_generate(new_uuid);
     memset(player, 0, sizeof(player_t));
     player->posx = posx;
     player->posy = posy;
+    player->player_number = nb++;
     player->level = 0;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = NORTH;
