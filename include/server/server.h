@@ -11,10 +11,17 @@
 #include "def.h"
 #include "common/garbage_collector.h"
 
+typedef struct team_s
+{
+    char team_uuid[37];
+    char *team_name;
+    int client_max;
+    struct team_s *next;
+} team_t;
+
 typedef struct game_info_s
 {
-    char **team_names;
-    char **team_uuids;
+    team_t *teams;
     int width;
     int height;
     int freq;
@@ -33,15 +40,14 @@ typedef enum item
 
 typedef struct tile_s
 {
-    int ressources[THYSTAME + 1];
+    int resources[THYSTAME + 1];
     int posx;
     int posy;
 } tile_t;
 
 typedef struct game_board_s
 {
-    char **team_names;
-    char **team_uuids;
+    team_t *teams;
     int width;
     int height;
     int freq;
@@ -94,17 +100,15 @@ typedef struct player_s
     struct player_s *next;
 } player_t;
 
-typedef struct team_s
-{
-    char team_uuid[37];
-    char *name;
-} team_t;
 
 typedef struct func_s
 {
     char *cmd;
     int (*fun)(char **, server_t *, game_board_t *, client_t *);
 } func_t;
+
+#define TILE_CONTENT g_board->map[y_index][x_index]
+#define TILE_CONTENT_R g_board->map[y_index][x_index].resources
 
 char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
@@ -118,14 +122,17 @@ bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
 
 player_t **player_container(void);
-bool add_player(player_t *next);
-bool delete_player(player_t *player);
-
 player_t *get_player_by_uuid(char *uuid);
-bool delete_player(player_t *player);
 bool add_player(player_t *next);
+bool delete_player(player_t *player);
 player_t *init_player(char *team_uuid, int posx, int posy);
-player_t **player_container(void);
+
+team_t **team_container(void);
+team_t *get_team_by_uuid(char *uuid);
+team_t *init_team(char team_uuid[37], char *team_name, int max_client);
+bool add_team(team_t *next);
+bool delete_team(team_t *team);
+team_t *get_team_by_name(char *name);
 
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
@@ -140,6 +147,16 @@ int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
 int create_server(server_info_t *server_info, game_info_t *sgame);
+void stop_client(int fd, server_t *server, int *res);
+void delete_client_from_list(client_t *client);
+
+int graphic_send_first_batch(game_board_t *g_board, \
+client_t *client, server_t *server);
+int ia_send_first_batch(game_board_t *g_board, \
+client_t *client, server_t *server);
+
+void my_sighandler(UNSD int signal);
+int my_handler(int nb, bool change);
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},

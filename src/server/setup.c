@@ -33,13 +33,14 @@ game_board_t *game, int i)
         FD_SET(new->fd, &server->active_fd_set);
         init_new_client(new);
         add_client(new);
-        if (FD_ISSET(new->fd, &server->write_fd_set)) {
+        if (FD_ISSET(new->fd, &server->active_fd_set)) {
             dprintf(new->fd, "WELCOME\n");
         }
     } else {
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {
             fprintf(stderr, "Error while reading from client\n");
+            delete_client_from_list(get_client_by_socket(i));
             return ERROR;
         }
         printf("[%s]\n", buff);
@@ -52,8 +53,9 @@ int launch_server(server_t server, server_info_t *server_in, \
 game_info_t *game_info)
 {
     game_board_t *game = create_game_board(game_info);
+    int res = 0;
 
-    while (1) {
+    while (my_handler(12, false) == 0) {
         server.read_fd_set = server.active_fd_set;
         server.write_fd_set = server.active_fd_set;
         if (select(FD_SETSIZE, &server.read_fd_set, &server.write_fd_set, \
@@ -61,11 +63,16 @@ game_info_t *game_info)
             fprintf(stderr, "Error while waiting for client\n");
             return ERROR;
         }
+        if (my_handler(12, false) != 0)
+            break;
         for (int i = 0; i < FD_SETSIZE; i += 1) {
             if (FD_ISSET(i, &server.read_fd_set))
-                handle_connection(&server, server_in, game, i);
+                res = handle_connection(&server, server_in, game, i);
+            if (res == ERROR)
+                stop_client(i, &server, &res);
         }
     }
+    return SUCCESS;
 }
 
 int setup_server(server_t server, server_info_t *server_info, game_info_t *game)
@@ -103,7 +110,7 @@ int create_server(server_info_t *server_info, game_info_t *game)
         return ERROR;
     }
     server.server_address.sin_family = AF_INET;
-    server.server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.server_address.sin_addr.s_addr = inet_addr("0.0.0.0");
     server.server_address.sin_port = htons(server_info->port);
     return (setup_server(server, server_info, game));
 }

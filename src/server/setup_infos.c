@@ -18,49 +18,46 @@ int p_case(server_info_t *server_info)
     return SUCCESS;
 }
 
-void n_case_next(game_info_t *g_info, char *name)
+void n_case_next(server_info_t *s_info, char *name)
 {
-    int len = 0;
     uuid_t tmp;
     char buffer[37] = {0};
+    team_t *new_team = NULL;
 
     printf("opt n nb ==  %s\n", name);
     uuid_generate(tmp);
     uuid_unparse_lower(tmp, buffer);
 
-    len = get_tab_len(g_info->team_names);
-    g_info->team_names = realloc(g_info->team_names, (S_CHAR * (len + 2)));
-    g_info->team_names[len + 1] = NULL;
-    g_info->team_names[len] = my_strdup(name);
-
-    len = get_tab_len(g_info->team_uuids);
-    g_info->team_uuids = realloc(g_info->team_uuids, (S_CHAR * (len + 2)));
-    g_info->team_uuids[len + 1] = NULL;
-    g_info->team_uuids[len] = my_strdup(buffer);
+    new_team = init_team(buffer, name, s_info->max_client);
+    if (add_team(new_team) == false) {
+        printf("error while adding a team\n");
+        return;
+    }
 }
 
 int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
 {
     int index = 0;
+    int count = 0;
 
     index = optind - 1;
-    free_tab(g_info->team_names);
-    free_tab(g_info->team_uuids);
-    g_info->team_names = NULL;
-    g_info->team_names = malloc(sizeof(char *));
-    g_info->team_names[0] = NULL;
-    g_info->team_uuids = NULL;
-    g_info->team_uuids = malloc(sizeof(char *));
-    g_info->team_uuids[0] = NULL;
+    for (team_t *tmp = *team_container(); tmp; tmp = tmp->next) {
+        if (delete_team(tmp) == false) {
+            printf("error while deleting team\n");
+            return ERROR;
+        }
+    }
     for (; index < ac; index++) {
         if (av[index][0] == '-') {
             optind = index - 1;
             break;
         }
-        n_case_next(g_info, av[index]);
+        n_case_next(s_info, av[index]);
+        count++;
     }
-    s_info->nb_teams = get_tab_len(g_info->team_names);
-    return 42;
+    g_info->teams = *team_container();
+    s_info->nb_teams = count;
+    return SUCCESS;
 }
 
 int switch_opt(server_info_t *s_info, game_info_t *g_info, \
@@ -88,23 +85,12 @@ int setup_infos(int ac, char *av[], server_info_t *server_info, \
 game_info_t *game_info)
 {
     int opt = 0;
-    bool done = false;
     int res = 0;
-    bool n_done = false;
 
     while ((opt = getopt(ac, av, "p:x:y:n:c:f:")) != EOF) {
-        if (done == false) {
-            done = true;
-        }
         res = switch_opt(server_info, game_info, (int [2]){opt, ac}, av);
-        if (res == ERROR && n_done == true)
+        if (res == ERROR)
             return ERROR;
-        else if (res == ERROR && n_done == false)
-            return 21;
-        if (res == 42)
-            n_done = true;
     }
-    if (done == false || n_done == false)
-        return 42;
     return SUCCESS;
 }
