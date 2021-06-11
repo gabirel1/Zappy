@@ -110,7 +110,7 @@ int create_server(server_info_t *server_info, game_info_t *game)
         return ERROR;
     }
     server.server_address.sin_family = AF_INET;
-    server.server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.server_address.sin_addr.s_addr = inet_addr("0.0.0.0");
     server.server_address.sin_port = htons(server_info->port);
     return (setup_server(server, server_info, game));
 }
