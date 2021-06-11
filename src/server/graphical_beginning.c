@@ -34,7 +34,8 @@ client_t *client, server_t *server)
 int ia_send_first_batch(game_board_t *g_board, \
 client_t *client, server_t *server)
 {
-    team_t *team = get_team_by_uuid(client->uuid);
+    player_t *player = get_player_by_uuid(client->uuid);
+    team_t *team = (player) ? get_team_by_uuid(player->team_uuid) : 0;
 
     if (team == NULL) {
         printf("no team found\n");
