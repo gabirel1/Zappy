@@ -28,6 +28,10 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     player->level = 0;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = NORTH;
+    player->cooldown = 0;
+    player->hp = 10;
+    gettimeofday(&(player->life_clock), NULL);
+    gettimeofday(&(player->clock), NULL);
     uuid_unparse_lower(new_uuid, player->uuid);
     return player;
 }

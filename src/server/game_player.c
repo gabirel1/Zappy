@@ -9,21 +9,25 @@
 
 void update_cooldown(game_board_t *board)
 {
-    static struct timeval start = { 0 };
-    static bool is_first = true;
     double secs = 0;
     struct timeval end;
 
-    if (is_first) {
-        gettimeofday(&start, NULL);
-        is_first = false;
-    }
-    gettimeofday(&end, NULL);
-    secs = (double)(end.tv_usec - start.tv_usec) / 1000000 + \
-    (double)(end.tv_sec - start.tv_sec);
-    if (secs > 1 / board->freq) {
-        for (player_t *tmp = *player_container(); tmp; tmp = tmp->next)
-            tmp->cooldown -= (tmp->cooldown > 0) ? 1 : 0;
-        gettimeofday(&start, NULL);
+    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+        if (tmp->cooldown == 0) {
+            gettimeofday(&(tmp->clock), NULL);
+        }
+        gettimeofday(&end, NULL);
+        secs = (double)(end.tv_usec - tmp->clock.tv_usec) / 1000000 + \
+        (double)(end.tv_sec - tmp->clock.tv_sec);
+        if (secs > 1 / board->freq) {
+            tmp->cooldown -= 1;
+            gettimeofday(&(tmp->clock), NULL);
+        }
+        secs = (double)(end.tv_usec - tmp->life_clock.tv_usec) / 1000000 + \
+        (double)(end.tv_sec - tmp->life_clock.tv_sec);
+        if (secs > 126 / board->freq) {
+            tmp->hp -= 1;
+            gettimeofday(&(tmp->life_clock), NULL);
+        }
     }
 }

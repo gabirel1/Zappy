@@ -99,6 +99,9 @@ typedef struct player_s
     char uuid[37];
     char team_uuid[37];
     int cooldown;
+    int hp;
+    struct timeval clock;
+    struct timeval life_clock;
     struct player_s *next;
 } player_t;
 
