@@ -97,6 +97,7 @@ typedef struct player_s
     char team_uuid[37];
     orientation_t orientation;
     int inventory[THYSTAME + 1];
+    int cooldown;
     struct player_s *next;
 } player_t;
 
@@ -157,6 +158,9 @@ client_t *client, server_t *server);
 
 void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
+
+int game_loop(struct timeval *start, game_board_t *game);
+void update_cooldown(game_board_t *board);
 
 static const func_t func_tab[] = {
     // {"msz", &map_size},

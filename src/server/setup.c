@@ -53,8 +53,10 @@ int launch_server(server_t server, server_info_t *server_in, \
 game_info_t *game_info)
 {
     game_board_t *game = create_game_board(game_info);
+    struct timeval start;
     int res = 0;
 
+    gettimeofday(&start, NULL);
     while (my_handler(12, false) == 0) {
         server.read_fd_set = server.active_fd_set;
         server.write_fd_set = server.active_fd_set;
@@ -71,6 +73,8 @@ game_info_t *game_info)
             if (res == ERROR)
                 stop_client(i, &server, &res);
         }
+        update_cooldown(game);
+        game_loop(&start, game);
     }
     return SUCCESS;
 }
