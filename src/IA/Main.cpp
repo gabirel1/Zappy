@@ -23,8 +23,13 @@ int main(int ac, char **av)
     std::cout << soc.receiveMessage() << std::endl;
     soc.sendMessage(pars.getName());
     std::cout << soc.receiveMessage() << std::endl;
-    soc.sendMessage("Forward\n");
-    std::cout << soc.receiveMessage() << std::endl;
+    while (1) {
+        soc.sendMessage("Forward\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Right\n");
+        std::cout << soc.receiveMessage() << std::endl;
+    }
 
     return (0);
      

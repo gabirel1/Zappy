@@ -90,13 +90,14 @@ typedef enum orientation
 
 typedef struct player_s
 {
-    char uuid[37];
+    int inventory[THYSTAME + 1];
+    orientation_t orientation;
     int posx;
     int posy;
     int level;
+    int player_number;
+    char uuid[37];
     char team_uuid[37];
-    orientation_t orientation;
-    int inventory[THYSTAME + 1];
     int cooldown;
     struct player_s *next;
 } player_t;
@@ -118,6 +119,7 @@ void free_tab(char *tab[]);
 
 game_board_t *create_game_board(game_info_t *game_info);
 
+client_t **client_container(void);
 bool add_client(client_t *next);
 bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
@@ -134,6 +136,7 @@ team_t *init_team(char team_uuid[37], char *team_name, int max_client);
 bool add_team(team_t *next);
 bool delete_team(team_t *team);
 team_t *get_team_by_name(char *name);
+char *get_team_name_by_uuid(char uuid[37]);
 
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
