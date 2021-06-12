@@ -171,6 +171,9 @@ int my_handler(int nb, bool change);
 int game_loop(struct timeval *start, game_board_t *game);
 void update_cooldown(game_board_t *board);
 
+int seg(char *team_name, int fd, server_t *server);
+int smg(char *message, int fd, server_t *server);
+
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int bct(char *request[], server_t *server, game_board_t *g_board, \
