@@ -22,6 +22,17 @@ int *generate_resources(int width, int height)
     return resources;
 }
 
+void update_resources(game_board_t *board, int *resources)
+{
+    for (int i = 0; i < THYSTAME; i += 1) {
+        for (int j = 0; j < resources[i]; j += 1) {
+            int x = rand() % board->width;
+            int y = rand() % board->height;
+            board->map[y][x].resources[i] += 1;
+        }
+    }
+}
+
 game_board_t *create_game_board(game_info_t *game_info)
 {
     game_board_t *board = my_malloc(sizeof(game_board_t));
@@ -38,12 +49,23 @@ game_board_t *create_game_board(game_info_t *game_info)
         for (int j = 0; j < board->width; j += 1)
             board->map[i][j] = create_tile(j, i);
     }
-    for (int i = 0; i < THYSTAME; i += 1) {
-        for (int j = 0; j < resources[i]; j += 1) {
-            int x = rand() % board->width;
-            int y = rand() % board->height;
-            board->map[y][x].resources[i] += 1;
-        }
-    }
+    update_resources(board, resources);
     return board;
+}
+
+int game_loop(struct timeval *start, game_board_t *game)
+{
+    struct timeval end;
+    double secs = 0;
+    int *ressources = generate_resources(game->width, game->height);
+
+    gettimeofday(&end, NULL);
+    secs = (double)(end.tv_usec - start->tv_usec) / 1000000 + \
+    (double)(end.tv_sec - start->tv_sec);
+    if (secs > 20 / game->freq) {
+        update_resources(game, ressources);
+        gettimeofday(start, NULL);
+        return SUCCESS;
+    }
+    return SUCCESS;
 }

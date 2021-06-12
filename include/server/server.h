@@ -92,13 +92,17 @@ typedef struct player_s
 {
     int inventory[THYSTAME + 1];
     orientation_t orientation;
-    struct player_s *next;
     int posx;
     int posy;
     int level;
     int player_number;
     char uuid[37];
     char team_uuid[37];
+    int cooldown;
+    int hp;
+    struct timeval clock;
+    struct timeval life_clock;
+    struct player_s *next;
 } player_t;
 
 
@@ -162,6 +166,9 @@ client_t *client, server_t *server);
 
 void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
+
+int game_loop(struct timeval *start, game_board_t *game);
+void update_cooldown(game_board_t *board);
 
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
