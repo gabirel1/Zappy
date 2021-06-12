@@ -44,7 +44,7 @@ client_t *client)
     for (int i = 0; func_tab[i].cmd; i += 1) {
         if (strcmp(func_tab[i].cmd, tab[0]) == 0) {
             passed = true;
-            func_tab[i].fun(tab, server, game, client);
+            func_tab[i].fun(&tab[1], server, game, client);
         }
     }
     if (!passed) {

@@ -116,6 +116,8 @@ int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
 void free_tab(char *tab[]);
 
+tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
+game_board_t *game_board);
 game_board_t *create_game_board(game_info_t *game_info);
 
 client_t **client_container(void);
@@ -161,11 +163,20 @@ client_t *client, server_t *server);
 void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
 
+int msz(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int bct(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int mct(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int tna(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+
 static const func_t func_tab[] = {
-    // {"msz", &map_size},
-    // {"bct", &tilecontent},
-    // {"mct", &all_tiles},
-    // {"tna", &all_teams_name},
+    {"msz", &msz},
+    {"bct", &bct},
+    {"mct", &mct},
+    {"tna", &tna},
     // {"ppo", &player_position},
     // {"plv", &player_level},
     // {"pin", &player_inventory},
