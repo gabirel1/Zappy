@@ -173,6 +173,10 @@ void update_cooldown(game_board_t *board);
 
 int seg(char *team_name, int fd, server_t *server);
 int smg(char *message, int fd, server_t *server);
+int pfk(int fd, int player_number, server_t *server);
+int pdr(int fd, int player_number, int resource_number, \
+server_t *server);
+int pdi(int fd, int player_number, server_t *server);
 
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
