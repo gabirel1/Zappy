@@ -134,6 +134,7 @@ player_t *get_player_by_uuid(char *uuid);
 bool add_player(player_t *next);
 bool delete_player(player_t *player);
 player_t *init_player(char *team_uuid, int posx, int posy);
+player_t *get_player_by_number(int player_id);
 
 team_t **team_container(void);
 team_t *get_team_by_uuid(char *uuid);
@@ -178,17 +179,27 @@ int mct(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int tna(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int ppo(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int plv(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int pin(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int sgt(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int sst(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
     {"bct", &bct},
     {"mct", &mct},
     {"tna", &tna},
-    // {"ppo", &player_position},
-    // {"plv", &player_level},
-    // {"pin", &player_inventory},
-    // {"sgt", &get_time_unit},
-    // {"sst", &set_time_unit},
+    {"ppo", &ppo},
+    {"plv", &plv},
+    {"pin", &pin},
+    {"sgt", &sgt},
+    {"sst", &sst},
     // {"Forward", &move_forward},
     // {"Right", &move_right},
     // {"Left", &move_left},
