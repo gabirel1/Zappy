@@ -83,9 +83,9 @@ typedef struct client_s
 typedef enum orientation
 {
     NORTH = 1,
-    EAST,
     SOUTH,
-    WEST
+    WEST,
+    EAST
 } orientation_t;
 
 typedef struct player_s
@@ -196,6 +196,9 @@ int sgt(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int sst(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+
+int forward(game_board_t *game, player_t *player);
+int left(game_board_t *game, player_t *player);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
