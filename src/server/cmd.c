@@ -40,6 +40,7 @@ client_t *client)
 {
     char **tab = str_to_word_array(my_strdup(buff), " \n");
     bool passed = false;
+    int res = 0;
 
     for (int i = 0; func_tab[i].cmd; i += 1) {
         if (strcmp(func_tab[i].cmd, tab[0]) == 0) {
@@ -47,9 +48,14 @@ client_t *client)
             func_tab[i].fun(&tab[1], server, game, client);
         }
     }
-    if (!passed) {
-        if (check_first_client_send(buff, game, client, server) == ERROR)
+    if (passed)
+        return SUCCESS;
+    res = check_first_client_send(buff, game, client, server);
+    if (res == ERROR && client->is_ia == true)
+        if (FD_ISSET(client->fd, &server->write_fd_set))
             dprintf(client->fd, "ko\n");
-    }
-    return SUCCESS;
+    if (res == ERROR && client->is_graphic == true)
+        if (FD_ISSET(client->fd, &server->write_fd_set))
+            dprintf(client->fd, "suc\n");
+    return ERROR;
 }

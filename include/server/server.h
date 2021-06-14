@@ -83,9 +83,9 @@ typedef struct client_s
 typedef enum orientation
 {
     NORTH = 1,
-    EAST,
     SOUTH,
-    WEST
+    WEST,
+    EAST
 } orientation_t;
 
 typedef struct player_s
@@ -171,6 +171,22 @@ int my_handler(int nb, bool change);
 int game_loop(struct timeval *start, game_board_t *game);
 void update_cooldown(game_board_t *board);
 
+int seg(char *team_name, int fd, server_t *server);
+int smg(char *message, int fd, server_t *server);
+int pfk(int fd, int player_number, server_t *server);
+int pdr(int fd, int player_number, int resource_number, \
+server_t *server);
+int pgt(int fd, int player_number, int resource_number, \
+server_t *server);
+int pdi(int fd, int player_number, server_t *server);
+int pex(int fd, int player_number, server_t *server);
+int pbc(int fd, int player_number, char *message, server_t *server);
+int enw(int fd, int egg_number, int player_number, server_t *server);
+int eht(int fd, int egg_number, server_t *server);
+int ebo(int fd, int egg_number, server_t *server);
+int edi(int fd, int egg_number, server_t *server);
+int pic(int fd, int first_player, int *player_numbers, server_t *server);
+
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int bct(char *request[], server_t *server, game_board_t *g_board, \
@@ -189,6 +205,9 @@ int sgt(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int sst(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+
+int forward(game_board_t *game, player_t *player);
+int left(game_board_t *game, player_t *player);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
