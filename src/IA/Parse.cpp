@@ -18,7 +18,7 @@ Parse::~Parse()
 {
 }
 
-bool Parse::parsing(int ac, char **av)
+bool Parse::parsing(UNSD int ac, char **av)
 {
     std::regex nb("^\\d+$");
     std::regex word("^\\w+$");
