@@ -9,17 +9,17 @@ SRC = 	$(wildcard src/server/*.c)	\
 		$(wildcard src/server/commands/*.c)	\
 		$(wildcard src/common/*.c)	\
 
-# IA	=	$(wildcard src/IA/*.cpp)
+IA	=	$(wildcard src/IA/*.cpp)
 
 CC = gcc
 
-# PP = g++
+PP = g++
 
 DEBUG = g3
 
 TARGET = zappy_server
 
-# TARGET_IA = IA
+TARGET_IA = IA
 
 CFLAGS = -W -Wall -Wextra -I./include
 
@@ -29,7 +29,7 @@ OBJ	=	$(SRC:.c=.o)
 
 all:	$(OBJ)
 	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
-	# $(PP) $(IA) -o $(TARGET_IA)
+	$(PP) $(IA) -o $(TARGET_IA)
 
 debug:	CFLAGS += -g3
 
@@ -40,7 +40,7 @@ clean:
 
 fclean:	clean
 	$(RM) $(TARGET)
-	# $(RM) $(TARGET_IA)
+	$(RM) $(TARGET_IA)
 
 re:	fclean all
 

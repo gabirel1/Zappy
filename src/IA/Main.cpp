@@ -23,11 +23,40 @@ int main(int ac, char **av)
     std::cout << soc.receiveMessage() << std::endl;
     soc.sendMessage(pars.getName());
     std::cout << soc.receiveMessage() << std::endl;
-    while (1) {
+    for (int i = 0; i > -1; i++) {
         soc.sendMessage("Forward\n");
         std::cout << soc.receiveMessage() << std::endl;
 
+        if (i%4 == 0) {
+            soc.sendMessage("Right\n");
+            std::cout << soc.receiveMessage() << std::endl;
+        }
+
         soc.sendMessage("Right\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take food\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take linemate\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take deraumere\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take sibur\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take mendiane\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take phiras\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Take thystame\n");
+        std::cout << soc.receiveMessage() << std::endl;
+
+        soc.sendMessage("Inventory\n");
         std::cout << soc.receiveMessage() << std::endl;
     }
 
