@@ -5,47 +5,28 @@
 ## Makefile
 ##
 
-SRC = 	$(wildcard src/server/*.c)	\
-		$(wildcard src/server/commands/*.c)	\
-		$(wildcard src/common/*.c)	\
+all:	server ia
 
-IA	=	$(wildcard src/IA/*.cpp)
+server:	
+	make -C ./src/server
 
-CC = gcc
+ia:
+	make -C ./src/IA
 
-# CXX = g++
 
-DEBUG = g3
+debug_server:
+	make -C ./src/server debug
 
-TARGET = zappy_server
-
-# TARGET_IA = zappy_ai
-
-CFLAGS = -W -Wall -Wextra -I./include
-
-# CXXFLAGS = -W -Wall -Wextra -Werror -I./include -g3
-
-LDFLAGS = -luuid
-
-OBJ	=	$(SRC:.c=.o)
-
-# OBJ_IA = $(IA:.cpp=.o)
-
-all:	$(OBJ) $(OBJ_IA)
-	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
-#	$(CXX) $(OBJ_IA) -o $(TARGET_IA)
-
-debug:	CFLAGS += -g3
-
-debug:	fclean all
+debug_ia:
+	make -C ./src/IA
 
 clean:
-	$(RM) $(OBJ)
-#	$(RM) $(OBJ_IA)
+	make -C ./src/server clean
+	make -C ./src/IA clean
 
 fclean:	clean
-	$(RM) $(TARGET)
-#	$(RM) $(TARGET_IA)
+	make -C ./src/server fclean
+	make -C ./src/IA fclean
 
 re:	fclean all
 
