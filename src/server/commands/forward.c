@@ -51,8 +51,8 @@ int forward(game_board_t *game, player_t *player)
     return SUCCESS;
 }
 
-int move_forward(char *request[], server_t *server, game_board_t *g_board, \
-client_t *client)
+int move_forward(UNSD char *request[], server_t *server, \
+game_board_t *g_board, client_t *client)
 {
     player_t *player = NULL;
 

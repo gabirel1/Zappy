@@ -27,7 +27,7 @@ int left(game_board_t *game UNSD, player_t *player)
     return SUCCESS;
 }
 
-int move_left(char *request[], server_t *server, game_board_t *g_board, \
+int move_left(UNSD char *request[], server_t *server, game_board_t *g_board, \
 client_t *client)
 {
     player_t *player = NULL;
