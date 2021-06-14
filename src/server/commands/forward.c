@@ -14,13 +14,13 @@ int forward_next(game_board_t *game, player_t *player)
             if (player->posx < game->width - 1)
                 player->posx += 1;
             else
-                return ERROR;
+                player->posx = 0;
             break;
         case WEST :
             if (player->posx > 0)
                 player->posx -= 1;
             else
-                return ERROR;
+                player->posx = game->width - 1;
             break;
         default :
             return ERROR;
@@ -35,13 +35,13 @@ int forward(game_board_t *game, player_t *player)
             if (player->posy > 0)
                 player->posy -= 1;
             else
-                return ERROR;
+                player->posy = game->height - 1;
             break;
         case SOUTH :
             if (player->posy < game->height - 1)
                 player->posy += 1;
             else
-                return ERROR;
+                player->posy = 0;
             break;
         default :
             if (forward_next(game, player) == ERROR)
