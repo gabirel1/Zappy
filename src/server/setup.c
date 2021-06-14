@@ -44,7 +44,11 @@ game_board_t *game, int i)
             return ERROR;
         }
         printf("[%s]\n", buff);
-        interpret_cmd(buff, server, game, get_client_by_socket(i));
+        if (interpret_cmd(buff, server, \
+        game, get_client_by_socket(i)) == TEAM_FULL) {
+            delete_client_from_list(get_client_by_socket(i));
+            return ERROR;
+        }
     }
     return SUCCESS;
 }

@@ -28,8 +28,12 @@ client_t *client, server_t *server)
         return graphic_send_first_batch(game, client, server);
     }
     if (team != NULL) {
-        make_link_client_to_new_player(client, team->team_uuid);
         team->client_max -= 1;
+        if (team->client_max <= 0) {
+            printf("team full\n");
+            return TEAM_FULL;
+        }
+        make_link_client_to_new_player(client, team->team_uuid);
         return ia_send_first_batch(game, client, server);
     }
     return ERROR;
@@ -55,7 +59,8 @@ client_t *client)
         if (FD_ISSET(client->fd, &server->write_fd_set))
             dprintf(client->fd, "ko\n");
     if (res == ERROR && client->is_graphic == true)
-        if (FD_ISSET(client->fd, &server->write_fd_set))
-            dprintf(client->fd, "suc\n");
+        suc(client->fd, server);
+    if (res == TEAM_FULL)
+        return TEAM_FULL;
     return ERROR;
 }
