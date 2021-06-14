@@ -212,6 +212,11 @@ client_t *client);
 int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
 
+int move_forward(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int move_left(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+
 static const func_t func_tab[] = {
     {"msz", &msz},
     {"bct", &bct},
@@ -222,9 +227,9 @@ static const func_t func_tab[] = {
     {"pin", &pin},
     {"sgt", &sgt},
     {"sst", &sst},
-    // {"Forward", &move_forward},
+    {"Forward", &move_forward},
     // {"Right", &move_right},
-    // {"Left", &move_left},
+    {"Left", &move_left},
     // {"Look", &look},
     // {"Inventory", &inventory},
     // {"Broadcast text", &broadcast_text},

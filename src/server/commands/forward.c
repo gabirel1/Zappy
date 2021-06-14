@@ -50,3 +50,20 @@ int forward(game_board_t *game, player_t *player)
     player->cooldown = 7;
     return SUCCESS;
 }
+
+int move_forward(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client)
+{
+    player_t *player = NULL;
+
+    if (!FD_ISSET(client->fd, &server->write_fd_set))
+        return ERROR;
+    player = get_player_by_uuid(client->uuid);
+    if (player == NULL || player->cooldown != 0 || \
+    forward(g_board, player) == ERROR) {
+        dprintf(client->fd, "ko\n");
+        return ERROR;
+    }
+    dprintf(client->fd, "ok\n");
+    return SUCCESS;
+}
