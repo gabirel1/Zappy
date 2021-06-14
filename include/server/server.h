@@ -83,9 +83,9 @@ typedef struct client_s
 typedef enum orientation
 {
     NORTH = 1,
+    EAST,
     SOUTH,
-    WEST,
-    EAST
+    WEST
 } orientation_t;
 
 typedef struct player_s
@@ -119,6 +119,8 @@ char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
 void free_tab(char *tab[]);
+char *my_itoa(int i);
+char *my_strcat(char *s1, char *s2);
 
 tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
 game_board_t *game_board);
@@ -209,8 +211,10 @@ client_t *client);
 int sst(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
+char **ressources_container(void);
 int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
+char *look(game_board_t *game, player_t *player);
 
 int move_forward(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
