@@ -15,8 +15,11 @@ class IA::Player {
         Player(int port, const std::string &addr, const std::string &teamName);
         ~Player();
 
-        void look();
     private:
+        void forkPlayer();
+        void loop();
+        void look();
+        void broadcast(const std::string &msg);
         Socket _socket;
         int _level;
         std::string _teamName;

@@ -18,7 +18,8 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx +1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
-    look();
+    broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
+    loop();
 }
 
 IA::Player::~Player()
@@ -100,4 +101,41 @@ std::ostream &operator<<(std::ostream &os, const IA::resources &res)
     if (res == IA::THYSTAME)
         os << "thystame";
     return (os);
+}
+
+void IA::Player::broadcast(const std::string &msg)
+{
+    _socket.sendMessage("Broadcast " + msg);
+    std::string tmp(_socket.receiveMessage());
+
+    std::cout << ((tmp == "ok\n") ? "message sent!!" : "problem in sending message") << std::endl;
+}
+
+void IA::Player::loop()
+{
+    std::string tmp;
+    while (1) {
+        tmp = _socket.receiveMessage();
+        if (tmp.empty())
+            continue;
+        if (tmp == "dead\n") {
+            std::cout << "dead" << std::endl;
+            break;
+        }
+        if (!tmp.empty())
+            std::cout << tmp << std::endl;
+        // on fait les actions ici
+    }
+}
+
+void IA::Player::forkPlayer()
+{
+    int pid = 0;
+
+    pid = fork();
+    if (pid == 0) {
+        Player newPlayer(_port, _addr, _teamName);
+        exit (0);
+    } else if (pid != -1)
+        return;
 }
