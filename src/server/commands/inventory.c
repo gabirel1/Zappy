@@ -19,5 +19,6 @@ char *inventory(game_board_t *game UNSD, player_t *player)
             my_strcat(ret, ",");
     }
     my_strcat(ret, "]");
+    player->cooldown = 1;
     return ret;
 }
