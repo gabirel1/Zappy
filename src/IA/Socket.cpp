@@ -30,10 +30,9 @@ void Socket::sendMessage(const std::string order) const
 std::string Socket::receiveMessage(void)
 {
     int cpy = dup(_fd);
-    FILE *stream = fdopen(cpy, "r");
-    char *buffer = NULL;
-    std::size_t n = 0;
-    getline(&buffer, &n, stream);
-    fclose(stream);
-    return (std::string(buffer));
+    std::string result;
+    char buffer[1048];
+    memset(buffer, 0, 1048);
+    read(cpy, buffer, 1048);
+    return (buffer);
 }
