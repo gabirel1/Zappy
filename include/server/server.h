@@ -225,12 +225,14 @@ int move_left(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int move_right(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
-int eject(game_board_t *game, player_t *player);
-int fork_player(game_board_t *game, player_t *player);
 int f_look(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_inventory(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int eject(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game, player_t *player);
+int take(game_board_t *game, player_t *player, char *object);
+int set(game_board_t *game, player_t *player, char *object);
 
 static const func_t func_tab[] = {
     {"msz", &msz},

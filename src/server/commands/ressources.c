@@ -12,7 +12,7 @@ char **ressources_container(void)
     static char **ptr = NULL;
 
     if (ptr == NULL) {
-        ptr = my_malloc(sizeof(char *) * (THYSTAME + 1));
+        ptr = my_malloc(sizeof(char *) * (THYSTAME + 2));
         ptr[0] = my_strdup("food");
         ptr[1] = my_strdup("linemate");
         ptr[2] = my_strdup("deraumere");
@@ -20,6 +20,7 @@ char **ressources_container(void)
         ptr[4] = my_strdup("mendiane");
         ptr[5] = my_strdup("phiras");
         ptr[6] = my_strdup("thystame");
+        ptr[7] = NULL;
     }
     return ptr;
 }

@@ -46,5 +46,6 @@ int eject(game_board_t *game, player_t *player)
     if (to_move == NULL)
         return ERROR;
     move_player(game, player, to_move);
+    player->cooldown = 7;
     return SUCCESS;
 }
