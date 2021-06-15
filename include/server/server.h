@@ -100,6 +100,7 @@ typedef struct player_s
     char team_uuid[37];
     int cooldown;
     int hp;
+    bool is_egg;
     struct timeval clock;
     struct timeval life_clock;
     struct player_s *next;
@@ -224,6 +225,8 @@ int move_left(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int move_right(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int eject(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game, player_t *player);
 int f_look(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_inventory(char *request[], server_t *server, game_board_t *g_board, \
