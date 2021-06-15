@@ -218,6 +218,8 @@ int left(game_board_t *game, player_t *player);
 int right(game_board_t *game UNSD, player_t *player);
 char *look(game_board_t *game, player_t *player);
 char *inventory(game_board_t *game UNSD, player_t *player);
+int eject(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game, player_t *player);
 
 int move_forward(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -233,6 +235,10 @@ int eject(game_board_t *game, player_t *player);
 int fork_player(game_board_t *game, player_t *player);
 int take(game_board_t *game, player_t *player, char *object);
 int set(game_board_t *game, player_t *player, char *object);
+int f_eject(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_fork(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -251,8 +257,8 @@ static const func_t func_tab[] = {
     {"Inventory", &f_inventory},
     // {"Broadcast text", &broadcast_text},
     // {"Connect_nbr", &connect_nbr},
-    // {"Fork", &fork_player},
-    // {"Eject", &eject_player},
+    {"Fork", &f_fork},
+    {"Eject", &f_eject},
     // {"Take", &take_object},
     // {"Set", &set_object},
     // {"Incantation", &incantation},
