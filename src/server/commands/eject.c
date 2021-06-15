@@ -48,3 +48,20 @@ int eject(game_board_t *game, player_t *player)
     move_player(game, player, to_move);
     return SUCCESS;
 }
+
+int f_eject(UNSD char *request[], server_t *server, game_board_t *g_board, \
+client_t *client)
+{
+    player_t *player = NULL;
+
+    if (!FD_ISSET(client->fd, &server->write_fd_set))
+        return ERROR;
+    player = get_player_by_uuid(client->uuid);
+    if (player == NULL || player->cooldown != 0 || \
+    eject(g_board, player) == ERROR) {
+        dprintf(client->fd, "ko\n");
+        return ERROR;
+    }
+    dprintf(client->fd, "ok\n");
+    return SUCCESS;
+}
