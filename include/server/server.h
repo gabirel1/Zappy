@@ -216,6 +216,7 @@ int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
 int right(game_board_t *game UNSD, player_t *player);
 char *look(game_board_t *game, player_t *player);
+char *inventory(game_board_t *game UNSD, player_t *player);
 
 int move_forward(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -224,6 +225,8 @@ client_t *client);
 int move_right(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_look(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_inventory(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
 static const func_t func_tab[] = {
@@ -240,7 +243,7 @@ static const func_t func_tab[] = {
     {"Right", &move_right},
     {"Left", &move_left},
     {"Look", &f_look},
-    // {"Inventory", &inventory},
+    {"Inventory", &f_inventory},
     // {"Broadcast text", &broadcast_text},
     // {"Connect_nbr", &connect_nbr},
     // {"Fork", &fork_player},
