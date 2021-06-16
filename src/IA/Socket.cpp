@@ -29,17 +29,17 @@ void Socket::sendMessage(const std::string order) const
 
 std::string Socket::receiveMessage(void)
 {
-    // int cpy = dup(_fd);
+    int cpy = dup(_fd);
 
     std::string result;
     fd_set read_fds;
     FD_ZERO(&read_fds);
-    int fdmax = 1;
+    int fdmax = cpy;
     FD_SET(fdmax, &read_fds);
     
     if (select(fdmax + 1, &read_fds, NULL, NULL, NULL) < 0)
         return ("");
-    if (FD_ISSET(1, &read_fds)) {
+    if (FD_ISSET(cpy, &read_fds)) {
         printf("Write in 0");
     }
         // char buffer[1048];
