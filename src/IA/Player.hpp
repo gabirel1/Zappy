@@ -15,10 +15,6 @@ class IA::Player {
         Player(int port, const std::string &addr, const std::string &teamName);
         ~Player();
 
-        void look();
-        std::string take(std::string ressources);
-        std::string move(std::string move);
-        std::string inv();
     private:
         Socket _socket;
         int _level;
@@ -40,6 +36,8 @@ class IA::Player {
         void clearInventory();
         void initInventory();
         void addToInventory(resources res, int nb);
+        std::string move(std::string move);
+        std::string take(std::string ressources);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);

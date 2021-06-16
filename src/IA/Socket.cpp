@@ -7,7 +7,7 @@
 
 #include "Socket.hpp"
 
-Socket::Socket(int port, std::string addr): _port(port), _addr(addr)
+Socket::Socket(int port, std::string addr) : _port(port), _addr(addr)
 {
     this->_fd = socket(AF_INET, SOCK_STREAM, 0);
     _servAdress.sin_family = AF_INET;
@@ -29,10 +29,21 @@ void Socket::sendMessage(const std::string order) const
 
 std::string Socket::receiveMessage(void)
 {
-    int cpy = dup(_fd);
+    // int cpy = dup(_fd);
+
     std::string result;
-    char buffer[1048];
-    memset(buffer, 0, 1048);
-    read(cpy, buffer, 1048);
-    return (buffer);
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    int fdmax = 1;
+    FD_SET(fdmax, &read_fds);
+    
+    if (select(fdmax + 1, &read_fds, NULL, NULL, NULL) < 0)
+        return ("");
+    if (FD_ISSET(1, &read_fds)) {
+        printf("Write in 0");
+    }
+        // char buffer[1048];
+        // memset(buffer, 0, 1048);
+        // read(_fd, buffer, 1048);
+    return ("TEAM team1\n0 0\n");
 }
