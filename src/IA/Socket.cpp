@@ -31,19 +31,18 @@ std::string Socket::receiveMessage(void)
 {
     int cpy = dup(_fd);
 
-    std::string result;
+    // std::string result;
+    char buffer[1048];
     fd_set read_fds;
     FD_ZERO(&read_fds);
     int fdmax = cpy;
     FD_SET(fdmax, &read_fds);
+    memset(buffer, 0, 1048);
     
     if (select(fdmax + 1, &read_fds, NULL, NULL, NULL) < 0)
         return ("");
     if (FD_ISSET(cpy, &read_fds)) {
-        printf("Write in 0");
+        read(cpy, buffer, 1048);
     }
-        // char buffer[1048];
-        // memset(buffer, 0, 1048);
-        // read(_fd, buffer, 1048);
-    return ("TEAM team1\n0 0\n");
+    return (buffer);
 }
