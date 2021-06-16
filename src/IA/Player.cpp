@@ -19,7 +19,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx +1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
-    // initInventory();
+    initInventory();
     // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // inventory();
     loop();
@@ -31,7 +31,7 @@ IA::Player::~Player()
 
 void IA::Player::look()
 {
-    this->_tile.clear();
+    _tile.clear();
     _socket.sendMessage("Look\n");
     std::string tmp = _socket.receiveMessage();
     int nbr = 0;
@@ -143,7 +143,6 @@ void IA::Player::loop()
             break;
         }
 
-        std::cout << _socket.receiveMessage() << std::endl;
         if (!tmp.empty())
             std::cout << tmp << std::endl;
         _socket.sendMessage("Forward\n");
@@ -179,6 +178,8 @@ void IA::Player::forkPlayer()
 
 void IA::Player::inventory()
 {
+    // _inventory.clear();
+    _socket.sendMessage("Inventory\n");
     std::string tmp = _socket.receiveMessage();
 
     std::cout << tmp << std::endl;
