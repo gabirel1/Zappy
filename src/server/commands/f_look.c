@@ -7,6 +7,25 @@
 
 #include "server/server.h"
 
+char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
+{
+    for (int i = 0; i < length; i += 1) {
+        for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+            if (tmp->posx == tiles[i].posx && tmp->posy == tiles[i].posy) {
+                my_strcat(ret, "player ");
+            }
+        }
+        for (int j = 0; j <= THYSTAME; j += 1) {
+            if (tiles[i].resources[j] > 0) {
+                my_strcat(ret, ressources[j]);
+                my_strcat(ret, " ");
+            }
+        }
+        my_strcat(ret, ",");
+    }
+    return ret;
+}
+
 int f_look(UNSD char *request[], server_t *server, game_board_t *g_board, \
 client_t *client)
 {

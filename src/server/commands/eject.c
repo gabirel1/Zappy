@@ -11,7 +11,8 @@ player_t *is_ennemy(player_t *player)
 {
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->posx == player->posx && tmp->posy == player->posy \
-        && strcmp(tmp->team_uuid, player->team_uuid) != 0)
+        && strcmp(tmp->team_uuid, player->team_uuid) != 0 && \
+        player->is_egg == false)
             return tmp;
     }
     return NULL;

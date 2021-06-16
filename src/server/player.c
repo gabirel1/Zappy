@@ -25,12 +25,13 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     player->posx = posx;
     player->posy = posy;
     player->player_number = nb++;
-    player->level = 0;
+    player->level = 1;
     player->is_egg = false;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = NORTH;
     player->cooldown = 0;
     player->hp = 10;
+    player->on_cd = NULL;
     gettimeofday(&(player->life_clock), NULL);
     gettimeofday(&(player->clock), NULL);
     uuid_unparse_lower(new_uuid, player->uuid);

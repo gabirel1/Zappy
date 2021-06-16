@@ -117,20 +117,7 @@ char *look(game_board_t *game, player_t *player)
         tiles = look_east(game, player);
     if (player->orientation == WEST)
         tiles = look_west(game, player);
-    for (int i = 0; i < length; i += 1) {
-        for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
-            if (tmp->posx == tiles[i].posx && tmp->posy == tiles[i].posy) {
-                my_strcat(ret, "player ");
-            }
-        }
-        for (int j = 0; j <= THYSTAME; j += 1) {
-            if (tiles[i].resources[j] > 0) {
-                my_strcat(ret, ressources[j]);
-                my_strcat(ret, " ");
-            }
-        }
-        my_strcat(ret, ",");
-    }
+    ret = look_tiles(tiles, length, ret, ressources);
     my_strcat(ret, "]");
     player->cooldown = 7;
     return ret;

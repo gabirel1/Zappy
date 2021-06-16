@@ -103,6 +103,7 @@ typedef struct player_s
     bool is_egg;
     struct timeval clock;
     struct timeval life_clock;
+    void (*on_cd)(struct player_s *);
     struct player_s *next;
 } player_t;
 
@@ -131,6 +132,7 @@ client_t **client_container(void);
 bool add_client(client_t *next);
 bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
+void init_new_client(client_t *client);
 
 player_t **player_container(void);
 player_t *get_player_by_uuid(char *uuid);
@@ -160,8 +162,12 @@ int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
 int create_server(server_info_t *server_info, game_info_t *sgame);
+int server_loop(server_t server, int res, server_info_t *server_in, \
+game_board_t *game);
 void stop_client(int fd, server_t *server, int *res);
 void delete_client_from_list(client_t *client);
+int handle_connection(server_t *server, UNSD server_info_t *server_in, \
+game_board_t *game, int i);
 
 int graphic_send_first_batch(game_board_t *g_board, \
 client_t *client, server_t *server);
@@ -217,11 +223,13 @@ int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
 int right(game_board_t *game UNSD, player_t *player);
 char *look(game_board_t *game, player_t *player);
+char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources);
 char *inventory(game_board_t *game UNSD, player_t *player);
 int eject(game_board_t *game, player_t *player);
 int fork_player(game_board_t *game, player_t *player);
 int take(game_board_t *game, player_t *player, char *object);
 int set(game_board_t *game, player_t *player, char *object);
+int incantation(game_board_t *game UNSD, player_t *player);
 
 int move_forward(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -243,6 +251,8 @@ int f_set(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int broadcast_text(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -259,7 +269,7 @@ static const func_t func_tab[] = {
     {"Left", &move_left},
     {"Look", &f_look},
     {"Inventory", &f_inventory},
-    // {"Broadcast text", &broadcast_text},
+    {"Broadcast text", &broadcast_text},
     {"Connect_nbr", &f_connect_nbr},
     {"Fork", &f_fork},
     {"Eject", &f_eject},
