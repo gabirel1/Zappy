@@ -241,6 +241,8 @@ int f_take(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_set(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -258,7 +260,7 @@ static const func_t func_tab[] = {
     {"Look", &f_look},
     {"Inventory", &f_inventory},
     // {"Broadcast text", &broadcast_text},
-    // {"Connect_nbr", &connect_nbr},
+    {"Connect_nbr", &f_connect_nbr},
     {"Fork", &f_fork},
     {"Eject", &f_eject},
     {"Take", &f_take},
