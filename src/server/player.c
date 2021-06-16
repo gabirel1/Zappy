@@ -26,6 +26,7 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     player->posy = posy;
     player->player_number = nb++;
     player->level = 0;
+    player->is_egg = false;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = NORTH;
     player->cooldown = 0;

@@ -33,6 +33,7 @@
 
 #define SUCCESS 0
 #define ERROR -1
+#define TEAM_FULL -21
 #define FAILURE 84
 #define UNSD __attribute__((unused))
 #define S_CHAR sizeof(char *)

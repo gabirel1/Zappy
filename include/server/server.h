@@ -83,9 +83,9 @@ typedef struct client_s
 typedef enum orientation
 {
     NORTH = 1,
+    EAST,
     SOUTH,
-    WEST,
-    EAST
+    WEST
 } orientation_t;
 
 typedef struct player_s
@@ -100,6 +100,7 @@ typedef struct player_s
     char team_uuid[37];
     int cooldown;
     int hp;
+    bool is_egg;
     struct timeval clock;
     struct timeval life_clock;
     struct player_s *next;
@@ -119,6 +120,8 @@ char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
 void free_tab(char *tab[]);
+char *my_itoa(int i);
+char *my_strcat(char *s1, char *s2);
 
 tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
 game_board_t *game_board);
@@ -186,6 +189,9 @@ int eht(int fd, int egg_number, server_t *server);
 int ebo(int fd, int egg_number, server_t *server);
 int edi(int fd, int egg_number, server_t *server);
 int pic(int fd, int first_player, int *player_numbers, server_t *server);
+int pie(int fd, int pos[2], int result, server_t *server);
+int sbp(int fd, server_t *server);
+int suc(int fd, server_t *server);
 
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -206,8 +212,37 @@ client_t *client);
 int sst(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
+char **ressources_container(void);
 int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
+int right(game_board_t *game UNSD, player_t *player);
+char *look(game_board_t *game, player_t *player);
+char *inventory(game_board_t *game UNSD, player_t *player);
+int eject(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game, player_t *player);
+int take(game_board_t *game, player_t *player, char *object);
+int set(game_board_t *game, player_t *player, char *object);
+
+int move_forward(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int move_left(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int move_right(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_look(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_inventory(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_eject(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_fork(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_take(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_set(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -219,17 +254,17 @@ static const func_t func_tab[] = {
     {"pin", &pin},
     {"sgt", &sgt},
     {"sst", &sst},
-    // {"Forward", &move_forward},
-    // {"Right", &move_right},
-    // {"Left", &move_left},
-    // {"Look", &look},
-    // {"Inventory", &inventory},
+    {"Forward", &move_forward},
+    {"Right", &move_right},
+    {"Left", &move_left},
+    {"Look", &f_look},
+    {"Inventory", &f_inventory},
     // {"Broadcast text", &broadcast_text},
-    // {"Connect_nbr", &connect_nbr},
-    // {"Fork", &fork_player},
-    // {"Eject", &eject_player},
-    // {"Take", &take_object},
-    // {"Set", &set_object},
+    {"Connect_nbr", &f_connect_nbr},
+    {"Fork", &f_fork},
+    {"Eject", &f_eject},
+    {"Take", &f_take},
+    {"Set", &f_set},
     // {"Incantation", &incantation},
     {NULL, NULL}
 };

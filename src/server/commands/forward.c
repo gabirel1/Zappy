@@ -14,13 +14,13 @@ int forward_next(game_board_t *game, player_t *player)
             if (player->posx < game->width - 1)
                 player->posx += 1;
             else
-                return ERROR;
+                player->posx = 0;
             break;
         case WEST :
             if (player->posx > 0)
                 player->posx -= 1;
             else
-                return ERROR;
+                player->posx = game->width - 1;
             break;
         default :
             return ERROR;
@@ -35,18 +35,35 @@ int forward(game_board_t *game, player_t *player)
             if (player->posy > 0)
                 player->posy -= 1;
             else
-                return ERROR;
+                player->posy = game->height - 1;
             break;
         case SOUTH :
             if (player->posy < game->height - 1)
                 player->posy += 1;
             else
-                return ERROR;
+                player->posy = 0;
             break;
         default :
             if (forward_next(game, player) == ERROR)
                 return ERROR;
     }
     player->cooldown = 7;
+    return SUCCESS;
+}
+
+int move_forward(UNSD char *request[], server_t *server, \
+game_board_t *g_board, client_t *client)
+{
+    player_t *player = NULL;
+
+    if (!FD_ISSET(client->fd, &server->write_fd_set))
+        return ERROR;
+    player = get_player_by_uuid(client->uuid);
+    if (player == NULL || player->cooldown != 0 || \
+    forward(g_board, player) == ERROR) {
+        dprintf(client->fd, "ko\n");
+        return ERROR;
+    }
+    dprintf(client->fd, "ok\n");
     return SUCCESS;
 }

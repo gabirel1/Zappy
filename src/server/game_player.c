@@ -15,6 +15,7 @@ void update_cooldown(game_board_t *board)
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->cooldown == 0) {
             gettimeofday(&(tmp->clock), NULL);
+            tmp->is_egg = false;
         }
         gettimeofday(&end, NULL);
         secs = (double)(end.tv_usec - tmp->clock.tv_usec) / 1000000 + \
@@ -25,7 +26,7 @@ void update_cooldown(game_board_t *board)
         }
         secs = (double)(end.tv_usec - tmp->life_clock.tv_usec) / 1000000 + \
         (double)(end.tv_sec - tmp->life_clock.tv_sec);
-        if (secs > 126 / board->freq) {
+        if (secs > 126 / board->freq && tmp->is_egg == false) {
             tmp->hp -= 1;
             gettimeofday(&(tmp->life_clock), NULL);
         }

@@ -18,8 +18,9 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx +1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
+    initInventory();
     broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
-    loop();
+    inventory();
 }
 
 IA::Player::~Player()
@@ -156,4 +157,54 @@ void IA::Player::forkPlayer()
         exit (0);
     } else if (pid != -1)
         return;
+}
+
+void IA::Player::inventory()
+{
+    std::string tmp = _socket.receiveMessage();
+
+    std::cout << tmp << std::endl;
+    if (tmp == "ko")
+        exit (84);
+    for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1))
+        parseInventory(tmp.find(',', idx + 1), tmp, idx);
+    for (const auto &i: _inventory)
+        std::cout << i.first << " = " + std::to_string(i.second) << std::endl;
+}
+
+void IA::Player::addToInventory(resources res, int nb)
+{
+    for (auto &i: _inventory)
+        if (i.first == res)
+            i.second = nb;
+}
+
+void IA::Player::parseInventory(std::size_t idx, std::string tmp, std::size_t last)
+{
+    if (tmp[last] == ' ')
+        last += 1;
+    else if (tmp[last] == ',')
+        last += 2;
+    std::size_t idxTest = tmp.find(' ', last + 1);
+    if (idx != tmp.npos)
+        addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, idx - idxTest).c_str()));
+    else
+        addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, tmp.find(']') - idxTest).c_str()));
+}
+
+void IA::Player::clearInventory()
+{
+    for (auto &i: _inventory)
+        i.second = 0;
+}
+
+void IA::Player::initInventory()
+{
+    _inventory.push_back(std::make_pair(FOOD, 0));
+    _inventory.push_back(std::make_pair(DERAUMERE, 0));
+    _inventory.push_back(std::make_pair(LINEMATE, 0));
+    _inventory.push_back(std::make_pair(SIBUR, 0));
+    _inventory.push_back(std::make_pair(MENDIANE, 0));
+    _inventory.push_back(std::make_pair(PHIRAS, 0));
+    _inventory.push_back(std::make_pair(THYSTAME, 0));
 }

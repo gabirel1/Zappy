@@ -20,10 +20,6 @@ class IA::Player {
         std::string move(std::string move);
         std::string inv();
     private:
-        void forkPlayer();
-        void loop();
-        void look();
-        void broadcast(const std::string &msg);
         Socket _socket;
         int _level;
         std::string _teamName;
@@ -31,9 +27,19 @@ class IA::Player {
         int _port;
         int _clientNum;
         std::pair<float, float> _position;
+        std::vector <std::pair<resources, int>> _inventory;
         std::unordered_map<std::string, requirements> _levels;
         std::vector <Tile> _tile;
+        void forkPlayer();
+        void loop();
+        void look();
+        void inventory();
+        void broadcast(const std::string &msg);
         void parseSpace(std::size_t idx, std::string tmp, std::size_t last, int nbr);
+        void parseInventory(std::size_t idx, std::string tmp, std::size_t last);
+        void clearInventory();
+        void initInventory();
+        void addToInventory(resources res, int nb);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);
