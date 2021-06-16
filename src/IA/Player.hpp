@@ -20,6 +20,10 @@ class IA::Player {
         std::string move(std::string move);
         std::string inv();
     private:
+        void forkPlayer();
+        void loop();
+        void look();
+        void broadcast(const std::string &msg);
         Socket _socket;
         int _level;
         std::string _teamName;
