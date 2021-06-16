@@ -19,20 +19,20 @@ int main(int ac, char **av)
     }
     else
         return(84);
+
     IA::Player newPlayer(pars.getPort(), pars.getMachine(), pars.getName());
-    // Socket soc(pars.getPort(), pars.getMachine());
-    // std::cout << pars.getMachine() << " " << pars.getPort() << std::endl;
-    // std::cout << soc.receiveMessage() << std::endl;
-    // soc.sendMessage(pars.getName());
-    // std::cout << soc.receiveMessage() << std::endl;
-    // while (1) {
-    //     soc.sendMessage("Forward\n");
-    //     std::cout << soc.receiveMessage() << std::endl;
 
-    //     soc.sendMessage("Right\n");
-    //     std::cout << soc.receiveMessage() << std::endl;
+    // for (int i = 0; i > -1; i++) {
+    //     std::cout << newPlayer.move("Forward") << std::endl;
+    //     std::cout << newPlayer.move("Right") << std::endl;
+    //     std::cout << newPlayer.take("linemate") << std::endl;
+    //     std::cout << newPlayer.take("deraumere") << std::endl;
+    //     std::cout << newPlayer.take("sibur") << std::endl;
+    //     std::cout << newPlayer.take("mendiane") << std::endl;
+    //     std::cout << newPlayer.take("phiras") << std::endl;
+    //     std::cout << newPlayer.take("thystame") << std::endl;
+    //     std::cout << newPlayer.take("food") << std::endl;
     // }
-
     return (0);
      
 }

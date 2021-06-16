@@ -36,6 +36,8 @@ class IA::Player {
         void clearInventory();
         void initInventory();
         void addToInventory(resources res, int nb);
+        void move(std::string move);
+        std::string take(std::string ressources);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);

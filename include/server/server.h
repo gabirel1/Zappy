@@ -220,6 +220,8 @@ char *look(game_board_t *game, player_t *player);
 char *inventory(game_board_t *game UNSD, player_t *player);
 int eject(game_board_t *game, player_t *player);
 int fork_player(game_board_t *game, player_t *player);
+int take(game_board_t *game, player_t *player, char *object);
+int set(game_board_t *game, player_t *player, char *object);
 
 int move_forward(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -231,13 +233,15 @@ int f_look(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_inventory(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
-int eject(game_board_t *game, player_t *player);
-int fork_player(game_board_t *game, player_t *player);
-int take(game_board_t *game, player_t *player, char *object);
-int set(game_board_t *game, player_t *player, char *object);
 int f_eject(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_fork(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_take(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_set(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
+int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
 static const func_t func_tab[] = {
@@ -256,11 +260,11 @@ static const func_t func_tab[] = {
     {"Look", &f_look},
     {"Inventory", &f_inventory},
     // {"Broadcast text", &broadcast_text},
-    // {"Connect_nbr", &connect_nbr},
+    {"Connect_nbr", &f_connect_nbr},
     {"Fork", &f_fork},
     {"Eject", &f_eject},
-    // {"Take", &take_object},
-    // {"Set", &set_object},
+    {"Take", &f_take},
+    {"Set", &f_set},
     // {"Incantation", &incantation},
     {NULL, NULL}
 };

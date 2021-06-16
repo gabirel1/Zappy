@@ -12,15 +12,17 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     std::cout << _socket.receiveMessage() << std::endl;
     _socket.sendMessage(_teamName);
     std::string tmp = _socket.receiveMessage();
-    std::cout << tmp << std::endl;
+    // std::string tmp1 = _socket.receiveMessage();
+    // std::cout << tmp1 << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx +1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
-    broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
-    inventory();
+    // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
+    // inventory();
+    loop();
 }
 
 IA::Player::~Player()
@@ -29,6 +31,7 @@ IA::Player::~Player()
 
 void IA::Player::look()
 {
+    _tile.clear();
     _socket.sendMessage("Look\n");
     std::string tmp = _socket.receiveMessage();
     int nbr = 0;
@@ -104,6 +107,23 @@ std::ostream &operator<<(std::ostream &os, const IA::resources &res)
     return (os);
 }
 
+std::string IA::Player::take(std::string ressources)
+{
+    _socket.sendMessage("Take " + ressources + "\n");
+    return (_socket.receiveMessage());
+}
+
+void IA::Player::move(std::string dir)
+{
+    _socket.sendMessage(dir);
+}
+
+// std::string IA::Player::inv()
+// {
+//     _socket.sendMessage("Inventory\n");
+//     return (_socket.receiveMessage());
+// }
+
 void IA::Player::broadcast(const std::string &msg)
 {
     _socket.sendMessage("Broadcast " + msg);
@@ -115,18 +135,33 @@ void IA::Player::broadcast(const std::string &msg)
 void IA::Player::loop()
 {
     std::string tmp;
-    while (1) {
+    for (int i = 0; i > -1 ; i++) {
+
         tmp = _socket.receiveMessage();
-        if (tmp.empty())
-            continue;
         if (tmp == "dead\n") {
             std::cout << "dead" << std::endl;
             break;
         }
+
         if (!tmp.empty())
             std::cout << tmp << std::endl;
+        _socket.sendMessage("Forward\n");
+        _socket.receiveMessage();
+
+        this->look();
+        _socket.receiveMessage();
+        
+        if (_tile[0].getResources()[0].second != 0)
+            this->take("Food");
+        _socket.receiveMessage();
+        
+        this->inventory();
+        _socket.receiveMessage();
+
         // on fait les actions ici
+        // _socket.sendMessage("Left\n");
     }
+    
 }
 
 void IA::Player::forkPlayer()
@@ -143,6 +178,8 @@ void IA::Player::forkPlayer()
 
 void IA::Player::inventory()
 {
+    // _inventory.clear();
+    _socket.sendMessage("Inventory\n");
     std::string tmp = _socket.receiveMessage();
 
     std::cout << tmp << std::endl;
