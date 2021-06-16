@@ -20,5 +20,6 @@ client_t *client)
             dprintf(tmp->fd, "message %d, %s\n", \
             player->posy * g_board->width + player->posx, request[0]);
     }
+    player->cooldown = 7;
     return SUCCESS;
 }

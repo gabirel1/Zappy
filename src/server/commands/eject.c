@@ -7,17 +7,6 @@
 
 #include "server/server.h"
 
-player_t *is_ennemy(player_t *player)
-{
-    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
-        if (tmp->posx == player->posx && tmp->posy == player->posy \
-        && strcmp(tmp->team_uuid, player->team_uuid) != 0 && \
-        player->is_egg == false)
-            return tmp;
-    }
-    return NULL;
-}
-
 void move_player(game_board_t *game, player_t *player, player_t *to_move)
 {
     if (player->orientation == NORTH) {
@@ -42,11 +31,11 @@ void move_player(game_board_t *game, player_t *player, player_t *to_move)
 
 int eject(game_board_t *game, player_t *player)
 {
-    player_t *to_move = is_ennemy(player);
-
-    if (to_move == NULL)
-        return ERROR;
-    move_player(game, player, to_move);
+    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+        if (tmp->posx == player->posx && tmp->posy == player->posy \
+        && tmp != player && player->is_egg == false)
+            move_player(game, player, tmp);
+    }
     player->cooldown = 7;
     return SUCCESS;
 }

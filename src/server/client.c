@@ -47,6 +47,7 @@ bool delete_client(client_t *client)
 
     if (!*front_ptr)
         return (false);
+    close(client->fd);
     if (client == tmp) {
         *front_ptr = tmp->next;
         return (true);
