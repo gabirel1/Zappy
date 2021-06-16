@@ -20,11 +20,6 @@ int main(int ac, char **av)
     else
         return(84);
 
-    Socket soc(pars.getPort(), pars.getMachine());
-    std::cout << soc.receiveMessage() << std::endl;
-    soc.sendMessage(pars.getName());
-    std::cout << soc.receiveMessage() << std::endl;
-
     IA::Player newPlayer(pars.getPort(), pars.getMachine(), pars.getName());
 
     // for (int i = 0; i > -1; i++) {

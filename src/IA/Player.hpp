@@ -36,7 +36,7 @@ class IA::Player {
         void clearInventory();
         void initInventory();
         void addToInventory(resources res, int nb);
-        std::string move(std::string move);
+        void move(std::string move);
         std::string take(std::string ressources);
 };
 
