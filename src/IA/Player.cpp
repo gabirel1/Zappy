@@ -31,6 +31,7 @@ IA::Player::~Player()
 
 void IA::Player::look()
 {
+    this->_tile.clear();
     _socket.sendMessage("Look\n");
     std::string tmp = _socket.receiveMessage();
     int nbr = 0;
@@ -136,16 +137,28 @@ void IA::Player::loop()
     std::string tmp;
     for (int i = 0; i > -1 ; i++) {
 
-        std::cout << "yolo" << std::endl;
         tmp = _socket.receiveMessage();
         if (tmp == "dead\n") {
             std::cout << "dead" << std::endl;
             break;
         }
-        _socket.sendMessage("Forward\n");
+
         std::cout << _socket.receiveMessage() << std::endl;
         if (!tmp.empty())
             std::cout << tmp << std::endl;
+        _socket.sendMessage("Forward\n");
+        _socket.receiveMessage();
+
+        this->look();
+        _socket.receiveMessage();
+        
+        if (_tile[0].getResources()[0].second != 0)
+            this->take("Food");
+        _socket.receiveMessage();
+        
+        this->inventory();
+        _socket.receiveMessage();
+
         // on fait les actions ici
         // _socket.sendMessage("Left\n");
     }

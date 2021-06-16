@@ -42,13 +42,14 @@ std::string Socket::receiveMessage(void)
     int fdmax = cpy;
     FD_SET(fdmax, &read_fds);
     memset(buffer, 0, 1048);
-    struct timeval tv = {2, 0};
+    struct timeval tv;
+    tv.tv_usec = 10000;
     
     if (select(fdmax + 1, &read_fds, NULL, NULL, &tv) < 0)
         return ("");
     if (FD_ISSET(cpy, &read_fds)) {
         read(cpy, buffer, 1048);
-        // std::cout << buffer << std::endl;
+        std::cout << buffer << std::endl;
         return (buffer);
     }
     return ("");
