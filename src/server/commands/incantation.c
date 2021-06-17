@@ -20,11 +20,17 @@ int get_players_tile(player_t *player)
     return number;
 }
 
-void level_up(player_t *player, server_t *server UNSD)
+void level_up(player_t *player, server_t *server)
 {
     if (player->level < 8)
         player->level += 1;
     player->on_cd = NULL;
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            pie(tmp->fd, (int [2]) {player->posx, player->posy}, \
+            player->level, server);
+        }
+    }
 }
 
 int **required(void)
