@@ -110,7 +110,7 @@ char *look(game_board_t *game, player_t *player)
 {
     tile_t *tiles = NULL;
     int length = (player->level + 1) * (player->level + 1);
-    char *ret = my_strdup("[");
+    char *ret = my_strdup("[ ");
     char **ressources = ressources_container();
 
     if (player->orientation == NORTH)

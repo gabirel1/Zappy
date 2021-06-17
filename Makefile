@@ -5,29 +5,32 @@
 ## Makefile
 ##
 
-all:	server ia
+all:	server ai
 
 server:	
 	make -C ./src/server
 
-ia:
-	make -C ./src/AI
+ai:
+	make -C ./src/ai
 
+debug:
+	make -C ./src/server debug
+	make -C ./src/AI debug
 
 debug_server:
 	make -C ./src/server debug
 
 debug_ia:
-	make -C ./src/AI debug
+	make -C ./src/ai debug
 
 clean:
 	make -C ./src/server clean
-	make -C ./src/AI clean
+	make -C ./src/ai clean
 
 fclean:	clean
 	make -C ./src/server fclean
-	make -C ./src/AI fclean
+	make -C ./src/ai fclean
 
 re:	fclean all
 
-.PHONY: server ia
+.PHONY: server ai

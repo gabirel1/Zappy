@@ -9,8 +9,6 @@ IA	=	$(wildcard ./*.cpp)
 
 CXX = g++
 
-DEBUG = -g3
-
 TARGET = ../../zappy_ai
 
 CXXFLAGS = -W -Wall -Wextra -Werror
@@ -22,9 +20,9 @@ all:	$(TARGET)
 $(TARGET) : $(OBJ)
 	$(CXX) $(OBJ) -o $(TARGET)
 
-# debug:	fclean
-# 	CXXFLAGS += $(DEBUG)
-# 	all
+debug: CXXFLAGS += -g3
+
+debug: fclean all
 
 clean:
 	$(RM) $(OBJ)
