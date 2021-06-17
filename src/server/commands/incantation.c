@@ -13,7 +13,7 @@ int get_players_tile(player_t *player)
 
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->posx == player->posx && tmp->posy == player->posy && \
-        tmp->level >= player->level && \
+        tmp->level == player->level && \
         tmp->is_egg == false)
             number += 1;
     }
@@ -50,14 +50,21 @@ int incantation(game_board_t *game UNSD, player_t *player)
         if (i == 0 && get_players_tile(player) < \
         requirements[i][player->level - 1])
             return ERROR;
-        if (i != 0 && player->inventory[i] < requirements[i][player->level - 1])
+        if (i != 0 && game->map[player->posy][player->posx].resources[i] \
+        != requirements[i][player->level - 1])
             return ERROR;
     }
     for (int i = 0; i < 7; i += 1) {
         if (i != 0)
-            player->inventory[i] -= requirements[i][player->level - 1];
+            game->map[player->posy][player->posx].resources[i] = 0;
     }
-    player->cooldown = 300;
-    player->on_cd = &level_up;
+    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+        if (tmp->posx == player->posx && tmp->posy == player->posy && \
+        tmp->level == player->level && \
+        tmp->is_egg == false) {
+            tmp->cooldown = 300;
+            tmp->on_cd = &level_up;
+        }
+    }
     return SUCCESS;
 }

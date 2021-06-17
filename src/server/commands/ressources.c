@@ -24,3 +24,15 @@ char **ressources_container(void)
     }
     return ptr;
 }
+
+int get_resources_number_by_name(char *name)
+{
+    char **resources = ressources_container();
+
+    for (int index = 0; resources[index]; index++) {
+        if (strcmp(resources[index], name) == 0) {
+            return index;
+        }
+    }
+    return ERROR;
+}
