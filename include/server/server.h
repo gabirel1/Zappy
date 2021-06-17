@@ -199,6 +199,7 @@ int pic(int fd, int first_player, int *player_numbers, server_t *server);
 int pie(int fd, int pos[2], int result, server_t *server);
 int sbp(int fd, server_t *server);
 int suc(int fd, server_t *server);
+int ppo_second(int fd, player_t *player, server_t *server);
 
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
