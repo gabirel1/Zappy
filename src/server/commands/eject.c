@@ -27,11 +27,8 @@ void move_player(game_board_t *game, player_t *to_move)
         if (to_move->posx < 0)
             to_move->posx += game->width;
     }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (strcmp(tmp->uuid, to_move->uuid) == 0)
-            dprintf(tmp->fd, "movement: %d\n", to_move->posy * \
-            game->width + to_move->posx);
-    }
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next)
+        CALL_MOV
 }
 
 int eject(game_board_t *game, player_t *player)
