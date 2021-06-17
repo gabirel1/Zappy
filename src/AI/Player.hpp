@@ -41,6 +41,7 @@ class IA::Player {
         void addToInventory(resources res, int nb);
         void move(std::string move);
         void take(std::string ressources);
+        void incantation();
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);

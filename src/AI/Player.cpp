@@ -303,6 +303,30 @@ void IA::Player::clearInventory()
         i.second = 0;
 }
 
+void IA::Player::incantation()
+{
+    std::string tmp;
+
+    if (_toStop)
+        return;
+    _socket.sendMessage("Incantation");
+    tmp = _socket.receiveMessage(_toStop);
+    while (tmp.empty()) {
+        usleep(1000);
+        tmp = _socket.receiveMessage(_toStop);
+    }   
+    if (tmp == "dead\n") {
+        _toStop = true;
+        return;
+    }
+    if (tmp == "ko\n") {
+        std::cout << _clientNum << " didn't go forward " << std::endl;
+        return;
+    }
+    std::cout << tmp << std::endl;
+    _level += 1;
+}
+
 void IA::Player::initInventory()
 {
     _inventory.push_back(std::make_pair(FOOD, 0));
