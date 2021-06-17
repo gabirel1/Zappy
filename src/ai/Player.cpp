@@ -87,6 +87,7 @@ void IA::Player::loop()
             }
             else
             {
+                setObject("linemate");
                 std::cout << "-----------------incantation--------------------" << std::endl;
                 this->incantation();
             }
