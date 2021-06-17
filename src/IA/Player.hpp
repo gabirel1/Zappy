@@ -9,6 +9,7 @@
 #define PLAYER_HPP_
 #include "IA.hpp"
 #include "Tile.hpp"
+#include <unordered_map>
 
 class IA::Player {
     public:
@@ -16,6 +17,8 @@ class IA::Player {
         ~Player();
 
     private:
+        std::vector<std::pair<std::string, std::string>> _request;
+        bool _toStop;
         Socket _socket;
         int _level;
         std::string _teamName;
@@ -37,7 +40,7 @@ class IA::Player {
         void initInventory();
         void addToInventory(resources res, int nb);
         void move(std::string move);
-        std::string take(std::string ressources);
+        void take(std::string ressources);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);

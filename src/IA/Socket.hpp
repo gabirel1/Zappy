@@ -34,7 +34,7 @@ class Socket {
         ~Socket();
 
         void sendMessage(const std::string) const;
-        std::string receiveMessage(void);
+        std::string receiveMessage(bool &);
 
     protected:
     private:
@@ -42,6 +42,7 @@ class Socket {
         int _port;
         int _fd;
         std::string _addr;
+        fd_set _read_fds;
 };
 
 #endif /* !SOCKET_HPP_ */

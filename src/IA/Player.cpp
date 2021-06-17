@@ -7,12 +7,12 @@
 
 #include "Player.hpp"
 
-IA::Player::Player(int port, const std::string &addr, const std::string &teamName): _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
+IA::Player::Player(int port, const std::string &addr, const std::string &teamName): _toStop(false), _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
 {
-    std::cout << _socket.receiveMessage() << std::endl;
+    std::cout << _socket.receiveMessage(_toStop) << std::endl;
     _socket.sendMessage(_teamName);
-    std::string tmp = _socket.receiveMessage();
-    // std::string tmp1 = _socket.receiveMessage();
+    std::string tmp = _socket.receiveMessage(_toStop);
+    // std::string tmp1 = _socket.receiveMessage(_toStop);
     // std::cout << tmp1 << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
@@ -32,13 +32,26 @@ IA::Player::~Player()
 void IA::Player::look()
 {
     _tile.clear();
-    _socket.sendMessage("Look\n");
-    std::string tmp = _socket.receiveMessage();
+    _socket.sendMessage("Look");
+    std::string tmp = _socket.receiveMessage(_toStop);
     int nbr = 0;
 
-    std::cout << tmp << std::endl;
-    if (tmp == "ko")
-        exit(84); // on mettra les erreurs après
+    while (tmp.empty()) {
+        tmp = _socket.receiveMessage(_toStop);
+        // usleep(1000);
+    }
+    if (tmp == "dead\n") {
+        _toStop = true;
+        return;
+    }
+    // while (tmp.empty() || tmp == "ok\n")
+    //     tmp = _socket.receiveMessage(_toStop);
+    // std::cout << "Look = {" + tmp + "}" << std::endl;
+    if (tmp == "ko\n") {
+        std::cout << "no look" << std::endl;
+        return;
+        // exit(84); // on mettra les erreurs après
+    }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1), ++nbr)
         parseSpace(tmp.find(',', idx + 1), tmp, idx, nbr);
     for (const auto &e: _tile)
@@ -107,67 +120,109 @@ std::ostream &operator<<(std::ostream &os, const IA::resources &res)
     return (os);
 }
 
-std::string IA::Player::take(std::string ressources)
+void IA::Player::take(std::string res)
 {
-    _socket.sendMessage("Take " + ressources + "\n");
-    return (_socket.receiveMessage());
+    std::string tmp;
+
+    if (_toStop)
+        return;
+    _socket.sendMessage("Take " + res);
+    tmp = _socket.receiveMessage(_toStop);
+    while (tmp != "ok\n") {
+        if (tmp == "dead\n") {
+            _toStop = true;
+            return;
+        }
+        if (tmp == "ko\n") {
+            std::cout << _clientNum << " didn't take " + res << std::endl;
+            return;
+        }
+        tmp = _socket.receiveMessage(_toStop);
+        usleep(1000);
+    }
+    std::cout << _clientNum << " took " + res << std::endl;
 }
 
 void IA::Player::move(std::string dir)
 {
-    _socket.sendMessage(dir);
-}
+    std::string tmp;
 
-// std::string IA::Player::inv()
-// {
-//     _socket.sendMessage("Inventory\n");
-//     return (_socket.receiveMessage());
-// }
+    if (_toStop)
+        return;
+    // std::cout << "----------------------début forward----------------------" << std::endl;
+    _socket.sendMessage(dir);
+    tmp = _socket.receiveMessage(_toStop);
+    while (tmp != "ok\n") {
+        if (tmp == "dead\n") {
+            _toStop = true;
+            return;
+        }
+        if (tmp == "ko\n") {
+            std::cout << _clientNum << " didn't go forward " << std::endl;
+            return;
+        }
+        tmp = _socket.receiveMessage(_toStop);
+        // std::cout << "----------------------fin forward = " + tmp + "----------------------" << std::endl;
+        usleep(1000);
+    }
+    std::cout << _clientNum << " went forward" << std::endl;
+}
 
 void IA::Player::broadcast(const std::string &msg)
 {
+    if (_toStop)
+        return;
     _socket.sendMessage("Broadcast " + msg);
-    std::string tmp(_socket.receiveMessage());
+    std::string tmp(_socket.receiveMessage(_toStop));
 
+    while (tmp.empty())
+        usleep(1000);
+    if (tmp == "dead\n") {
+        _toStop = true;
+        return;
+    }
     std::cout << ((tmp == "ok\n") ? "message sent!!" : "problem in sending message") << std::endl;
 }
 
 void IA::Player::loop()
 {
     std::string tmp;
-    for (int i = 0; i > -1 ; i++) {
-
-        tmp = _socket.receiveMessage();
-        if (tmp == "dead\n") {
-            std::cout << "dead" << std::endl;
+    for (int i = 0; !_toStop ; i++) {
+        tmp = _socket.receiveMessage(_toStop);
+        // std::cout << "----------------------début----------------------" << std::endl;
+        // this->inventory();
+        if (tmp == "dead\n" || _toStop) {
+            std::cout << _clientNum << " dead" << std::endl;
+            _toStop = false;
             break;
         }
-
-        if (!tmp.empty())
-            std::cout << tmp << std::endl;
-        _socket.sendMessage("Forward\n");
-        _socket.receiveMessage();
+        move("Forward");
+        // _socket.sendMessage("Forward");
+        // while (_socket.receiveMessage(_toStop) != "ok\n");
+        // std::cout << "Forward ok" << std::endl;
 
         this->look();
-        _socket.receiveMessage();
-        
-        if (_tile[0].getResources()[0].second != 0)
-            this->take("Food");
-        _socket.receiveMessage();
-        
+        if (!_tile.empty() && _tile[0].getResources()[0].second != 0) {
+            this->take("food");
+        //     // std::string tmp = _socket.receiveMessage(_toStop);
+        //     // while (tmp.empty())
+        //     //     tmp = _socket.receiveMessage(_toStop);
+        //     // std::cout << "Take " + tmp << std::endl;
+        }
+        // std::cout << "----------------------fin----------------------" << std::endl;
         this->inventory();
-        _socket.receiveMessage();
-
-        // on fait les actions ici
-        // _socket.sendMessage("Left\n");
+        usleep(1000);
     }
-    
+    if (_toStop)
+        std::cout << _clientNum << " dead" << std::endl;
 }
 
 void IA::Player::forkPlayer()
 {
     int pid = 0;
 
+    if (_toStop)
+        return;
     pid = fork();
     if (pid == 0) {
         Player newPlayer(_port, _addr, _teamName);
@@ -178,13 +233,27 @@ void IA::Player::forkPlayer()
 
 void IA::Player::inventory()
 {
-    // _inventory.clear();
-    _socket.sendMessage("Inventory\n");
-    std::string tmp = _socket.receiveMessage();
+    if (_toStop)
+        return;
+    clearInventory();
+    _socket.sendMessage("Inventory");
+    std::string tmp;
 
-    std::cout << tmp << std::endl;
-    if (tmp == "ko")
-        exit (84);
+    while (tmp.empty()) {
+        tmp = _socket.receiveMessage(_toStop);
+        // usleep(1000);
+    }
+    if (tmp == "dead\n") {
+        _toStop = true;
+        return;
+    }
+    // std::cout << tmp << std::endl;
+    // while (tmp == "ok\n")
+    //     tmp = _socket.receiveMessage(_toStop);
+    if (tmp == "ko\n" || tmp.empty()) {
+        std::cout << "no inventory" << std::endl;
+        return;
+    }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1))
         parseInventory(tmp.find(',', idx + 1), tmp, idx);
     for (const auto &i: _inventory)

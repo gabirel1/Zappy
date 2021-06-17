@@ -13,7 +13,7 @@ DEBUG = -g3
 
 TARGET = ../../zappy_ai
 
-CXXFLAGS = -W -Wall -Wextra -Werror
+CXXFLAGS = -W -Wall -Wextra -Werror -g3
 
 OBJ	=	$(IA:.cpp=.o)
 
