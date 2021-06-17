@@ -18,6 +18,7 @@ class IA::Player {
 
     private:
         std::vector<std::pair<std::string, std::string>> _request;
+        int _nbTeam;
         bool _toStop;
         Socket _socket;
         int _level;
@@ -43,6 +44,8 @@ class IA::Player {
         void take(std::string ressources);
         void incantation();
         void setObject(const std::string &);
+        bool treatMessageBroadcast(const std::string &);
+        void waitResponse(std::string &);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);
