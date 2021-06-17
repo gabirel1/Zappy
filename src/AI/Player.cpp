@@ -380,3 +380,25 @@ void IA::Player::initInventory()
     _inventory.push_back(std::make_pair(PHIRAS, 0));
     _inventory.push_back(std::make_pair(THYSTAME, 0));
 }
+
+void IA::Player::setObject(const std::string &res)
+{
+    std::string tmp;
+
+    if (_toStop)
+        return;
+    _socket.sendMessage("Set " + res);
+    tmp = _socket.receiveMessage(_toStop);
+    while (tmp.empty()) {
+        usleep(1000);
+        tmp = _socket.receiveMessage(_toStop);
+    }
+    if (tmp == "dead\n") {
+        _toStop = true;
+        return;
+    }
+    if (tmp == "ko\n") {
+        std::cout << _clientNum << " didn't took down " + res << std::endl;
+        return;
+    std::cout << res << " was taken down" << std::endl;
+}
