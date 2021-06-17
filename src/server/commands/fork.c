@@ -7,13 +7,17 @@
 
 #include "server/server.h"
 
-void hatch(player_t *player)
+void hatch(player_t *player, server_t *server)
 {
     player->is_egg = false;
     player->on_cd = NULL;
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            eht(tmp->fd, player->player_number, server);
+    }
 }
 
-int fork_player(game_board_t *game UNSD, player_t *player)
+int fork_player(game_board_t *game UNSD, player_t *player, server_t *server)
 {
     player_t *new_player = init_player(player->team_uuid, \
     player->posx, player->posy);
@@ -24,6 +28,11 @@ int fork_player(game_board_t *game UNSD, player_t *player)
     new_player->on_cd = &hatch;
     player->cooldown = 42;
     add_player(new_player);
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            enw(tmp->fd, new_player->player_number, \
+            player->player_number, server);
+    }
     return SUCCESS;
 }
 
@@ -36,7 +45,7 @@ client_t *client)
         return ERROR;
     player = get_player_by_uuid(client->uuid);
     if (player == NULL || player->cooldown != 0 || \
-    fork_player(g_board, player) == ERROR) {
+    fork_player(g_board, player, server) == ERROR) {
         dprintf(client->fd, "ko\n");
         return ERROR;
     }

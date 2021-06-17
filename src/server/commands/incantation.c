@@ -20,7 +20,7 @@ int get_players_tile(player_t *player)
     return number;
 }
 
-void level_up(player_t *player)
+void level_up(player_t *player, server_t *server UNSD)
 {
     if (player->level < 8)
         player->level += 1;

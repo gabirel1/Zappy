@@ -103,7 +103,7 @@ typedef struct player_s
     bool is_egg;
     struct timeval clock;
     struct timeval life_clock;
-    void (*on_cd)(struct player_s *);
+    void (*on_cd)(struct player_s *, server_t *);
     struct player_s *next;
 } player_t;
 
@@ -230,7 +230,7 @@ char *look(game_board_t *game, player_t *player);
 char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources);
 char *inventory(game_board_t *game UNSD, player_t *player);
 int eject(game_board_t *game, player_t *player);
-int fork_player(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game UNSD, player_t *player, server_t *server);
 int take(game_board_t *game, player_t *player, char *object);
 int set(game_board_t *game, player_t *player, char *object);
 int incantation(game_board_t *game UNSD, player_t *player);
