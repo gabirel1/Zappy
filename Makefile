@@ -7,7 +7,7 @@
 
 all:	server ai
 
-server:	
+server:
 	make -C ./src/server
 
 ai:
