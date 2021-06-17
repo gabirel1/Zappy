@@ -7,7 +7,7 @@
 
 #include "Player.hpp"
 
-IA::Player::Player(int port, const std::string &addr, const std::string &teamName): _toStop(false), _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
+IA::Player::Player(int port, const std::string &addr, const std::string &teamName) : _toStop(false), _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
 {
     std::cout << _socket.receiveMessage(_toStop) << std::endl;
     _socket.sendMessage(_teamName);
@@ -16,7 +16,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     // std::cout << tmp1 << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
-    _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx +1)).c_str());
+    _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
@@ -32,11 +32,13 @@ IA::Player::~Player()
 void IA::Player::loop()
 {
     std::string tmp;
-    for (int i = 0; !_toStop ; i++) {
+    for (int i = 0; !_toStop; i++)
+    {
         tmp = _socket.receiveMessage(_toStop);
         // std::cout << "----------------------début----------------------" << std::endl;
         // this->inventory();
-        if (tmp == "dead\n" || _toStop) {
+        if (tmp == "dead\n" || _toStop)
+        {
             std::cout << _clientNum << " dead" << std::endl;
             _toStop = false;
             break;
@@ -45,35 +47,56 @@ void IA::Player::loop()
         // while (_socket.receiveMessage(_toStop) != "ok\n");
         // std::cout << "Forward ok" << std::endl;
 
-        this->look();
-        while (!_tile.empty() && _tile[0].getResources()[DFOOD].second != 0) {
-            this->take("food");
-        }
-        if (_tile.empty() && _tile[0].getResources()[DLINEMATE].second != 0)
-            this->take("linemate");
-        // std::cout << "----------------------fin----------------------" << std::endl;
-        this->inventory();
-        if (this->_inventory[DLINEMATE].second == 0) {
+        if (_level == 1)
+        {
             this->look();
-            if (!_tile.empty() || (_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
-                this->move("Forward");
-            else if (_tile[2].getResources()[DLINEMATE].second != 0)
-                this->move("Forward");
-            else if (_tile[1].getResources()[DLINEMATE].second != 0) {
-                this->move("Forward");
-                this->move("Right");
-                this->move("Forward");
+            for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+            {
+                std::cout << "food has been taken" << std::endl;
+                this->take("food");
             }
-            else if (_tile[3].getResources()[DLINEMATE].second != 0) {
-                this->move("Forward");
-                this->move("Left");
-                this->move("Forward");
+            if (_tile[0].getResources()[DLINEMATE].second != 0)
+                this->take("linemate");
+            // std::cout << "----------------------fin----------------------" << std::endl;
+            this->inventory();
+            if (this->_inventory[DLINEMATE].second == 0)
+            {
+                this->look();
+                if ((_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
+                {
+                    if (i % 4 == 0)
+                        this->move("Left");
+                    if (i % 6 == 0)
+                        this->move("Right");
+                    this->move("Forward");
+                }
+                else if (_tile[2].getResources()[DLINEMATE].second != 0)
+                    this->move("Forward");
+                else if (_tile[1].getResources()[DLINEMATE].second != 0)
+                {
+                    this->move("Forward");
+                    this->move("Left");
+                    this->move("Forward");
+                }
+                else if (_tile[3].getResources()[DLINEMATE].second != 0)
+                {
+                    this->move("Forward");
+                    this->move("Right");
+                    this->move("Forward");
+                }
             }
-        } else {
-            std::cout << "incantation" << std::endl;
-        }
+            else
+            {
+                std::cout << "-----------------incantation--------------------" << std::endl;
+                this->incantation();
+            }
 
-        usleep(1000);
+            usleep(1000);
+        }
+        else
+        {
+            std::cout << "LVL 2" << std::endl;
+        }
     }
     if (_toStop)
         std::cout << _clientNum << " dead" << std::endl;
@@ -86,43 +109,48 @@ void IA::Player::look()
     std::string tmp = _socket.receiveMessage(_toStop);
     int nbr = 0;
 
-    while (tmp.empty()) {
+    while (tmp.empty())
+    {
         tmp = _socket.receiveMessage(_toStop);
         // usleep(1000);
     }
-    if (tmp == "dead\n") {
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
     // while (tmp.empty() || tmp == "ok\n")
     //     tmp = _socket.receiveMessage(_toStop);
     // std::cout << "Look = {" + tmp + "}" << std::endl;
-    if (tmp == "ko\n") {
+    if (tmp == "ko\n")
+    {
         std::cout << "no look" << std::endl;
         return;
         // exit(84); // on mettra les erreurs après
     }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1), ++nbr)
         parseSpace(tmp.find(',', idx + 1), tmp, idx, nbr);
-    for (const auto &e: _tile)
-        for (const auto &t: e.getResources())
+    for (const auto &e : _tile)
+        for (const auto &t : e.getResources())
             std::cout << e.getCaseNbr() << " and " << t.first << " = " << t.second << std::endl;
 }
-
 
 void IA::Player::parseSpace(std::size_t idx, std::string tmp, std::size_t last, int nbr)
 {
     Tile tile(nbr);
-    for (std::size_t tmpIdx = tmp.find(' ', last); 1; tmpIdx = tmp.find(' ', tmpIdx + 1)) {
+    for (std::size_t tmpIdx = tmp.find(' ', last); 1; tmpIdx = tmp.find(' ', tmpIdx + 1))
+    {
         std::size_t test = tmp.find(' ', tmpIdx + 1);
         if (tmpIdx == tmp.npos)
             break;
-        if (test > idx && idx != tmp.npos) {
+        if (test > idx && idx != tmp.npos)
+        {
             tile.addResources(getResourcesFromString(tmp.substr(tmpIdx + 1, idx - (tmpIdx + 1))));
             break;
         }
-        if (tmp[test + 1] == ']') {
-            tile.addResources(getResourcesFromString(tmp.substr(tmpIdx + 1, test - (tmpIdx + 1) )));
+        if (tmp[test + 1] == ']')
+        {
+            tile.addResources(getResourcesFromString(tmp.substr(tmpIdx + 1, test - (tmpIdx + 1))));
             break;
         }
         tile.addResources(getResourcesFromString(tmp.substr(tmpIdx + 1, test - (tmpIdx + 1))));
@@ -178,12 +206,15 @@ void IA::Player::take(std::string res)
         return;
     _socket.sendMessage("Take " + res);
     tmp = _socket.receiveMessage(_toStop);
-    while (tmp != "ok\n") {
-        if (tmp == "dead\n") {
+    while (tmp != "ok\n")
+    {
+        if (tmp == "dead\n")
+        {
             _toStop = true;
             return;
         }
-        if (tmp == "ko\n") {
+        if (tmp == "ko\n")
+        {
             std::cout << _clientNum << " didn't take " + res << std::endl;
             return;
         }
@@ -202,12 +233,15 @@ void IA::Player::move(std::string dir)
     // std::cout << "----------------------début forward----------------------" << std::endl;
     _socket.sendMessage(dir);
     tmp = _socket.receiveMessage(_toStop);
-    while (tmp != "ok\n") {
-        if (tmp == "dead\n") {
+    while (tmp != "ok\n")
+    {
+        if (tmp == "dead\n")
+        {
             _toStop = true;
             return;
         }
-        if (tmp == "ko\n") {
+        if (tmp == "ko\n")
+        {
             std::cout << _clientNum << " didn't go forward " << std::endl;
             return;
         }
@@ -227,7 +261,8 @@ void IA::Player::broadcast(const std::string &msg)
 
     while (tmp.empty())
         usleep(1000);
-    if (tmp == "dead\n") {
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
@@ -241,10 +276,12 @@ void IA::Player::forkPlayer()
     if (_toStop)
         return;
     pid = fork();
-    if (pid == 0) {
+    if (pid == 0)
+    {
         Player newPlayer(_port, _addr, _teamName);
-        exit (0);
-    } else if (pid != -1)
+        exit(0);
+    }
+    else if (pid != -1)
         return;
 }
 
@@ -256,30 +293,33 @@ void IA::Player::inventory()
     _socket.sendMessage("Inventory");
     std::string tmp;
 
-    while (tmp.empty()) {
+    while (tmp.empty())
+    {
         tmp = _socket.receiveMessage(_toStop);
         // usleep(1000);
     }
-    if (tmp == "dead\n") {
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
     // std::cout << tmp << std::endl;
     // while (tmp == "ok\n")
     //     tmp = _socket.receiveMessage(_toStop);
-    if (tmp == "ko\n" || tmp.empty()) {
+    if (tmp == "ko\n" || tmp.empty())
+    {
         std::cout << "no inventory" << std::endl;
         return;
     }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1))
         parseInventory(tmp.find(',', idx + 1), tmp, idx);
-    for (const auto &i: _inventory)
+    for (const auto &i : _inventory)
         std::cout << i.first << " = " + std::to_string(i.second) << std::endl;
 }
 
 void IA::Player::addToInventory(resources res, int nb)
 {
-    for (auto &i: _inventory)
+    for (auto &i : _inventory)
         if (i.first == res)
             i.second = nb;
 }
@@ -299,7 +339,7 @@ void IA::Player::parseInventory(std::size_t idx, std::string tmp, std::size_t la
 
 void IA::Player::clearInventory()
 {
-    for (auto &i: _inventory)
+    for (auto &i : _inventory)
         i.second = 0;
 }
 
@@ -311,16 +351,19 @@ void IA::Player::incantation()
         return;
     _socket.sendMessage("Incantation");
     tmp = _socket.receiveMessage(_toStop);
-    while (tmp.empty()) {
+    while (tmp.empty())
+    {
         usleep(1000);
         tmp = _socket.receiveMessage(_toStop);
-    }   
-    if (tmp == "dead\n") {
+    }
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
-    if (tmp == "ko\n") {
-        std::cout << _clientNum << " didn't go forward " << std::endl;
+    if (tmp == "ko\n")
+    {
+        std::cout << _clientNum << " didn't lvl up " << std::endl;
         return;
     }
     std::cout << tmp << std::endl;
