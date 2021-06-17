@@ -177,6 +177,7 @@ client_t *client, server_t *server);
 
 void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
+int *get_player_numbers(int to_skip);
 
 int game_loop(struct timeval *start, game_board_t *game);
 void update_cooldown(game_board_t *board, server_t *server);
@@ -195,7 +196,7 @@ int enw(int fd, int egg_number, int player_number, server_t *server);
 int eht(int fd, int egg_number, server_t *server);
 int ebo(int fd, int egg_number, server_t *server); //
 int edi(int fd, int egg_number, server_t *server); //
-int pic(int fd, int first_player, int *player_numbers, server_t *server); //
+int pic(int fd, int first_player, int *player_numbers, server_t *server);
 int pie(int fd, int pos[2], int result, server_t *server);
 int sbp(int fd, server_t *server); //
 int suc(int fd, server_t *server);
@@ -258,6 +259,8 @@ int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_broadcast_text(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int f_incantation(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -280,7 +283,7 @@ static const func_t func_tab[] = {
     {"Eject", &f_eject},
     {"Take", &f_take},
     {"Set", &f_set},
-    // {"Incantation", &incantation},
+    {"Incantation", &f_incantation},
     {NULL, NULL}
 };
 

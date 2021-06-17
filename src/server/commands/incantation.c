@@ -74,3 +74,26 @@ int incantation(game_board_t *game UNSD, player_t *player)
     }
     return SUCCESS;
 }
+
+int f_incantation(UNSD char *req[], server_t *server, game_board_t *g_board, \
+client_t *client)
+{
+    player_t *player = NULL;
+
+    if (!FD_ISSET(client->fd, &server->write_fd_set))
+        return ERROR;
+    player = get_player_by_uuid(client->uuid);
+    if (player == NULL || player->cooldown != 0 || \
+    left(g_board, player) == ERROR) {
+        dprintf(client->fd, "ko\n");
+        return ERROR;
+    }
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            pic(tmp->fd, player->player_number, \
+            get_player_numbers(player->player_number), server);
+        }
+    }
+    dprintf(client->fd, "%d\n", player->level);
+    return SUCCESS;
+}
