@@ -33,19 +33,25 @@ IA::Player::~Player()
 void IA::Player::loop()
 {
     std::string tmp;
-    for (int i = 0; _toStop != true; i++) {
+    srand (time(NULL));
+
+    for (int i = 0; _toStop != true; i++)
+    {
         tmp = _socket.receiveMessage(_toStop);
-        if (tmp == "dead\n" || _toStop) {
+        if (tmp == "dead\n" || _toStop)
+        {
             std::cout << _clientNum << " dead" << std::endl;
             _toStop = false;
             break;
         }
-        if (!tmp.empty()) {
+        if (!tmp.empty())
+        {
             treatMessageBroadcast(tmp);
         }
 
         std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << std::endl;
-        if (_level == 1) {
+        if (_level == 1)
+        {
             this->look();
             for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
             {
@@ -116,13 +122,43 @@ void IA::Player::loop()
                     this->take("thystame");
                 }
                 this->incantation();
-                this->forkPlayer();
+                if (_nbTeam < 2)
+                    this->forkPlayer();
             }
 
             usleep(1000);
         }
         else
         {
+            this->look();
+            for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+            {
+                std::cout << "food has been taken" << std::endl;
+                this->take("food");
+            }
+            if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
+            {
+                int r = rand() % 3 + 0;
+                if (r == 0)
+                    this->move("Left");
+                else if (r == 1)
+                    this->move("Right");
+                this->move("Forward");
+            }
+            else if (_tile[2].getResources()[FOOD].second != 0)
+                this->move("Forward");
+            else if (_tile[1].getResources()[FOOD].second != 0)
+            {
+                this->move("Forward");
+                this->move("Left");
+                this->move("Forward");
+            }
+            else if (_tile[3].getResources()[FOOD].second != 0)
+            {
+                this->move("Forward");
+                this->move("Right");
+                this->move("Forward");
+            }
             std::cout << _clientNum << " LVL 2" << std::endl;
         }
     }
@@ -241,11 +277,13 @@ void IA::Player::move(std::string dir)
         return;
     _socket.sendMessage(dir);
     waitResponse(tmp);
-    if (tmp == "dead\n") {
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
-    if (tmp == "ko\n") {
+    if (tmp == "ko\n")
+    {
         std::cout << _clientNum << " didn't go forward " << std::endl;
         return;
     }
@@ -260,17 +298,19 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
         tmp = msg.substr(msg.find(',') + 2);
     else
         tmp = msg;
-    // std::cout << "{" << tmp << "}" << std::endl;   
-    if (tmp.find("team") != tmp.npos) {
+    // std::cout << "{" << tmp << "}" << std::endl;
+    if (tmp.find("team") != tmp.npos)
+    {
         broadcast("mytm:" + _teamName);
         return (true);
     }
-    else if (tmp.find("mytm") != tmp.npos) {
+    else if (tmp.find("mytm") != tmp.npos)
+    {
         if (tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) == _teamName)
             _nbTeam += 1;
         return (true);
     }
-    std::cout << "message from server: [" << tmp << "]" <<std::endl;
+    std::cout << "message from server: [" << tmp << "]" << std::endl;
     return (false);
 }
 
@@ -283,11 +323,13 @@ void IA::Player::broadcast(const std::string &msg)
     // std::string tmp(_socket.receiveMessage(_toStop));
 
     waitResponse(tmp);
-    if (tmp == "dead\n") {
+    if (tmp == "dead\n")
+    {
         _toStop = true;
         return;
     }
-    if (tmp == "ko\n") {
+    if (tmp == "ko\n")
+    {
         std::cout << "klskldlksdproblem in sending message" << std::endl;
         return;
     }
@@ -304,7 +346,8 @@ void IA::Player::forkPlayer()
         return;
     _socket.sendMessage("Fork");
     waitResponse(tmp);
-    if (tmp == "ko\n") {
+    if (tmp == "ko\n")
+    {
         std::cout << "can't fork" << std::endl;
         return;
     }
@@ -315,7 +358,8 @@ void IA::Player::forkPlayer()
         Player newPlayer(_port, _addr, _teamName);
         exit(0);
     }
-    else if (pid != -1) {
+    else if (pid != -1)
+    {
         broadcast("team");
         return;
     }
@@ -324,16 +368,19 @@ void IA::Player::forkPlayer()
 void IA::Player::waitResponse(std::string &tmp)
 {
     tmp = _socket.receiveMessage(_toStop);
-    while (1) {
+    while (1)
+    {
         // std::cout << "receive = "<< tmp << std::endl;
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
-        if (tmp == "dead\n") {
+        if (tmp == "dead\n")
+        {
             _toStop = true;
             tmp = "dead\n";
             return;
         }
-        if (!tmp.empty()) {
+        if (!tmp.empty())
+        {
             if (!treatMessageBroadcast(tmp))
                 break;
             tmp = tmp.substr(tmp.find('\n') + 1);
