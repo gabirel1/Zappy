@@ -90,15 +90,16 @@ void IA::Player::loop()
             else
             {
                 setObject("linemate");
-                std::cout << "-----------------incantation--------------------" << std::endl;
+                std::cout << _clientNum <<"-----------------incantation--------------------" << std::endl;
                 this->incantation();
+                this->forkPlayer();
             }
 
             usleep(1000);
         }
         else
         {
-            std::cout << "LVL 2" << std::endl;
+            std::cout << _clientNum  << " LVL 2" << std::endl;
         }
     }
     if (_toStop)
