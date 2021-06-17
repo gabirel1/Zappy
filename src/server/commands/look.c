@@ -9,7 +9,8 @@
 
 tile_t *look_north(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) ^ 2));
+    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1)));
     int posx = 0;
     int posy = 0;
     int index = 0;
@@ -32,7 +33,8 @@ tile_t *look_north(game_board_t *game, player_t *player)
 
 tile_t *look_south(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) ^ 2));
+    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1)));
     int posx = 0;
     int posy = 0;
     int index = 0;
@@ -56,7 +58,8 @@ tile_t *look_south(game_board_t *game, player_t *player)
 
 tile_t *look_east(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) ^ 2));
+    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1)));
     int posx = 0;
     int posy = 0;
     int index = 0;
@@ -80,7 +83,8 @@ tile_t *look_east(game_board_t *game, player_t *player)
 
 tile_t *look_west(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) ^ 2));
+    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1)));
     int posx = 0;
     int posy = 0;
     int index = 0;
@@ -105,8 +109,8 @@ tile_t *look_west(game_board_t *game, player_t *player)
 char *look(game_board_t *game, player_t *player)
 {
     tile_t *tiles = NULL;
-    int length = (player->level + 1) ^ 2;
-    char *ret = my_strdup("[");
+    int length = (player->level + 1) * (player->level + 1);
+    char *ret = my_strdup("[ ");
     char **ressources = ressources_container();
 
     if (player->orientation == NORTH)
@@ -118,7 +122,7 @@ char *look(game_board_t *game, player_t *player)
     if (player->orientation == WEST)
         tiles = look_west(game, player);
     ret = look_tiles(tiles, length, ret, ressources);
-    my_strcat(ret, "]");
+    ret = my_strcat(ret, "]");
     player->cooldown = 7;
     return ret;
 }
