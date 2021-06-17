@@ -14,6 +14,13 @@ client_t **client_container(void)
     return &head;
 }
 
+void init_new_client(client_t *client)
+{
+    client->is_graphic = false;
+    client->is_ia = false;
+    memset(client->uuid, 0, 37);
+}
+
 bool add_client(client_t *next)
 {
     client_t **front_ptr = client_container();
@@ -40,6 +47,7 @@ bool delete_client(client_t *client)
 
     if (!*front_ptr)
         return (false);
+    close(client->fd);
     if (client == tmp) {
         *front_ptr = tmp->next;
         return (true);

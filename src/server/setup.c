@@ -7,35 +7,35 @@
 
 #include "server/server.h"
 
-void init_new_client(client_t *client)
+int new_connection(server_t *server, int i)
 {
-    client->is_graphic = false;
-    client->is_ia = false;
-    memset(client->uuid, 0, 37);
+    client_t *new = my_malloc(sizeof(client_t));
+    size_t len = sizeof(server->server_address);
+
+    new->fd = accept(i, (struct sockaddr *) &server->server_address, \
+    (socklen_t *) &len);
+    if (new->fd == -1) {
+        fprintf(stderr, "Error while accepting new client\n");
+        return ERROR;
+    }
+    printf("new connection\n");
+    FD_SET(new->fd, &server->active_fd_set);
+    init_new_client(new);
+    add_client(new);
+    if (FD_ISSET(new->fd, &server->active_fd_set)) {
+        dprintf(new->fd, "WELCOME\n");
+    }
+    return SUCCESS;
 }
 
 int handle_connection(server_t *server, UNSD server_info_t *server_in, \
 game_board_t *game, int i)
 {
     char *buff = NULL;
-    client_t *new = NULL;
-    size_t len = sizeof(server->server_address);
 
     if (i == server->serverfd) {
-        new = my_malloc(sizeof(client_t));
-        new->fd = accept(i, (struct sockaddr *) &server->server_address, \
-        (socklen_t *) &len);
-        if (new->fd == -1) {
-            fprintf(stderr, "Error while accepting new client\n");
+        if (new_connection(server, i) == ERROR)
             return ERROR;
-        }
-        printf("new connection\n");
-        FD_SET(new->fd, &server->active_fd_set);
-        init_new_client(new);
-        add_client(new);
-        if (FD_ISSET(new->fd, &server->active_fd_set)) {
-            dprintf(new->fd, "WELCOME\n");
-        }
     } else {
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {
@@ -61,23 +61,8 @@ game_info_t *game_info)
     int res = 0;
 
     gettimeofday(&start, NULL);
-    while (my_handler(12, false) == 0) {
-        server.read_fd_set = server.active_fd_set;
-        server.write_fd_set = server.active_fd_set;
-        if (select(FD_SETSIZE, &server.read_fd_set, &server.write_fd_set, \
-        NULL, &server.timeout) == -1) {
-            fprintf(stderr, "Error while waiting for client\n");
-            return ERROR;
-        }
-        if (my_handler(12, false) != 0)
-            break;
-        for (int i = 0; i < FD_SETSIZE; i += 1) {
-            if (FD_ISSET(i, &server.read_fd_set))
-                res = handle_connection(&server, server_in, game, i);
-            if (res == ERROR)
-                stop_client(i, &server, &res);
-        }
-        update_cooldown(game);
+    while (my_handler(12, false) == 0 && \
+    server_loop(server, res, server_in, game) == SUCCESS) {
         game_loop(&start, game);
     }
     return SUCCESS;
