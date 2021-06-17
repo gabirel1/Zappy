@@ -7,9 +7,12 @@
 
 #include "server/server.h"
 
-static void make_link_client_to_new_player(client_t *client, char *team_uuid)
+static void make_link_client_to_new_player(client_t *client, \
+char *team_uuid, game_board_t *game)
 {
-    player_t *new_player = init_player(team_uuid, 10, 10); // change value later
+    player_t *new_player = init_player(team_uuid, rand() % \
+    game->width, rand() % game->height);
+
     if (add_player(new_player) == false) {
         printf("error while creating player\n");
         return;
@@ -33,7 +36,7 @@ client_t *client, server_t *server)
             printf("team full\n");
             return TEAM_FULL;
         }
-        make_link_client_to_new_player(client, team->team_uuid);
+        make_link_client_to_new_player(client, team->team_uuid, game);
         return ia_send_first_batch(game, client, server);
     }
     return ERROR;

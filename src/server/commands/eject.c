@@ -7,7 +7,7 @@
 
 #include "server/server.h"
 
-void move_player(game_board_t *game, player_t *player, player_t *to_move)
+void move_player(game_board_t *game, player_t *to_move)
 {
     if (to_move->orientation == NORTH) {
         to_move->posy -= 1;
@@ -28,7 +28,7 @@ void move_player(game_board_t *game, player_t *player, player_t *to_move)
             to_move->posx += game->width;
     }
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (strcmp(tmp->uuid, to_move) == 0)
+        if (strcmp(tmp->uuid, to_move->uuid) == 0)
             dprintf(tmp->fd, "movement: %d\n", to_move->posy * \
             game->width + to_move->posx);
     }
@@ -39,7 +39,7 @@ int eject(game_board_t *game, player_t *player)
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->posx == player->posx && tmp->posy == player->posy \
         && tmp != player && player->is_egg == false)
-            move_player(game, player, tmp);
+            move_player(game, tmp);
     }
     player->cooldown = 7;
     return SUCCESS;
