@@ -13,6 +13,9 @@ server:
 ai:
 	make -C ./src/ai
 
+debug:
+	make -C ./src/server debug
+	make -C ./src/AI debug
 
 debug_server:
 	make -C ./src/server debug
