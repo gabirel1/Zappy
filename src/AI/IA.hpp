@@ -11,6 +11,13 @@
 #include <unordered_map>
 #include <vector>
 #include "Socket.hpp"
+#define DFOOD 0
+#define DLINEMATE 1
+#define DDERAUMERE 2
+#define DSIBUR 3
+#define DMENDIANE 4
+#define DPHIRAS 5
+#define DTHYSTAME 6
 
 namespace IA {
     typedef enum {

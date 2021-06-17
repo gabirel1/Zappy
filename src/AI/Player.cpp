@@ -289,8 +289,8 @@ void IA::Player::clearInventory()
 void IA::Player::initInventory()
 {
     _inventory.push_back(std::make_pair(FOOD, 0));
-    _inventory.push_back(std::make_pair(DERAUMERE, 0));
     _inventory.push_back(std::make_pair(LINEMATE, 0));
+    _inventory.push_back(std::make_pair(DERAUMERE, 0));
     _inventory.push_back(std::make_pair(SIBUR, 0));
     _inventory.push_back(std::make_pair(MENDIANE, 0));
     _inventory.push_back(std::make_pair(PHIRAS, 0));
