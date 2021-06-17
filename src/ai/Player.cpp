@@ -21,6 +21,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
     broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
+    // usleep(100000);
     broadcast("team");
     loop();
 }
@@ -253,18 +254,23 @@ void IA::Player::move(std::string dir)
 
 bool IA::Player::treatMessageBroadcast(const std::string &msg)
 {
-    if (msg.size() == 4 && msg == "team") {
-        broadcast("team:" + _teamName);
+    std::string tmp;
+
+    if (msg.find("message") != msg.npos)
+        tmp = msg.substr(msg.find(',') + 2);
+    else
+        tmp = msg;
+    // std::cout << "{" << tmp << "}" << std::endl;   
+    if (tmp.find("team") != tmp.npos) {
+        broadcast("mytm:" + _teamName);
         return (true);
     }
-    else if (msg.size() > 4 && msg.substr(0, 4) == "team") {
-        std::cout << msg << std::endl;
-        exit (84);
-        if (msg.substr(msg.find(':') + 1) == _teamName)
+    else if (tmp.find("mytm") != tmp.npos) {
+        if (tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) == _teamName)
             _nbTeam += 1;
         return (true);
     }
-    std::cout << "message from server: " << msg << std::endl;
+    std::cout << "message from server: [" << tmp << "]" <<std::endl;
     return (false);
 }
 
@@ -277,12 +283,16 @@ void IA::Player::broadcast(const std::string &msg)
     // std::string tmp(_socket.receiveMessage(_toStop));
 
     waitResponse(tmp);
-    if (tmp == "dead\n")
-    {
+    if (tmp == "dead\n") {
         _toStop = true;
         return;
     }
-    std::cout << ((tmp == "ok\n") ? "message sent!!" : "problem in sending message") << std::endl;
+    if (tmp == "ko\n") {
+        std::cout << "klskldlksdproblem in sending message" << std::endl;
+        return;
+    }
+
+    std::cout << tmp << std::endl;
 }
 
 void IA::Player::forkPlayer()
@@ -315,17 +325,19 @@ void IA::Player::waitResponse(std::string &tmp)
 {
     tmp = _socket.receiveMessage(_toStop);
     while (1) {
-        std::cout << tmp << std::endl;
-        if (tmp == "ok\r\n" || tmp == "ko\n")
+        // std::cout << tmp << std::endl;
+        if (!tmp.empty()) {
+            if (!treatMessageBroadcast(tmp))
+                break;
+            tmp = tmp.substr(tmp.find('\n') + 1);
+        }
+        if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n") {
             _toStop = true;
             tmp = "dead\n";
             return;
         }
-        if (!tmp.empty())
-            if (!treatMessageBroadcast(tmp))
-                break;
         tmp = _socket.receiveMessage(_toStop);
         usleep(100000);
     }
