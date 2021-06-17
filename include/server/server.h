@@ -116,8 +116,8 @@ typedef struct func_s
 
 #define TILE_CONTENT g_board->map[y_index][x_index]
 #define TILE_CONTENT_R g_board->map[y_index][x_index].resources
-#define FD_TMP_ISSET (FD_ISSET(tmp->fd, &server->write_fd_set))
 
+server_t **server_container(void);
 char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
 bool is_full_digits(char *string);
@@ -179,7 +179,7 @@ void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
 
 int game_loop(struct timeval *start, game_board_t *game);
-void update_cooldown(game_board_t *board);
+void update_cooldown(game_board_t *board, server_t *server);
 
 int seg(char *team_name, int fd, server_t *server);
 int smg(char *message, int fd, server_t *server);

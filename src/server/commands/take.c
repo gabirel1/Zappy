@@ -46,8 +46,7 @@ client_t *client)
         return ERROR;
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true) {
-            FD_TMP_ISSET ? pgt(tmp->fd, player->player_number, \
-            resource_id, server) : 0;
+            pgt(tmp->fd, player->player_number, resource_id, server);
         }
     }
     dprintf(client->fd, "ok\n");
