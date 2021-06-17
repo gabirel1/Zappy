@@ -162,7 +162,7 @@ int y_case(game_info_t *g_info);
 int x_case(game_info_t *g_info);
 
 int create_server(server_info_t *server_info, game_info_t *sgame);
-int server_loop(server_t server, int res, server_info_t *server_in, \
+int server_loop(server_t *server, int res, server_info_t *server_in, \
 game_board_t *game);
 void stop_client(int fd, server_t *server, int *res);
 void delete_client_from_list(client_t *client);
