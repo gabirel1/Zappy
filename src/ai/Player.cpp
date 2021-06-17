@@ -12,8 +12,10 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     std::cout << _socket.receiveMessage(_toStop) << std::endl;
     _socket.sendMessage(_teamName);
     std::string tmp = _socket.receiveMessage(_toStop);
-    // std::string tmp1 = _socket.receiveMessage(_toStop);
+    // std::string tmp1 = _socket.re    ceiveMessage(_toStop);
     // std::cout << tmp1 << std::endl;
+    if (tmp.empty() || tmp == "ko\n")
+        exit (84);
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
