@@ -11,8 +11,6 @@ SRC = 	$(wildcard *.c)	\
 
 CC = gcc
 
-DEBUG = g3
-
 TARGET = ../../zappy_server
 
 CFLAGS = -W -Wall -Wextra -I../../include
