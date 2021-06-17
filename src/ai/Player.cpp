@@ -44,7 +44,7 @@ void IA::Player::loop()
             treatMessageBroadcast(tmp);
         }
 
-        std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << std::endl;
+        std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
         if (_level == 1) {
             this->look();
             for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
@@ -316,7 +316,7 @@ void IA::Player::forkPlayer()
         exit(0);
     }
     else if (pid != -1) {
-        broadcast("team");
+        // broadcast("team");
         return;
     }
 }
