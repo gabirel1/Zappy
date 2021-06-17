@@ -65,10 +65,30 @@ struct timeval end, server_t *server)
     }
 }
 
+void send_end(team_t *team, server_t *server)
+{
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            seg(team->team_name, tmp->fd, server);
+    }
+    my_handler(12, true);
+}
+
 void update_cooldown(game_board_t *board, server_t *server)
 {
     struct timeval end;
+    int number = 0;
 
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next)
         update_player_cooldown(tmp, board, end, server);
+    for (team_t *tmp = *team_container(); tmp; tmp = tmp->next) {
+        for (player_t *player = *player_container(); player; \
+        player = player->next) {
+            if (strcmp(player->team_uuid, tmp->team_uuid) == 0)
+                number += 1;
+        }
+        if (number == 6)
+            send_end(tmp, server);
+        number = 0;
+    }
 }
