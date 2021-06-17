@@ -114,6 +114,11 @@ typedef struct func_s
     int (*fun)(char **, server_t *, game_board_t *, client_t *);
 } func_t;
 
+
+
+#define CALL_MOV if (strcmp(tmp->uuid, to_move->uuid) == 0) \
+            dprintf(tmp->fd, "movement: %d\n", to_move->posy * \
+            game->width + to_move->posx);
 #define TILE_CONTENT g_board->map[y_index][x_index]
 #define TILE_CONTENT_R g_board->map[y_index][x_index].resources
 

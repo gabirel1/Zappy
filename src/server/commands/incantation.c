@@ -54,14 +54,12 @@ int incantation(game_board_t *game UNSD, player_t *player)
         != requirements[i][player->level - 1])
             return ERROR;
     }
-    for (int i = 0; i < 7; i += 1) {
+    for (int i = 0; i < 7; i += 1)
         if (i != 0)
             game->map[player->posy][player->posx].resources[i] = 0;
-    }
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->posx == player->posx && tmp->posy == player->posy && \
-        tmp->level == player->level && \
-        tmp->is_egg == false) {
+        tmp->level == player->level && tmp->is_egg == false) {
             tmp->cooldown = 300;
             tmp->on_cd = &level_up;
         }
