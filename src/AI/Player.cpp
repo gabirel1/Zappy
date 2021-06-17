@@ -400,5 +400,6 @@ void IA::Player::setObject(const std::string &res)
     if (tmp == "ko\n") {
         std::cout << _clientNum << " didn't took down " + res << std::endl;
         return;
+    }
     std::cout << res << " was taken down" << std::endl;
 }

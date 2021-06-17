@@ -18,7 +18,7 @@ debug_server:
 	make -C ./src/server debug
 
 debug_ia:
-	make -C ./src/AI
+	make -C ./src/AI debug
 
 clean:
 	make -C ./src/server clean
