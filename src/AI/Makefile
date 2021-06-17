@@ -13,7 +13,7 @@ DEBUG = -g3
 
 TARGET = ../../zappy_ai
 
-CXXFLAGS = -W -Wall -Wextra -Werror -g3
+CXXFLAGS = -W -Wall -Wextra -Werror
 
 OBJ	=	$(IA:.cpp=.o)
 
@@ -22,8 +22,9 @@ all:	$(TARGET)
 $(TARGET) : $(OBJ)
 	$(CXX) $(OBJ) -o $(TARGET)
 
-debug:	fclean
-	CXXFLAGS += $(DEBUG)
+# debug:	fclean
+# 	CXXFLAGS += $(DEBUG)
+# 	all
 
 clean:
 	$(RM) $(OBJ)
