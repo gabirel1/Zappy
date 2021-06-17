@@ -9,8 +9,6 @@ IA	=	$(wildcard ./*.cpp)
 
 CXX = g++
 
-DEBUG = -g3
-
 TARGET = ../../zappy_ai
 
 CXXFLAGS = -W -Wall -Wextra -Werror
