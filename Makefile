@@ -11,22 +11,22 @@ server:
 	make -C ./src/server
 
 ia:
-	make -C ./src/ai
+	make -C ./src/AI
 
 
 debug_server:
 	make -C ./src/server debug
 
 debug_ia:
-	make -C ./src/ai
+	make -C ./src/AI
 
 clean:
 	make -C ./src/server clean
-	make -C ./src/ai clean
+	make -C ./src/AI clean
 
 fclean:	clean
 	make -C ./src/server fclean
-	make -C ./src/ai fclean
+	make -C ./src/AI fclean
 
 re:	fclean all
 
