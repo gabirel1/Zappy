@@ -62,7 +62,7 @@ game_info_t *game_info)
 
     gettimeofday(&start, NULL);
     while (my_handler(12, false) == 0 && \
-    server_loop(server, res, server_in, game) == SUCCESS) {
+    server_loop(&server, res, server_in, game) == SUCCESS) {
         game_loop(&start, game);
     }
     return SUCCESS;
