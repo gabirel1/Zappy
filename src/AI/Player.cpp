@@ -29,6 +29,41 @@ IA::Player::~Player()
 {
 }
 
+void IA::Player::loop()
+{
+    std::string tmp;
+    for (int i = 0; !_toStop ; i++) {
+        tmp = _socket.receiveMessage(_toStop);
+        // std::cout << "----------------------début----------------------" << std::endl;
+        // this->inventory();
+        if (tmp == "dead\n" || _toStop) {
+            std::cout << _clientNum << " dead" << std::endl;
+            _toStop = false;
+            break;
+        }
+        // _socket.sendMessage("Forward");
+        // while (_socket.receiveMessage(_toStop) != "ok\n");
+        // std::cout << "Forward ok" << std::endl;
+
+        this->look();
+        while (!_tile.empty() && _tile[0].getResources()[DFOOD].second != 0) {
+            this->take("food");
+        }
+        if (_tile.empty() && _tile[0].getResources()[DLIMATE].second)
+            this->take("limate");
+        // std::cout << "----------------------fin----------------------" << std::endl;
+        this->inventory();
+        if (this->_inventory[DLIMATE].second == 0) {
+            this->look();
+            if (!_tile.empty() || _tile[1].getResources()[DLIMATE].second == 0)
+        }
+
+        usleep(1000);
+    }
+    if (_toStop)
+        std::cout << _clientNum << " dead" << std::endl;
+}
+
 void IA::Player::look()
 {
     _tile.clear();
@@ -182,39 +217,6 @@ void IA::Player::broadcast(const std::string &msg)
         return;
     }
     std::cout << ((tmp == "ok\n") ? "message sent!!" : "problem in sending message") << std::endl;
-}
-
-void IA::Player::loop()
-{
-    std::string tmp;
-    for (int i = 0; !_toStop ; i++) {
-        tmp = _socket.receiveMessage(_toStop);
-        // std::cout << "----------------------début----------------------" << std::endl;
-        // this->inventory();
-        if (tmp == "dead\n" || _toStop) {
-            std::cout << _clientNum << " dead" << std::endl;
-            _toStop = false;
-            break;
-        }
-        move("Forward");
-        // _socket.sendMessage("Forward");
-        // while (_socket.receiveMessage(_toStop) != "ok\n");
-        // std::cout << "Forward ok" << std::endl;
-
-        this->look();
-        if (!_tile.empty() && _tile[0].getResources()[0].second != 0) {
-            this->take("food");
-        //     // std::string tmp = _socket.receiveMessage(_toStop);
-        //     // while (tmp.empty())
-        //     //     tmp = _socket.receiveMessage(_toStop);
-        //     // std::cout << "Take " + tmp << std::endl;
-        }
-        // std::cout << "----------------------fin----------------------" << std::endl;
-        this->inventory();
-        usleep(1000);
-    }
-    if (_toStop)
-        std::cout << _clientNum << " dead" << std::endl;
 }
 
 void IA::Player::forkPlayer()
