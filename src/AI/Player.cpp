@@ -49,13 +49,28 @@ void IA::Player::loop()
         while (!_tile.empty() && _tile[0].getResources()[DFOOD].second != 0) {
             this->take("food");
         }
-        if (_tile.empty() && _tile[0].getResources()[DLIMATE].second)
-            this->take("limate");
+        if (_tile.empty() && _tile[0].getResources()[DLINEMATE].second != 0)
+            this->take("linemate");
         // std::cout << "----------------------fin----------------------" << std::endl;
         this->inventory();
-        if (this->_inventory[DLIMATE].second == 0) {
+        if (this->_inventory[DLINEMATE].second == 0) {
             this->look();
-            if (!_tile.empty() || _tile[1].getResources()[DLIMATE].second == 0)
+            if (!_tile.empty() || (_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
+                this->move("Forward");
+            else if (_tile[2].getResources()[DLINEMATE].second != 0)
+                this->move("Forward");
+            else if (_tile[1].getResources()[DLINEMATE].second != 0) {
+                this->move("Forward");
+                this->move("Right");
+                this->move("Forward");
+            }
+            else if (_tile[3].getResources()[DLINEMATE].second != 0) {
+                this->move("Forward");
+                this->move("Left");
+                this->move("Forward");
+            }
+        } else {
+            std::cout << "incantation" << std::endl;
         }
 
         usleep(1000);
