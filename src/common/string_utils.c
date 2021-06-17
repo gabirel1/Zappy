@@ -9,12 +9,12 @@
 
 char *my_strcat(char *s1, char *s2)
 {
-    char *ret = my_malloc(((s1) ? strlen(s1) : 0) + strlen(s1) + 1);
+    char *ret = my_malloc(strlen(s1) + strlen(s2) + 1);
 
-    memset(ret, 0, ((s1) ? strlen(s1) : 0) + strlen(s1) + 1);
-    if (s1)
-        strcpy(ret, s1);
-    strcpy(ret, s2);
+    memset(ret, 0, strlen(s1) + strlen(s2) + 1);
+    strcpy(ret, s1);
+    strcpy(ret + strlen(s1), s2);
+    printf("STRCAT (%s + %s) = %s\n", s1, s2, ret);
     return ret;
 }
 
