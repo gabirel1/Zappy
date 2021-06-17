@@ -22,7 +22,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     initInventory();
     broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // usleep(100000);
-    broadcast("team");
+    // broadcast("team");
     loop();
 }
 
@@ -41,7 +41,9 @@ void IA::Player::loop()
             break;
         }
         if (!tmp.empty()) {
-            treatMessageBroadcast(tmp);
+            bool test = treatMessageBroadcast(tmp);
+            if (test)
+                std::cerr << "===============================finished team from loop ===============================" << std::endl;
         }
 
         std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
@@ -116,13 +118,41 @@ void IA::Player::loop()
                     this->take("thystame");
                 }
                 this->incantation();
-                this->forkPlayer();
+                (_level != 1) ? this->forkPlayer() : (void)0;
             }
-
             usleep(1000);
         }
         else
         {
+            this->look();
+            for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+            {
+                std::cout << "food has been taken" << std::endl;
+                this->take("food");
+            }
+            if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
+            {
+                int r = rand() % 3 + 0;
+                if (r == 0)
+                    this->move("Left");
+                else if (r == 1)
+                    this->move("Right");
+                this->move("Forward");
+            }
+            else if (_tile[2].getResources()[FOOD].second != 0)
+                this->move("Forward");
+            else if (_tile[1].getResources()[FOOD].second != 0)
+            {
+                this->move("Forward");
+                this->move("Left");
+                this->move("Forward");
+            }
+            else if (_tile[3].getResources()[FOOD].second != 0)
+            {
+                this->move("Forward");
+                this->move("Right");
+                this->move("Forward");
+            }
             std::cout << _clientNum << " LVL 2" << std::endl;
         }
     }
@@ -260,14 +290,16 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
         tmp = msg.substr(msg.find(',') + 2);
     else
         tmp = msg;
-    // std::cout << "{" << tmp << "}" << std::endl;   
     if (tmp.find("team") != tmp.npos) {
+        // usleep(10000);
         broadcast("mytm:" + _teamName);
+        std::cerr << "##########################endsending " << _teamName << " ##########################" << std::endl;
         return (true);
     }
     else if (tmp.find("mytm") != tmp.npos) {
         if (tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) == _teamName)
             _nbTeam += 1;
+        // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
         return (true);
     }
     std::cout << "message from server: [" << tmp << "]" <<std::endl;
@@ -278,21 +310,23 @@ void IA::Player::broadcast(const std::string &msg)
 {
     if (_toStop)
         return;
+    std::cerr << "-------------------------" <<  msg <<" debut-------------------------" << std::endl;
     _socket.sendMessage("Broadcast " + msg);
     std::string tmp;
-    // std::string tmp(_socket.receiveMessage(_toStop));
 
     waitResponse(tmp);
     if (tmp == "dead\n") {
         _toStop = true;
+        std::cerr << "-------------------------" <<  msg <<" end dead -------------------------" << std::endl;
         return;
     }
     if (tmp == "ko\n") {
         std::cout << "klskldlksdproblem in sending message" << std::endl;
+        std::cerr << "-------------------------" <<  msg <<" end ko-------------------------" << std::endl;
         return;
     }
-
-    std::cout << tmp << std::endl;
+    std::cout << "message sent !!" << std::endl;
+    std::cerr << "-------------------------" <<  msg <<" end -------------------------" << std::endl;
 }
 
 void IA::Player::forkPlayer()
@@ -308,7 +342,7 @@ void IA::Player::forkPlayer()
         std::cout << "can't fork" << std::endl;
         return;
     }
-    std::cout << "forking new trentorian" << std::endl;
+    std::cout << "forking new trentorian " << tmp << std::endl;
     pid = fork();
     if (pid == 0)
     {
@@ -321,11 +355,25 @@ void IA::Player::forkPlayer()
     }
 }
 
+void IA::Player::getOtherInput(std::string &tmp)
+{
+    int nb = 0;
+
+    for (std::size_t idx = tmp.find('\n'); idx != tmp.npos; idx = tmp.find('\n', idx + 1), ++nb);
+    if (nb > 1 && tmp.find("message") == 0)
+        tmp = tmp.substr(tmp.find('\n') + 1);
+    else if (nb > 1 && tmp.find("message") != 0)
+        tmp = tmp.substr(0, tmp.find('\n'));
+    else
+        tmp.clear();  
+}
+
 void IA::Player::waitResponse(std::string &tmp)
 {
+    std::string other;
+    bool test = false;
     tmp = _socket.receiveMessage(_toStop);
     while (1) {
-        // std::cout << "receive = "<< tmp << std::endl;
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n") {
@@ -334,10 +382,17 @@ void IA::Player::waitResponse(std::string &tmp)
             return;
         }
         if (!tmp.empty()) {
-            if (!treatMessageBroadcast(tmp))
+            if (!(test = treatMessageBroadcast(tmp)))
                 break;
-            tmp = tmp.substr(tmp.find('\n') + 1);
-            continue;
+            else {
+                std::cerr << "===============================finished team from waitResponse" << _clientNum << " ===============================" << std::endl;
+                getOtherInput(tmp);
+            }
+        }
+        if (test) {
+            std::cerr << "tmp = " << tmp << std::endl;
+            if (!tmp.empty())
+                return;
         }
         tmp = _socket.receiveMessage(_toStop);
         usleep(100000);

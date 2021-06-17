@@ -46,6 +46,7 @@ class IA::Player {
         void setObject(const std::string &);
         bool treatMessageBroadcast(const std::string &);
         void waitResponse(std::string &);
+        void getOtherInput(std::string &);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);
