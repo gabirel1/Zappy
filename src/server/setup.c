@@ -105,5 +105,6 @@ int create_server(server_info_t *server_info, game_info_t *game)
     server.server_address.sin_family = AF_INET;
     server.server_address.sin_addr.s_addr = inet_addr("0.0.0.0");
     server.server_address.sin_port = htons(server_info->port);
+    *server_container() = &server;
     return (setup_server(server, server_info, game));
 }

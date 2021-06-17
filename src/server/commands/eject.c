@@ -60,7 +60,7 @@ client_t *client)
     }
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true) {
-            FD_TMP_ISSET ? pex(tmp->fd, player->player_number, server) : 0;
+            pex(tmp->fd, player->player_number, server);
         }
     }
     dprintf(client->fd, "ok\n");

@@ -7,26 +7,44 @@
 
 #include "server/server.h"
 
-void player_death(player_t *player)
+void player_death_next(int player_number, server_t *server)
 {
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            pdi(tmp->fd, player_number, server);
+        }
+    }
+}
+
+void player_death(player_t *player, server_t *server)
+{
+    team_t *team = NULL;
+    int player_number = 0;
+
     if (player->inventory[FOOD] == 0)
         player->hp -= 1;
     else
         player->inventory[FOOD] -= 1;
-    if (player->hp == 0) {
-        for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-            if (strcmp(tmp->uuid, player->uuid) == 0) {
-                dprintf(tmp->fd, "dead\n");
-                delete_player(player);
-                delete_client(tmp);
-            }
+    if (player->hp != 0)
+        return;
+    player_number = player->player_number;
+    team = get_team_by_uuid(player->team_uuid);
+    (team != NULL) ? team->client_max += 1 : 0;
+    player_death_next(player_number, server);
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (strcmp(tmp->uuid, player->uuid) == 0) {
+            dprintf(tmp->fd, "dead\n");
+            // delete_player(player);
+            // delete_client(tmp);
         }
     }
 }
 
 void update_player_cooldown(player_t *tmp, game_board_t *board, \
-struct timeval end, double secs)
+struct timeval end, server_t *server)
 {
+    double secs = 0;
+
     if (tmp->cooldown == 0) {
         gettimeofday(&(tmp->clock), NULL);
         (tmp->on_cd != NULL) ? tmp->on_cd(tmp) : 0;
@@ -41,16 +59,15 @@ struct timeval end, double secs)
     secs = (double)(end.tv_usec - tmp->life_clock.tv_usec) / 1000000 + \
     (double)(end.tv_sec - tmp->life_clock.tv_sec);
     if (secs > 126 / board->freq && tmp->is_egg == false) {
-        player_death(tmp);
+        player_death(tmp, server);
         gettimeofday(&(tmp->life_clock), NULL);
     }
 }
 
-void update_cooldown(game_board_t *board)
+void update_cooldown(game_board_t *board, server_t *server)
 {
-    double secs = 0;
     struct timeval end;
 
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next)
-        update_player_cooldown(tmp, board, end, secs);
+        update_player_cooldown(tmp, board, end, server);
 }

@@ -25,6 +25,6 @@ game_board_t *game)
         if (res == ERROR)
             stop_client(i, server, &res);
     }
-    update_cooldown(game);
+    update_cooldown(game, server);
     return SUCCESS;
 }
