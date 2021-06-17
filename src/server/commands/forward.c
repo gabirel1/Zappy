@@ -64,6 +64,11 @@ game_board_t *g_board, client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            ppo_second(tmp->fd, player, server);
+        }
+    }
     dprintf(client->fd, "ok\n");
     return SUCCESS;
 }

@@ -23,3 +23,12 @@ client_t *client)
     player->posx, player->posy, player->orientation);
     return SUCCESS;
 }
+
+int ppo_second(int fd, player_t *player, server_t *server)
+{
+    if (!FD_ISSET(fd, &server->write_fd_set))
+        return ERROR;
+    dprintf(fd, "ppo %d %d %d %d\n", player->player_number, \
+    player->posx, player->posy, player->orientation);
+    return SUCCESS;
+}
