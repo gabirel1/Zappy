@@ -33,7 +33,7 @@ IA::Player::~Player()
 void IA::Player::loop()
 {
     std::string tmp;
-    for (int i = 0; !_toStop; i++) {
+    for (int i = 0; _toStop != true; i++) {
         tmp = _socket.receiveMessage(_toStop);
         if (tmp == "dead\n" || _toStop) {
             std::cout << _clientNum << " dead" << std::endl;
@@ -325,18 +325,19 @@ void IA::Player::waitResponse(std::string &tmp)
 {
     tmp = _socket.receiveMessage(_toStop);
     while (1) {
-        // std::cout << tmp << std::endl;
-        if (!tmp.empty()) {
-            if (!treatMessageBroadcast(tmp))
-                break;
-            tmp = tmp.substr(tmp.find('\n') + 1);
-        }
+        // std::cout << "receive = "<< tmp << std::endl;
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n") {
             _toStop = true;
             tmp = "dead\n";
             return;
+        }
+        if (!tmp.empty()) {
+            if (!treatMessageBroadcast(tmp))
+                break;
+            tmp = tmp.substr(tmp.find('\n') + 1);
+            continue;
         }
         tmp = _socket.receiveMessage(_toStop);
         usleep(100000);
