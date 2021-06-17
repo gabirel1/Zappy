@@ -21,7 +21,6 @@ char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
                 ret = my_strcat(ret, " ");
             }
         }
-        printf("PKPPDKE %s\n", ret);
         if (i < length - 1)
             ret = my_strcat(ret, ",");
     }

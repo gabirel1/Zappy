@@ -122,6 +122,8 @@ char *look(game_board_t *game, player_t *player)
     if (player->orientation == WEST)
         tiles = look_west(game, player);
     ret = look_tiles(tiles, length, ret, ressources);
+    if (ret[strlen(ret) - 1] != ' ')
+        ret = my_strcat(ret, " ");
     ret = my_strcat(ret, "]");
     player->cooldown = 7;
     return ret;
