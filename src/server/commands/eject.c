@@ -59,8 +59,9 @@ client_t *client)
         return ERROR;
     }
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true)
-            pex(tmp->fd, player->player_number, server);
+        if (tmp->is_graphic == true) {
+            FD_TMP_ISSET ? pex(tmp->fd, player->player_number, server) : 0;
+        }
     }
     dprintf(client->fd, "ok\n");
     return SUCCESS;

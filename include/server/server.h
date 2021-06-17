@@ -116,6 +116,7 @@ typedef struct func_s
 
 #define TILE_CONTENT g_board->map[y_index][x_index]
 #define TILE_CONTENT_R g_board->map[y_index][x_index].resources
+#define FD_TMP_ISSET (FD_ISSET(tmp->fd, &server->write_fd_set))
 
 char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);
@@ -219,6 +220,7 @@ int sst(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
 char **ressources_container(void);
+int get_resources_number_by_name(char *name);
 int forward(game_board_t *game, player_t *player);
 int left(game_board_t *game, player_t *player);
 int right(game_board_t *game UNSD, player_t *player);

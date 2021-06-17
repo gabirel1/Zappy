@@ -32,6 +32,7 @@ int f_take(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client)
 {
     player_t *player = NULL;
+    int resource_id = 0;
 
     if (!FD_ISSET(client->fd, &server->write_fd_set))
         return ERROR;
@@ -40,6 +41,14 @@ client_t *client)
     request[0] == NULL || take(g_board, player, request[0]) == ERROR) {
         dprintf(client->fd, "ko\n");
         return ERROR;
+    }
+    if ((resource_id = get_resources_number_by_name(request[0])) == ERROR)
+        return ERROR;
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            FD_TMP_ISSET ? pgt(tmp->fd, player->player_number, \
+            resource_id, server) : 0;
+        }
     }
     dprintf(client->fd, "ok\n");
     return SUCCESS;
