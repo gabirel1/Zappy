@@ -191,12 +191,12 @@ server_t *server);
 int pdi(int fd, int player_number, server_t *server);
 int pex(int fd, int player_number, server_t *server);
 int pbc(int fd, int player_number, char *message, server_t *server);
-int enw(int fd, int egg_number, int player_number, server_t *server); //
-int eht(int fd, int egg_number, server_t *server); //
+int enw(int fd, int egg_number, int player_number, server_t *server);
+int eht(int fd, int egg_number, server_t *server);
 int ebo(int fd, int egg_number, server_t *server); //
 int edi(int fd, int egg_number, server_t *server); //
 int pic(int fd, int first_player, int *player_numbers, server_t *server); //
-int pie(int fd, int pos[2], int result, server_t *server); //
+int pie(int fd, int pos[2], int result, server_t *server);
 int sbp(int fd, server_t *server); //
 int suc(int fd, server_t *server);
 int ppo_second(int fd, player_t *player, server_t *server);
