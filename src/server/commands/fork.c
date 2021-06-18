@@ -13,7 +13,7 @@ void hatch(player_t *player, server_t *server)
     player->on_cd = NULL;
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true)
-            eht(tmp->fd, player->player_number, server);
+            edi(tmp->fd, player->player_number, server);
     }
 }
 
@@ -29,9 +29,12 @@ int fork_player(game_board_t *game UNSD, player_t *player, server_t *server)
     player->cooldown = 42;
     add_player(new_player);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true)
+        if (tmp->is_graphic == true) {
             enw(tmp->fd, new_player->player_number, \
             player->player_number, server);
+            eht(tmp->fd, new_player->player_number, \
+            server);
+        }
     }
     return SUCCESS;
 }
