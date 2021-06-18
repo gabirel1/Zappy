@@ -14,7 +14,6 @@ char *my_strcat(char *s1, char *s2)
     memset(ret, 0, strlen(s1) + strlen(s2) + 1);
     strcpy(ret, s1);
     strcpy(ret + strlen(s1), s2);
-    printf("STRCAT (%s + %s) = %s\n", s1, s2, ret);
     return ret;
 }
 

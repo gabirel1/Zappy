@@ -182,8 +182,9 @@ void IA::Player::loop()
     //         std::cout << _clientNum << " LVL 2" << std::endl;
     //     }
     // }
-    if (_toStop)
-        std::cout << _clientNum << " dead" << std::endl;
+        if (_toStop)
+            std::cout << _clientNum << " dead" << std::endl;
+        }
     }
 }
 
