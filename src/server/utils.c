@@ -19,8 +19,10 @@ char *read_from_fd(int fd, fd_set *fd_set)
     stream = fdopen(dup(fd), "r");
     n = getline(&buff, &len, stream);
     fclose(stream);
-    if (n < 0)
+    if (n < 0) {
+        free(buff);
         return NULL;
+    }
     buff[n - 1] = 0;
     return buff;
 }

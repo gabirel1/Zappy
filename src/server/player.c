@@ -27,6 +27,7 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     player->player_number = nb++;
     player->level = 1;
     player->is_egg = false;
+    player->is_egg_used = false;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = (rand() % 4) + 1;
     player->cooldown = 0;

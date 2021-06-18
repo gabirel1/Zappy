@@ -49,6 +49,7 @@ game_board_t *game, int i)
             delete_client_from_list(get_client_by_socket(i));
             return ERROR;
         }
+        free(buff);
     }
     return SUCCESS;
 }

@@ -101,6 +101,7 @@ typedef struct player_s
     int cooldown;
     int hp;
     bool is_egg;
+    bool is_egg_used;
     struct timeval clock;
     struct timeval life_clock;
     void (*on_cd)(struct player_s *, server_t *);
@@ -146,6 +147,7 @@ bool add_player(player_t *next);
 bool delete_player(player_t *player);
 player_t *init_player(char *team_uuid, int posx, int posy);
 player_t *get_player_by_number(int player_id);
+player_t *get_free_egg_player(char *team_uuid);
 
 team_t **team_container(void);
 team_t *get_team_by_uuid(char *uuid);

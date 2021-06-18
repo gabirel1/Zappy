@@ -41,3 +41,15 @@ int *get_player_numbers(int to_skip)
     }
     return to_ret;
 }
+
+player_t *get_free_egg_player(char *team_uuid)
+{
+    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+        if (strcmp(team_uuid, tmp->team_uuid) == 0 && tmp->is_egg == true && \
+        tmp->is_egg_used == false) {
+            tmp->is_egg_used = true;
+            return tmp;
+        }
+    }
+    return NULL;
+}

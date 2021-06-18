@@ -10,7 +10,9 @@
 static void make_link_client_to_new_player(client_t *client, \
 char *team_uuid, game_board_t *game)
 {
-    player_t *new_player = init_player(team_uuid, rand() % \
+    player_t *new_player = NULL;
+    
+    new_player = init_player(team_uuid, rand() % \
     game->width, rand() % game->height);
 
     if (add_player(new_player) == false) {
@@ -45,7 +47,7 @@ client_t *client, server_t *server)
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
 client_t *client)
 {
-    char **tab = str_to_word_array(my_strdup(buff), " \n");
+    char **tab = str_to_word_array(buff, " \n");
     bool passed = false;
     int res = 0;
 

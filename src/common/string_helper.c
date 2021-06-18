@@ -47,7 +47,7 @@ char **str_to_word_array(char *str, char *delim)
     if (tab == NULL)
         return NULL;
     while (ptr != NULL) {
-        tab[index] = strdup(ptr);
+        tab[index] = my_strdup(ptr);
         ptr = strtok(NULL, delim);
         index++;
     }
