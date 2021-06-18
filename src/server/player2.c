@@ -53,3 +53,15 @@ player_t *get_free_egg_player(char *team_uuid)
     }
     return NULL;
 }
+
+// player_t *get_free_player(char *team_uuid)
+// {
+//     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
+//         for (client_t *c_tmp = client_container(); c_tmp; c_tmp = c_tmp->next) {
+//             if (strcmp(c_tmp->uuid, tmp->uuid) == 0)
+//                 continue;
+//             if 
+//         }
+//         if (strcmp())
+//     }
+// }
