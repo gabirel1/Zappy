@@ -7,6 +7,15 @@
 
 #include "server/server.h"
 
+char *add_inventory(char *ret, char *ressources, int nb)
+{
+    for (int i = 0; i < nb; i += 1) {
+        ret = my_strcat(ret, ressources);
+        ret = my_strcat(ret, " ");
+    }
+    return ret;
+}
+
 char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
 {
     for (int i = 0; i < length; i += 1) {
@@ -16,10 +25,8 @@ char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
             }
         }
         for (int j = 0; j <= THYSTAME; j += 1) {
-            if (tiles[i].resources[j] > 0) {
-                ret = my_strcat(ret, ressources[j]);
-                ret = my_strcat(ret, " ");
-            }
+            if (tiles[i].resources[j] > 0)
+                ret = add_inventory(ret, ressources[j], tiles[i].resources[j]);
         }
         if (i < length - 1)
             ret = my_strcat(ret, ",");

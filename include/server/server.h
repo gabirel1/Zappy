@@ -103,7 +103,7 @@ typedef struct player_s
     bool is_egg;
     struct timeval clock;
     struct timeval life_clock;
-    void (*on_cd)(struct player_s *);
+    void (*on_cd)(struct player_s *, server_t *);
     struct player_s *next;
 } player_t;
 
@@ -114,6 +114,11 @@ typedef struct func_s
     int (*fun)(char **, server_t *, game_board_t *, client_t *);
 } func_t;
 
+
+
+#define CALL_MOV if (strcmp(tmp->uuid, to_move->uuid) == 0) \
+            dprintf(tmp->fd, "movement: %d\n", to_move->posy * \
+            game->width + to_move->posx);
 #define TILE_CONTENT g_board->map[y_index][x_index]
 #define TILE_CONTENT_R g_board->map[y_index][x_index].resources
 
@@ -177,6 +182,7 @@ client_t *client, server_t *server);
 
 void my_sighandler(UNSD int signal);
 int my_handler(int nb, bool change);
+int *get_player_numbers(int to_skip);
 
 int game_loop(struct timeval *start, game_board_t *game);
 void update_cooldown(game_board_t *board, server_t *server);
@@ -193,12 +199,13 @@ int pex(int fd, int player_number, server_t *server);
 int pbc(int fd, int player_number, char *message, server_t *server);
 int enw(int fd, int egg_number, int player_number, server_t *server);
 int eht(int fd, int egg_number, server_t *server);
-int ebo(int fd, int egg_number, server_t *server);
-int edi(int fd, int egg_number, server_t *server);
+int ebo(int fd, int egg_number, server_t *server); //
+int edi(int fd, int egg_number, server_t *server); //
 int pic(int fd, int first_player, int *player_numbers, server_t *server);
 int pie(int fd, int pos[2], int result, server_t *server);
-int sbp(int fd, server_t *server);
+int sbp(int fd, server_t *server); //
 int suc(int fd, server_t *server);
+int ppo_second(int fd, player_t *player, server_t *server);
 
 int msz(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
@@ -228,7 +235,7 @@ char *look(game_board_t *game, player_t *player);
 char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources);
 char *inventory(game_board_t *game UNSD, player_t *player);
 int eject(game_board_t *game, player_t *player);
-int fork_player(game_board_t *game, player_t *player);
+int fork_player(game_board_t *game UNSD, player_t *player, server_t *server);
 int take(game_board_t *game, player_t *player, char *object);
 int set(game_board_t *game, player_t *player, char *object);
 int incantation(game_board_t *game UNSD, player_t *player);
@@ -257,6 +264,8 @@ int f_connect_nbr(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 int f_broadcast_text(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
+int f_incantation(char *request[], server_t *server, game_board_t *g_board, \
+client_t *client);
 
 static const func_t func_tab[] = {
     {"msz", &msz},
@@ -279,7 +288,7 @@ static const func_t func_tab[] = {
     {"Eject", &f_eject},
     {"Take", &f_take},
     {"Set", &f_set},
-    // {"Incantation", &incantation},
+    {"Incantation", &f_incantation},
     {NULL, NULL}
 };
 

@@ -56,6 +56,7 @@ class IA::Player {
         void levelSeven(void);
         void levelHeigt(void);
         void clearTile(void);
+        void getOtherInput(std::string &);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);
