@@ -17,6 +17,7 @@ class IA::Player {
         ~Player();
 
     private:
+        int state = 0;
         std::vector<std::pair<std::string, std::string>> _request;
         int _nbTeam;
         bool _toStop;
@@ -46,6 +47,15 @@ class IA::Player {
         void setObject(const std::string &);
         bool treatMessageBroadcast(const std::string &);
         void waitResponse(std::string &);
+        void levelOne(void);
+        void levelTwo(void);
+        void levelTree(void);
+        void levelFour(void);
+        void levelFive(void);
+        void levelSix(void);
+        void levelSeven(void);
+        void levelHeigt(void);
+        void clearTile(void);
 };
 
 // std::ostream &operator<<(std::ostream &, const IA::resources &);
