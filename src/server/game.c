@@ -17,8 +17,11 @@ int *generate_resources(int width, int height)
     int *resources = my_malloc(sizeof(int) * (THYSTAME + 1));
     float densities[] = {0.5, 0.3, 0.15, 0.1, 0.1, 0.08, 0.05};
 
-    for (int i = 0; i < THYSTAME + 1; i += 1)
+    for (int i = 0; i < THYSTAME + 1; i += 1) {
         resources[i] = width * height * densities[i];
+        if (resources[i] == 0)
+            resources[i] = 1;
+    }
     return resources;
 }
 
@@ -28,7 +31,8 @@ void update_resources(game_board_t *board, int *resources)
         for (int j = 0; j < resources[i]; j += 1) {
             int x = rand() % board->width;
             int y = rand() % board->height;
-            board->map[y][x].resources[i] += 1;
+            if (board->map[y][x].resources[i] == 0)
+                board->map[y][x].resources[i] += 1;
         }
     }
 }
@@ -57,13 +61,13 @@ int game_loop(struct timeval *start, game_board_t *game)
 {
     struct timeval end;
     double secs = 0;
-    // int *ressources = generate_resources(game->width, game->height);
 
     gettimeofday(&end, NULL);
     secs = (double)(end.tv_usec - start->tv_usec) / 1000000 + \
     (double)(end.tv_sec - start->tv_sec);
     if (secs > 20 / game->freq) {
-        // update_resources(game, ressources);
+        printf("j\'update\n");
+        update_resources(game, generate_resources(game->width, game->height));
         gettimeofday(start, NULL);
         return SUCCESS;
     }
