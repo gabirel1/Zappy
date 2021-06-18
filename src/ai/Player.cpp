@@ -18,9 +18,9 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
-    std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
+    // std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
-    broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
+    // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // usleep(100000);
     // broadcast("team");
     loop();
@@ -72,116 +72,116 @@ void IA::Player::loop()
                 std::cerr << "===============================finished team from loop ===============================" << std::endl;
         }
 
-        std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
-        if (_level == 1) {
-            this->look();
-            for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
-            {
-                std::cout << "food has been taken" << std::endl;
-                this->take("food");
-            }
-            if (_tile[0].getResources()[DLINEMATE].second != 0)
-                this->take("linemate");
-            this->inventory();
-            if (this->_inventory[DLINEMATE].second == 0)
-            {
-                this->look();
-                if ((_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
-                {
-                    if (i % 4 == 0)
-                        this->move("Left");
-                    if (i % 6 == 0)
-                        this->move("Right");
-                    this->move("Forward");
-                }
-                else if (_tile[2].getResources()[DLINEMATE].second != 0)
-                    this->move("Forward");
-                else if (_tile[1].getResources()[DLINEMATE].second != 0)
-                {
-                    this->move("Forward");
-                    this->move("Left");
-                    this->move("Forward");
-                }
-                else if (_tile[3].getResources()[DLINEMATE].second != 0)
-                {
-                    this->move("Forward");
-                    this->move("Right");
-                    this->move("Forward");
-                }
-            }
-            else
-            {
-                setObject("linemate");
-                std::cout << _clientNum << "-----------------incantation--------------------" << std::endl;
-                for (int f = _tile[0].getResources()[DLINEMATE].second - 1; f > 0; f--)
-                {
-                    std::cout << "linemate has been taken" << std::endl;
-                    this->take("linemate");
-                }
-                for (int f = _tile[0].getResources()[DDERAUMERE].second; f > 0; f--)
-                {
-                    std::cout << "deraumere has been taken" << std::endl;
-                    this->take("deraumere");
-                }
-                for (int f = _tile[0].getResources()[DSIBUR].second; f > 0; f--)
-                {
-                    std::cout << "sibur has been taken" << std::endl;
-                    this->take("sibur");
-                }
-                for (int f = _tile[0].getResources()[DMENDIANE].second; f > 0; f--)
-                {
-                    std::cout << "mendiane has been taken" << std::endl;
-                    this->take("mendiane");
-                }
-                for (int f = _tile[0].getResources()[DPHIRAS].second; f > 0; f--)
-                {
-                    std::cout << "phiras has been taken" << std::endl;
-                    this->take("phiras");
-                }
-                for (int f = _tile[0].getResources()[DTHYSTAME].second; f > 0; f--)
-                {
-                    std::cout << "thystame has been taken" << std::endl;
-                    this->take("thystame");
-                }
-                this->incantation();
-                (_level != 1) ? this->forkPlayer() : (void)0;
-            }
-            usleep(1000);
-        }
-        else
-        {
-            this->look();
-            for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
-            {
-                std::cout << "food has been taken" << std::endl;
-                this->take("food");
-            }
-            if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
-            {
-                int r = rand() % 3 + 0;
-                if (r == 0)
-                    this->move("Left");
-                else if (r == 1)
-                    this->move("Right");
-                this->move("Forward");
-            }
-            else if (_tile[2].getResources()[FOOD].second != 0)
-                this->move("Forward");
-            else if (_tile[1].getResources()[FOOD].second != 0)
-            {
-                this->move("Forward");
-                this->move("Left");
-                this->move("Forward");
-            }
-            else if (_tile[3].getResources()[FOOD].second != 0)
-            {
-                this->move("Forward");
-                this->move("Right");
-                this->move("Forward");
-            }
-            std::cout << _clientNum << " LVL 2" << std::endl;
-        }
-    }
+    //     std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
+    //     if (_level == 1) {
+    //         this->look();
+    //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+    //         {
+    //             std::cout << "food has been taken" << std::endl;
+    //             this->take("food");
+    //         }
+    //         if (_tile[0].getResources()[DLINEMATE].second != 0)
+    //             this->take("linemate");
+    //         this->inventory();
+    //         if (this->_inventory[DLINEMATE].second == 0)
+    //         {
+    //             this->look();
+    //             if ((_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
+    //             {
+    //                 if (i % 4 == 0)
+    //                     this->move("Left");
+    //                 if (i % 6 == 0)
+    //                     this->move("Right");
+    //                 this->move("Forward");
+    //             }
+    //             else if (_tile[2].getResources()[DLINEMATE].second != 0)
+    //                 this->move("Forward");
+    //             else if (_tile[1].getResources()[DLINEMATE].second != 0)
+    //             {
+    //                 this->move("Forward");
+    //                 this->move("Left");
+    //                 this->move("Forward");
+    //             }
+    //             else if (_tile[3].getResources()[DLINEMATE].second != 0)
+    //             {
+    //                 this->move("Forward");
+    //                 this->move("Right");
+    //                 this->move("Forward");
+    //             }
+    //         }
+    //         else
+    //         {
+    //             setObject("linemate");
+    //             std::cout << _clientNum << "-----------------incantation--------------------" << std::endl;
+    //             for (int f = _tile[0].getResources()[DLINEMATE].second - 1; f > 0; f--)
+    //             {
+    //                 std::cout << "linemate has been taken" << std::endl;
+    //                 this->take("linemate");
+    //             }
+    //             for (int f = _tile[0].getResources()[DDERAUMERE].second; f > 0; f--)
+    //             {
+    //                 std::cout << "deraumere has been taken" << std::endl;
+    //                 this->take("deraumere");
+    //             }
+    //             for (int f = _tile[0].getResources()[DSIBUR].second; f > 0; f--)
+    //             {
+    //                 std::cout << "sibur has been taken" << std::endl;
+    //                 this->take("sibur");
+    //             }
+    //             for (int f = _tile[0].getResources()[DMENDIANE].second; f > 0; f--)
+    //             {
+    //                 std::cout << "mendiane has been taken" << std::endl;
+    //                 this->take("mendiane");
+    //             }
+    //             for (int f = _tile[0].getResources()[DPHIRAS].second; f > 0; f--)
+    //             {
+    //                 std::cout << "phiras has been taken" << std::endl;
+    //                 this->take("phiras");
+    //             }
+    //             for (int f = _tile[0].getResources()[DTHYSTAME].second; f > 0; f--)
+    //             {
+    //                 std::cout << "thystame has been taken" << std::endl;
+    //                 this->take("thystame");
+    //             }
+    //             this->incantation();
+    //             (_level != 1) ? this->forkPlayer() : (void)0;
+    //         }
+    //         usleep(1000);
+    //     }
+    //     else
+    //     {
+    //         this->look();
+    //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+    //         {
+    //             std::cout << "food has been taken" << std::endl;
+    //             this->take("food");
+    //         }
+    //         if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
+    //         {
+    //             int r = rand() % 3 + 0;
+    //             if (r == 0)
+    //                 this->move("Left");
+    //             else if (r == 1)
+    //                 this->move("Right");
+    //             this->move("Forward");
+    //         }
+    //         else if (_tile[2].getResources()[FOOD].second != 0)
+    //             this->move("Forward");
+    //         else if (_tile[1].getResources()[FOOD].second != 0)
+    //         {
+    //             this->move("Forward");
+    //             this->move("Left");
+    //             this->move("Forward");
+    //         }
+    //         else if (_tile[3].getResources()[FOOD].second != 0)
+    //         {
+    //             this->move("Forward");
+    //             this->move("Right");
+    //             this->move("Forward");
+    //         }
+    //         std::cout << _clientNum << " LVL 2" << std::endl;
+    //     }
+    // }
     if (_toStop)
         std::cout << _clientNum << " dead" << std::endl;
     }
