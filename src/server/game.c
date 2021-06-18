@@ -14,9 +14,11 @@ tile_t create_tile(int posx, int posy)
 
 int *generate_resources(int width, int height)
 {
-    int *resources = my_malloc(sizeof(int) * (THYSTAME + 1));
-    float densities[] = {0.5, 0.3, 0.15, 0.1, 0.1, 0.08, 0.05};
+    static int *resources = NULL;
+    static float densities[] = {0.5, 0.3, 0.15, 0.1, 0.1, 0.08, 0.05};
 
+    if (!resources)
+        resources = my_malloc(sizeof(int) * (THYSTAME + 1));
     for (int i = 0; i < THYSTAME + 1; i += 1) {
         resources[i] = width * height * densities[i];
         if (resources[i] == 0)
@@ -66,7 +68,6 @@ int game_loop(struct timeval *start, game_board_t *game)
     secs = (double)(end.tv_usec - start->tv_usec) / 1000000 + \
     (double)(end.tv_sec - start->tv_sec);
     if (secs > 20 / game->freq) {
-        printf("j\'update\n");
         update_resources(game, generate_resources(game->width, game->height));
         gettimeofday(start, NULL);
         return SUCCESS;
