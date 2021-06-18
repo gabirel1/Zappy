@@ -14,6 +14,7 @@ char *inventory(game_board_t *game UNSD, player_t *player)
 
     for (int i = 0; i <= THYSTAME; i += 1) {
         ret = my_strcat(ret, ressources[i]);
+        ret = my_strcat(ret, " ");
         ret = my_strcat(ret, my_itoa(player->inventory[i]));
         if (i != THYSTAME)
             ret = my_strcat(ret, ",");
