@@ -8,16 +8,25 @@
 #include "server/server.h"
 
 static void make_link_client_to_new_player(client_t *client, \
-char *team_uuid, game_board_t *game)
+char *team_uuid, game_board_t *game, server_t *server)
 {
     player_t *new_player = NULL;
-    
-    new_player = init_player(team_uuid, rand() % \
-    game->width, rand() % game->height);
 
-    if (add_player(new_player) == false) {
-        printf("error while creating player\n");
-        return;
+    new_player = get_free_egg_player(team_uuid);
+    if (new_player != NULL) {
+        for (client_t *tmp = *client_container(); tmp; tmp = tmp->next)
+            (tmp->is_graphic == true) ? \
+            ebo(tmp->fd, new_player->player_number, server) : 0;
+    }
+    if (new_player == NULL)
+        new_player = get_free_player(team_uuid);
+    if (new_player == NULL) {
+        new_player = init_player(team_uuid, rand() % \
+        game->width, rand() % game->height);
+        if (add_player(new_player) == false) {
+            printf("error while creating player\n");
+            return;
+        }
     }
     strcpy(client->uuid, new_player->uuid);
     client->is_ia = true;
@@ -38,7 +47,7 @@ client_t *client, server_t *server)
             printf("team full\n");
             return TEAM_FULL;
         }
-        make_link_client_to_new_player(client, team->team_uuid, game);
+        make_link_client_to_new_player(client, team->team_uuid, game, server);
         return ia_send_first_batch(game, client, server);
     }
     return ERROR;
