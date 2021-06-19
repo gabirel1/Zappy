@@ -39,3 +39,9 @@ char *my_itoa(int i)
     *convert_digit(s, i) = '\0';
     return (dest);
 }
+
+void free_tab(char **tab)
+{
+    for (int i = 0; tab[i]; i += 1)
+        free(tab[i]);
+}

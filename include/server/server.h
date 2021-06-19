@@ -130,6 +130,7 @@ bool is_full_digits(char *string);
 void free_tab(char *tab[]);
 char *my_itoa(int i);
 char *my_strcat(char *s1, char *s2);
+void free_tab(char **tab);
 
 tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
 game_board_t *game_board);
