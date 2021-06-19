@@ -17,7 +17,7 @@ typedef struct team_s
     char *team_name;
     int client_max;
     struct team_s *next;
-} team_t;
+} __attribute__((packed)) team_t;
 
 typedef struct game_info_s
 {
@@ -25,7 +25,7 @@ typedef struct game_info_s
     int width;
     int height;
     int freq;
-} game_info_t;
+} __attribute__((packed)) game_info_t;
 
 typedef enum item
 {
@@ -36,14 +36,14 @@ typedef enum item
     MENDIANE,
     PHIRAS,
     THYSTAME
-} item_t;
+} __attribute__((packed)) item_t;
 
 typedef struct tile_s
 {
     int resources[THYSTAME + 1];
     int posx;
     int posy;
-} tile_t;
+} __attribute__((packed)) tile_t;
 
 typedef struct game_board_s
 {
@@ -52,14 +52,14 @@ typedef struct game_board_s
     int height;
     int freq;
     tile_t **map;
-} game_board_t;
+} __attribute__((packed)) game_board_t;
 
 typedef struct server_info_s
 {
     int port;
     int max_client;
     int nb_teams;
-} server_info_t;
+} __attribute__((packed)) server_info_t;
 
 typedef struct server_s
 {
@@ -69,7 +69,7 @@ typedef struct server_s
     fd_set active_fd_set;
     struct sockaddr_in server_address;
     struct timeval timeout;
-} server_t;
+} __attribute__((packed)) server_t;
 
 typedef struct client_s
 {
@@ -78,7 +78,7 @@ typedef struct client_s
     bool is_ia;
     char uuid[37];
     struct client_s *next;
-} client_t;
+} __attribute__((packed)) client_t;
 
 typedef enum orientation
 {
@@ -106,14 +106,14 @@ typedef struct player_s
     struct timeval life_clock;
     void (*on_cd)(struct player_s *, server_t *);
     struct player_s *next;
-} player_t;
+} __attribute__((packed)) player_t;
 
 
 typedef struct func_s
 {
     char *cmd;
     int (*fun)(char **, server_t *, game_board_t *, client_t *);
-} func_t;
+} __attribute__((packed)) func_t;
 
 
 
