@@ -43,11 +43,11 @@ char **str_to_word_array(char *str, char *delim)
     char *ptr = strtok(str, delim);
     int index = 0;
 
-    tab = my_malloc(sizeof(char *) * (nb_of_args + 2));
+    tab = malloc(sizeof(char *) * (nb_of_args + 2));
     if (tab == NULL)
         return NULL;
     while (ptr != NULL) {
-        tab[index] = my_strdup(ptr);
+        tab[index] = strdup(ptr);
         ptr = strtok(NULL, delim);
         index++;
     }

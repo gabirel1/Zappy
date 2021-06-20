@@ -42,11 +42,11 @@ client_t *client, server_t *server)
         return graphic_send_first_batch(game, client, server);
     }
     if (team != NULL) {
-        team->client_max -= 1;
         if (team->client_max <= 0) {
             printf("team full\n");
             return TEAM_FULL;
         }
+        team->client_max -= 1;
         make_link_client_to_new_player(client, team->team_uuid, game, server);
         return ia_send_first_batch(game, client, server);
     }
@@ -66,12 +66,12 @@ client_t *client)
             func_tab[i].fun(&tab[1], server, game, client);
         }
     }
+    free_tab(tab);
     if (passed)
         return SUCCESS;
     res = check_first_client_send(buff, game, client, server);
     if (res == ERROR && client->is_ia == true)
-        if (FD_ISSET(client->fd, &server->write_fd_set))
-            dprintf(client->fd, "ko\n");
+        (FD_IS_SET) ? dprintf(client->fd, "ko\n") : 0;
     if (res == ERROR && client->is_graphic == true)
         suc(client->fd, server);
     if (res == TEAM_FULL)
