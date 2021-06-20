@@ -69,7 +69,7 @@ typedef struct server_s
     fd_set active_fd_set;
     struct sockaddr_in server_address;
     struct timeval timeout;
-} __attribute__((packed)) server_t;
+} server_t;
 
 typedef struct client_s
 {
@@ -106,7 +106,7 @@ typedef struct player_s
     struct timeval life_clock;
     void (*on_cd)(struct player_s *, server_t *);
     struct player_s *next;
-} __attribute__((packed)) player_t;
+} player_t;
 
 
 typedef struct func_s
@@ -130,7 +130,6 @@ bool is_full_digits(char *string);
 void free_tab(char *tab[]);
 char *my_itoa(int i);
 char *my_strcat(char *s1, char *s2);
-void free_tab(char **tab);
 
 tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
 game_board_t *game_board);

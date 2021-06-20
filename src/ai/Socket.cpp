@@ -51,6 +51,7 @@ std::string Socket::receiveMessage(bool &ts)
     }
     if (FD_ISSET(cpy, &read_fds)) {
         read(cpy, buffer, 1048);
+        close(cpy);
         if (std::string(buffer) == "dead\n")
             ts = true;
         // std::cout << buffer << std::endl;
