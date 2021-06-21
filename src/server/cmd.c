@@ -36,17 +36,19 @@ int check_first_client_send(char *buff, game_board_t *game, \
 client_t *client, server_t *server)
 {
     team_t *team = get_team_by_name(buff);
+    player_t *egg = NULL;
 
     if (strcmp(buff, "GRAPHIC") == 0) {
         client->is_graphic = true;
         return graphic_send_first_batch(game, client, server);
     }
     if (team != NULL) {
-        if (team->client_max <= 0) {
+        egg = get_free_egg_player(team->team_uuid);
+        if (team->client_max <= 0 && egg == NULL) {
             printf("team full\n");
             return TEAM_FULL;
         }
-        team->client_max -= 1;
+        (egg != NULL) ? team->client_max -= 1 : 0;
         make_link_client_to_new_player(client, team->team_uuid, game, server);
         return ia_send_first_batch(game, client, server);
     }
