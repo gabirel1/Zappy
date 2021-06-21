@@ -33,7 +33,7 @@ void update_resources(game_board_t *board, int *resources)
         for (int j = 0; j < resources[i]; j += 1) {
             int x = rand() % board->width;
             int y = rand() % board->height;
-            if (board->map[y][x].resources[i] == 0)
+            if (board->map[y][x].resources[i] == 0 && !is_player_on_tile(x, y))
                 board->map[y][x].resources[i] += 1;
         }
     }

@@ -134,6 +134,7 @@ char *my_strcat(char *s1, char *s2);
 tile_t *get_tile_by_pos(tile_t **tiles, int pos_x, int pos_y, \
 game_board_t *game_board);
 game_board_t *create_game_board(game_info_t *game_info);
+bool is_player_on_tile(int x, int y);
 
 client_t **client_container(void);
 bool add_client(client_t *next);
