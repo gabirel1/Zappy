@@ -320,17 +320,21 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
         tmp = msg.substr(msg.find(',') + 2);
     else
         tmp = msg;
-    if (tmp.find("team") != tmp.npos) {
-        // usleep(10000);
-        broadcast("mytm:" + _teamName);
-        std::cerr << "##########################endsending " << _teamName << " ##########################" << std::endl;
-        return (true);
-    }
-    else if (tmp.find("mytm") != tmp.npos)
-    {
-        if (tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) == _teamName)
-            _nbTeam += 1;
-        // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
+    // if (tmp.find("team") != tmp.npos) {
+    //     // usleep(10000);
+    //     broadcast("mytm:" + _teamName);
+    //     std::cerr << "##########################endsending " << _teamName << " ##########################" << std::endl;
+    //     return (true);
+    // }
+    // else if (tmp.find("mytm") != tmp.npos)
+    // {
+    //     if (tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) == _teamName)
+    //         _nbTeam += 1;
+    //     // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
+    //     return (true);
+    // } else 
+    if (tmp.find("here") != tmp.npos) {
+        _nbTeam += 1;
         return (true);
     }
     std::cout << "message from server: [" << tmp << "]" << std::endl;

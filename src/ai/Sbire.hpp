@@ -11,7 +11,7 @@
 #include "Player.hpp"
 #include "IA.hpp"
 
-class Sbire {
+class IA::Sbire {
     public:
         Sbire(int port, const std::string &addr, const std::string &teamName);
         ~Sbire();
@@ -23,7 +23,11 @@ class Sbire {
         std::string _addr;
         int _port;
         int _clientNum;
+        int _level;
         void loop();
+        void broadcast(const std::string &msg);
+        bool _toStop;
+        std::pair<float, float> _position;
 };
 
 #endif /* !SBIRE_HPP_ */

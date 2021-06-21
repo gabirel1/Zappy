@@ -43,6 +43,7 @@ namespace IA {
 
     class Tile;
     class Player;
+    class Sbire;
     resources getResourcesFromString(const std::string &);
 }
 std::ostream &operator<<(std::ostream &, const IA::resources &);
