@@ -29,7 +29,7 @@ int *generate_resources(int width, int height)
 
 void update_resources(game_board_t *board, int *resources)
 {
-    for (int i = 0; i < THYSTAME; i += 1) {
+    for (int i = 0; i < THYSTAME + 1; i += 1) {
         for (int j = 0; j < resources[i]; j += 1) {
             int x = rand() % board->width;
             int y = rand() % board->height;
