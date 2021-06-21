@@ -61,7 +61,8 @@ player_t *get_free_player(char *team_uuid)
     for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         to_return = true;
         for (client_t *c_tmp = *client_container(); c_tmp; c_tmp = c_tmp->next) {
-            if (strcmp(tmp->team_uuid, team_uuid) != 0 || strcmp(c_tmp->uuid, tmp->uuid) == 0)
+            if (strcmp(tmp->team_uuid, team_uuid) != 0 || \
+            strcmp(c_tmp->uuid, tmp->uuid) == 0)
                 to_return = false;
         }
         if (to_return == true)
