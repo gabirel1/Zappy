@@ -62,3 +62,27 @@ void IA::Sbire::broadcast(const std::string &msg)
         _socket.receiveMessage(_toStop);
     }
 }
+
+void IA::Sbire::take(const std::string &res)
+{
+    std::string tmp;
+
+    if (_toStop)
+        return;
+    _socket.sendMessage("Take " + res);
+    tmp = _socket.receiveMessage(_toStop);
+    while (1) {
+        if (tmp == "ko\n") {
+            std::cout <<  _clientNum << " didn't take " << res << std::endl;
+            return;
+        } if (tmp == "dead\n") {
+            _toStop = true;
+            return;
+        } if (tmp == "ok\n") {
+            std::cout << _clientNum << " took " << res << std::endl;
+            return;
+        }
+        usleep(100000);
+        _socket.receiveMessage(_toStop);
+    }
+}
