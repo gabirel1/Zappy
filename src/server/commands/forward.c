@@ -28,7 +28,7 @@ int forward_next(game_board_t *game, player_t *player)
     return SUCCESS;
 }
 
-int forward(game_board_t *game, player_t *player)
+void forward(player_t *player, server_t *server, game_board_t *game)
 {
     switch (player->orientation) {
         case NORTH :
@@ -45,30 +45,29 @@ int forward(game_board_t *game, player_t *player)
             break;
         default :
             if (forward_next(game, player) == ERROR)
-                return ERROR;
+                return;
     }
-    player->cooldown = 7;
-    return SUCCESS;
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            ppo_second(tmp->fd, player, server);
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "ok\n");
+    }
 }
 
 int move_forward(UNSD char *request[], server_t *server, \
-game_board_t *g_board, client_t *client)
+game_board_t *g_board UNSD, client_t *client)
 {
     player_t *player = NULL;
 
     if (!FD_ISSET(client->fd, &server->write_fd_set))
         return ERROR;
     player = get_player_by_uuid(client->uuid);
-    if (player == NULL || player->cooldown != 0 || \
-    forward(g_board, player) == ERROR) {
+    if (player == NULL) {
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true) {
-            ppo_second(tmp->fd, player, server);
-        }
-    }
-    dprintf(client->fd, "ok\n");
+    player->on_cd = &forward;
+    player->cooldown = 7;
     return SUCCESS;
 }

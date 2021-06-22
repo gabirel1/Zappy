@@ -104,7 +104,8 @@ typedef struct player_s
     bool is_egg_used;
     struct timeval clock;
     struct timeval life_clock;
-    void (*on_cd)(struct player_s *, server_t *);
+    void (*on_cd)(struct player_s *, server_t *, game_board_t *);
+    char **params;
     struct player_s *next;
 } player_t;
 
@@ -232,16 +233,20 @@ client_t *client);
 
 char **ressources_container(void);
 int get_resources_number_by_name(char *name);
-int forward(game_board_t *game, player_t *player);
-int left(game_board_t *game, player_t *player);
-int right(game_board_t *game UNSD, player_t *player);
+void forward(player_t *player, server_t *server, game_board_t *game);
+void left(player_t *player, server_t *server, \
+game_board_t *g_board UNSD);
+void right(player_t *player, server_t *server, \
+game_board_t *g_board UNSD);
 char *look(game_board_t *game, player_t *player);
 char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources);
 char *inventory(game_board_t *game UNSD, player_t *player);
-int eject(game_board_t *game, player_t *player);
+void eject(player_t *player, server_t *server, game_board_t *game);
 int fork_player(game_board_t *game UNSD, player_t *player, server_t *server);
-int take(game_board_t *game, player_t *player, char *object);
-int set(game_board_t *game, player_t *player, char *object);
+void take(player_t *player, server_t *server UNSD, \
+game_board_t *game UNSD);
+void set(player_t *player, server_t *server UNSD, \
+game_board_t *game UNSD);
 int incantation(game_board_t *game UNSD, player_t *player);
 int broadcast_text(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);

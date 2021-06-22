@@ -20,7 +20,7 @@ int get_players_tile(player_t *player)
     return number;
 }
 
-void level_up(player_t *player, server_t *server)
+void level_up(player_t *player, server_t *server, game_board_t *g UNSD)
 {
     if (player->level < 8)
         player->level += 1;
@@ -30,6 +30,14 @@ void level_up(player_t *player, server_t *server)
             pie(tmp->fd, (int [2]) {player->posx, player->posy}, \
             player->level, server);
         }
+    }
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            pic(tmp->fd, player->player_number, \
+            get_player_numbers(player->player_number), server);
+        }
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "%d\n", player->level);
     }
 }
 
@@ -86,12 +94,5 @@ client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true) {
-            pic(tmp->fd, player->player_number, \
-            get_player_numbers(player->player_number), server);
-        }
-    }
-    dprintf(client->fd, "%d\n", player->level);
     return SUCCESS;
 }
