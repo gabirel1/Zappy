@@ -614,7 +614,8 @@ void IA::Player::levelOne(void)
         }
         return;
     }
-    if (state == 2) {
+    if (state == 2)
+    {
         return;
     }
 
@@ -628,7 +629,8 @@ void IA::Player::levelOne(void)
                 state = 1;
             }
         }
-        for (int i = 0; i < 125; i++) {
+        for (int i = 0; i < 125; i++)
+        {
             this->setObject("food");
         }
 
@@ -829,21 +831,35 @@ void IA::Player::levelOne(void)
                         }
                         else
                         {
-                            if (_tile[2].getResources()[DFOOD].second != 0)
+                            if (this->_inventory[DLINEMATE].second > 170)
                             {
-                                this->move("Forward");
-                            }
-                            else if (_tile[1].getResources()[DFOOD].second != 0)
-                            {
-                                this->move("Forward");
-                                this->move("Left");
-                                this->move("Forward");
-                            }
-                            else if (_tile[3].getResources()[DFOOD].second != 0)
-                            {
-                                this->move("Forward");
-                                this->move("Right");
-                                this->move("Forward");
+                                if (_tile[2].getResources()[DFOOD].second != 0)
+                                {
+                                    this->move("Forward");
+                                }
+                                else if (_tile[1].getResources()[DFOOD].second != 0)
+                                {
+                                    this->move("Forward");
+                                    this->move("Left");
+                                    this->move("Forward");
+                                }
+                                else if (_tile[3].getResources()[DFOOD].second != 0)
+                                {
+                                    this->move("Forward");
+                                    this->move("Right");
+                                    this->move("Forward");
+                                }
+                                else
+                                {
+                                    int r = rand() % 2 + 0;
+                                    std::cout << "-------------" << r << std::endl;
+
+                                    if (r == 0)
+                                        this->move("Left");
+                                    else if (r == 1)
+                                        this->move("Right");
+                                    this->move("Forward");
+                                }
                             }
                             else
                             {
