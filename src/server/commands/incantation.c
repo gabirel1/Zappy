@@ -82,7 +82,7 @@ client_t *client)
         return ERROR;
     player = get_player_by_uuid(client->uuid);
     if (player == NULL || player->cooldown != 0 || \
-    left(g_board, player) == ERROR) {
+    incantation(g_board, player) == ERROR) {
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
