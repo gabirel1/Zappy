@@ -41,3 +41,16 @@ void stop_client(int fd, server_t *server, int *res)
     *res = 0;
     printf("one connection closed\n");
 }
+
+char **copy_tab(char **dest, char **src)
+{
+    int len = get_tab_len(src);
+    int index = 0;
+
+    dest = malloc(sizeof(char *) * (len + 1));
+    for (; index < len; index++)
+        dest[index] = strdup(src[index]);
+    dest[index] = NULL;
+
+    return dest;
+}

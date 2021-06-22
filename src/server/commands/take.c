@@ -33,8 +33,10 @@ game_board_t *game UNSD)
         if (tmp->is_graphic == true)
             pgt(tmp->fd, player->player_number, resource_id, server);
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, (ok == true) ? "ok" : "ko");
+            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
     }
+    free_tab(player->params);
+    player->params = NULL;
 }
 
 int f_take(char *request[], server_t *server, game_board_t *g_board UNSD, \
@@ -54,6 +56,6 @@ client_t *client)
         return ERROR;
     player->cooldown = 7;
     player->on_cd = &take;
-    player->params = request;
+    player->params = copy_tab(player->params, request);
     return SUCCESS;
 }

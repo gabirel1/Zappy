@@ -17,6 +17,8 @@ game_board_t *g_board UNSD)
         else if (tmp->is_graphic == true)
             pbc(tmp->fd, player->player_number, player->params[0], server);
     }
+    free_tab(player->params);
+    player->params = NULL;
 }
 
 int f_broadcast_text(char *request[], server_t *server, game_board_t *g_board UNSD, \
@@ -31,7 +33,7 @@ client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    player->params = request;
+    player->params = copy_tab(player->params, request);
     player->on_cd = &broadcast_message;
     player->cooldown = 7;
     return SUCCESS;
