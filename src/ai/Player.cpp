@@ -20,6 +20,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     // std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
+    state =     0;
     // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // usleep(100000);
     // broadcast("team");
@@ -66,124 +67,125 @@ void IA::Player::loop()
         else
         {
             std::cout << "lvl pb" << std::endl;
-        if (!tmp.empty()) {
-            bool test = treatMessageBroadcast(tmp);
-            if (test)
-                std::cerr << "===============================finished team from loop ===============================" << std::endl;
-        }
+            if (!tmp.empty())
+            {
+                bool test = treatMessageBroadcast(tmp);
+                if (test)
+                    std::cerr << "===============================finished team from loop ===============================" << std::endl;
+            }
 
-    //     std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
-    //     if (_level == 1) {
-    //         this->look();
-    //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
-    //         {
-    //             std::cout << "food has been taken" << std::endl;
-    //             this->take("food");
-    //         }
-    //         if (_tile[0].getResources()[DLINEMATE].second != 0)
-    //             this->take("linemate");
-    //         this->inventory();
-    //         if (this->_inventory[DLINEMATE].second == 0)
-    //         {
-    //             this->look();
-    //             if ((_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
-    //             {
-    //                 if (i % 4 == 0)
-    //                     this->move("Left");
-    //                 if (i % 6 == 0)
-    //                     this->move("Right");
-    //                 this->move("Forward");
-    //             }
-    //             else if (_tile[2].getResources()[DLINEMATE].second != 0)
-    //                 this->move("Forward");
-    //             else if (_tile[1].getResources()[DLINEMATE].second != 0)
-    //             {
-    //                 this->move("Forward");
-    //                 this->move("Left");
-    //                 this->move("Forward");
-    //             }
-    //             else if (_tile[3].getResources()[DLINEMATE].second != 0)
-    //             {
-    //                 this->move("Forward");
-    //                 this->move("Right");
-    //                 this->move("Forward");
-    //             }
-    //         }
-    //         else
-    //         {
-    //             setObject("linemate");
-    //             std::cout << _clientNum << "-----------------incantation--------------------" << std::endl;
-    //             for (int f = _tile[0].getResources()[DLINEMATE].second - 1; f > 0; f--)
-    //             {
-    //                 std::cout << "linemate has been taken" << std::endl;
-    //                 this->take("linemate");
-    //             }
-    //             for (int f = _tile[0].getResources()[DDERAUMERE].second; f > 0; f--)
-    //             {
-    //                 std::cout << "deraumere has been taken" << std::endl;
-    //                 this->take("deraumere");
-    //             }
-    //             for (int f = _tile[0].getResources()[DSIBUR].second; f > 0; f--)
-    //             {
-    //                 std::cout << "sibur has been taken" << std::endl;
-    //                 this->take("sibur");
-    //             }
-    //             for (int f = _tile[0].getResources()[DMENDIANE].second; f > 0; f--)
-    //             {
-    //                 std::cout << "mendiane has been taken" << std::endl;
-    //                 this->take("mendiane");
-    //             }
-    //             for (int f = _tile[0].getResources()[DPHIRAS].second; f > 0; f--)
-    //             {
-    //                 std::cout << "phiras has been taken" << std::endl;
-    //                 this->take("phiras");
-    //             }
-    //             for (int f = _tile[0].getResources()[DTHYSTAME].second; f > 0; f--)
-    //             {
-    //                 std::cout << "thystame has been taken" << std::endl;
-    //                 this->take("thystame");
-    //             }
-    //             this->incantation();
-    //             (_level != 1) ? this->forkPlayer() : (void)0;
-    //         }
-    //         usleep(1000);
-    //     }
-    //     else
-    //     {
-    //         this->look();
-    //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
-    //         {
-    //             std::cout << "food has been taken" << std::endl;
-    //             this->take("food");
-    //         }
-    //         if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
-    //         {
-    //             int r = rand() % 3 + 0;
-    //             if (r == 0)
-    //                 this->move("Left");
-    //             else if (r == 1)
-    //                 this->move("Right");
-    //             this->move("Forward");
-    //         }
-    //         else if (_tile[2].getResources()[FOOD].second != 0)
-    //             this->move("Forward");
-    //         else if (_tile[1].getResources()[FOOD].second != 0)
-    //         {
-    //             this->move("Forward");
-    //             this->move("Left");
-    //             this->move("Forward");
-    //         }
-    //         else if (_tile[3].getResources()[FOOD].second != 0)
-    //         {
-    //             this->move("Forward");
-    //             this->move("Right");
-    //             this->move("Forward");
-    //         }
-    //         std::cout << _clientNum << " LVL 2" << std::endl;
-    //     }
-    // }
-        if (_toStop)
-            std::cout << _clientNum << " dead" << std::endl;
+            //     std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
+            //     if (_level == 1) {
+            //         this->look();
+            //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+            //         {
+            //             std::cout << "food has been taken" << std::endl;
+            //             this->take("food");
+            //         }
+            //         if (_tile[0].getResources()[DLINEMATE].second != 0)
+            //             this->take("linemate");
+            //         this->inventory();
+            //         if (this->_inventory[DLINEMATE].second == 0)
+            //         {
+            //             this->look();
+            //             if ((_tile[1].getResources()[DLINEMATE].second == 0 && _tile[2].getResources()[DLINEMATE].second == 0 && _tile[3].getResources()[DLINEMATE].second == 0))
+            //             {
+            //                 if (i % 4 == 0)
+            //                     this->move("Left");
+            //                 if (i % 6 == 0)
+            //                     this->move("Right");
+            //                 this->move("Forward");
+            //             }
+            //             else if (_tile[2].getResources()[DLINEMATE].second != 0)
+            //                 this->move("Forward");
+            //             else if (_tile[1].getResources()[DLINEMATE].second != 0)
+            //             {
+            //                 this->move("Forward");
+            //                 this->move("Left");
+            //                 this->move("Forward");
+            //             }
+            //             else if (_tile[3].getResources()[DLINEMATE].second != 0)
+            //             {
+            //                 this->move("Forward");
+            //                 this->move("Right");
+            //                 this->move("Forward");
+            //             }
+            //         }
+            //         else
+            //         {
+            //             setObject("linemate");
+            //             std::cout << _clientNum << "-----------------incantation--------------------" << std::endl;
+            //             for (int f = _tile[0].getResources()[DLINEMATE].second - 1; f > 0; f--)
+            //             {
+            //                 std::cout << "linemate has been taken" << std::endl;
+            //                 this->take("linemate");
+            //             }
+            //             for (int f = _tile[0].getResources()[DDERAUMERE].second; f > 0; f--)
+            //             {
+            //                 std::cout << "deraumere has been taken" << std::endl;
+            //                 this->take("deraumere");
+            //             }
+            //             for (int f = _tile[0].getResources()[DSIBUR].second; f > 0; f--)
+            //             {
+            //                 std::cout << "sibur has been taken" << std::endl;
+            //                 this->take("sibur");
+            //             }
+            //             for (int f = _tile[0].getResources()[DMENDIANE].second; f > 0; f--)
+            //             {
+            //                 std::cout << "mendiane has been taken" << std::endl;
+            //                 this->take("mendiane");
+            //             }
+            //             for (int f = _tile[0].getResources()[DPHIRAS].second; f > 0; f--)
+            //             {
+            //                 std::cout << "phiras has been taken" << std::endl;
+            //                 this->take("phiras");
+            //             }
+            //             for (int f = _tile[0].getResources()[DTHYSTAME].second; f > 0; f--)
+            //             {
+            //                 std::cout << "thystame has been taken" << std::endl;
+            //                 this->take("thystame");
+            //             }
+            //             this->incantation();
+            //             (_level != 1) ? this->forkPlayer() : (void)0;
+            //         }
+            //         usleep(1000);
+            //     }
+            //     else
+            //     {
+            //         this->look();
+            //         for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+            //         {
+            //             std::cout << "food has been taken" << std::endl;
+            //             this->take("food");
+            //         }
+            //         if ((_tile[1].getResources()[FOOD].second == 0 && _tile[2].getResources()[FOOD].second == 0 && _tile[3].getResources()[FOOD].second == 0))
+            //         {
+            //             int r = rand() % 3 + 0;
+            //             if (r == 0)
+            //                 this->move("Left");
+            //             else if (r == 1)
+            //                 this->move("Right");
+            //             this->move("Forward");
+            //         }
+            //         else if (_tile[2].getResources()[FOOD].second != 0)
+            //             this->move("Forward");
+            //         else if (_tile[1].getResources()[FOOD].second != 0)
+            //         {
+            //             this->move("Forward");
+            //             this->move("Left");
+            //             this->move("Forward");
+            //         }
+            //         else if (_tile[3].getResources()[FOOD].second != 0)
+            //         {
+            //             this->move("Forward");
+            //             this->move("Right");
+            //             this->move("Forward");
+            //         }
+            //         std::cout << _clientNum << " LVL 2" << std::endl;
+            //     }
+            // }
+            if (_toStop)
+                std::cout << _clientNum << " dead" << std::endl;
         }
     }
 }
@@ -332,8 +334,9 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
     //         _nbTeam += 1;
     //     // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
     //     return (true);
-    // } else 
-    if (tmp.find("here") != tmp.npos) {
+    // } else
+    if (tmp.find("here") != tmp.npos)
+    {
         _nbTeam += 1;
         return (true);
     }
@@ -345,7 +348,7 @@ void IA::Player::broadcast(const std::string &msg)
 {
     if (_toStop)
         return;
-    std::cerr << "-------------------------" <<  msg <<" debut-------------------------" << std::endl;
+    std::cerr << "-------------------------" << msg << " debut-------------------------" << std::endl;
     _socket.sendMessage("Broadcast " + msg);
     std::string tmp;
 
@@ -353,16 +356,17 @@ void IA::Player::broadcast(const std::string &msg)
     if (tmp == "dead\n")
     {
         _toStop = true;
-        std::cerr << "-------------------------" <<  msg <<" end dead -------------------------" << std::endl;
+        std::cerr << "-------------------------" << msg << " end dead -------------------------" << std::endl;
         return;
     }
-    if (tmp == "ko\n") {
+    if (tmp == "ko\n")
+    {
         std::cout << "klskldlksdproblem in sending message" << std::endl;
-        std::cerr << "-------------------------" <<  msg <<" end ko-------------------------" << std::endl;
+        std::cerr << "-------------------------" << msg << " end ko-------------------------" << std::endl;
         return;
     }
     std::cout << "message sent !!" << std::endl;
-    std::cerr << "-------------------------" <<  msg <<" end -------------------------" << std::endl;
+    std::cerr << "-------------------------" << msg << " end -------------------------" << std::endl;
 }
 
 void IA::Player::forkPlayer()
@@ -397,13 +401,14 @@ void IA::Player::getOtherInput(std::string &tmp)
 {
     int nb = 0;
 
-    for (std::size_t idx = tmp.find('\n'); idx != tmp.npos; idx = tmp.find('\n', idx + 1), ++nb);
+    for (std::size_t idx = tmp.find('\n'); idx != tmp.npos; idx = tmp.find('\n', idx + 1), ++nb)
+        ;
     if (nb > 1 && tmp.find("message") == 0)
         tmp = tmp.substr(tmp.find('\n') + 1);
     else if (nb > 1 && tmp.find("message") != 0)
         tmp = tmp.substr(0, tmp.find('\n'));
     else
-        tmp.clear();  
+        tmp.clear();
 }
 
 void IA::Player::waitResponse(std::string &tmp)
@@ -411,7 +416,8 @@ void IA::Player::waitResponse(std::string &tmp)
     std::string other;
     bool test = false;
     tmp = _socket.receiveMessage(_toStop);
-    while (1) {
+    while (1)
+    {
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n")
@@ -420,15 +426,18 @@ void IA::Player::waitResponse(std::string &tmp)
             tmp = "dead\n";
             return;
         }
-        if (!tmp.empty()) {
+        if (!tmp.empty())
+        {
             if (!(test = treatMessageBroadcast(tmp)))
                 break;
-            else {
+            else
+            {
                 std::cerr << "===============================finished team from waitResponse" << _clientNum << " ===============================" << std::endl;
                 getOtherInput(tmp);
             }
         }
-        if (test) {
+        if (test)
+        {
             std::cerr << "tmp = " << tmp << std::endl;
             if (!tmp.empty())
                 return;
@@ -472,7 +481,7 @@ void IA::Player::parseInventory(std::size_t idx, std::string tmp, std::size_t la
     if (tmp[last] == ' ')
         last += 1;
     else if (tmp[last] == ',')
-        last += 2;
+        last += 1;
     std::size_t idxTest = tmp.find(' ', last + 1);
     if (idx != tmp.npos)
         addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, idx - idxTest).c_str()));
@@ -593,31 +602,36 @@ void IA::Player::levelOne(void)
 
     this->look();
     this->inventory();
-    if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9 && this->_inventory[DFOOD].second >= 160) {
-        for (int i = 0; i < 6; i++) {
-            this->forkPlayer();
+    if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9 && this->_inventory[DFOOD].second >= 160)
+    {
+        if (state == 0)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                this->forkPlayer();
+                state = 1;
+            }
         }
-        for (int i = 0; i <= 125; i++) {
-            this->setObject("food");
-        }
+        // for (int i = 0; i <= 125; i++) {
+        //     this->setObject("food");
+        // }
 
         return;
     }
     if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9)
     {
         std::cout << "all value has been aquire" << std::endl;
-        if (state == 1) {
-            return;
-        }
-        if (state == 2) {
+
+        if (_nbTeam == 6)
+        {
             this->clearTile();
             this->setObject("linemate");
-            //brodcast l'evolve
+            this->broadcast("evolve");
             this->incantation();
         }
-        if (this->_inventory[DFOOD].second >= 150) {
-            state = 1;
-            // for(;std::cout<<"Start of fork"<<std::endl;);
+        if (state == 1)
+        {
+            return;
         }
 
         this->look();
@@ -900,13 +914,12 @@ void IA::Player::levelTree(void)
     this->setObject("linemate");
 
     this->setObject("sibur");
-    
+
     this->setObject("pĥiras");
     this->setObject("pĥiras");
-    
+
     // brodcast incantation
     this->incantation();
-
 }
 
 void IA::Player::levelFour(void)
@@ -919,10 +932,9 @@ void IA::Player::levelFour(void)
 
     this->setObject("sibur");
     this->setObject("sibur");
-    
-    
+
     this->setObject("pĥiras");
-    
+
     // brodcast incantation
     this->incantation();
 }
@@ -937,12 +949,11 @@ void IA::Player::levelFive(void)
     this->setObject("deraumere");
 
     this->setObject("sibur");
-    
+
     this->setObject("mendiane");
     this->setObject("mendiane");
     this->setObject("mendiane");
 
-    
     // brodcast incantation
     this->incantation();
 }
@@ -959,9 +970,9 @@ void IA::Player::levelSix(void)
     this->setObject("sibur");
     this->setObject("sibur");
     this->setObject("sibur");
-    
+
     this->setObject("pĥiras");
-    
+
     // brodcast incantation
     this->incantation();
 }
@@ -979,7 +990,7 @@ void IA::Player::levelSeven(void)
 
     this->setObject("sibur");
     this->setObject("sibur");
-    
+
     this->setObject("mendiane");
     this->setObject("mendiane");
 
@@ -987,7 +998,7 @@ void IA::Player::levelSeven(void)
     this->setObject("pĥiras");
 
     this->setObject("thystame");
-    
+
     // brodcast incantation
     this->incantation();
 }
