@@ -33,7 +33,7 @@ game_board_t *game UNSD)
         if (tmp->is_graphic == true)
             pgt(tmp->fd, player->player_number, resource_id, server);
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, (ok == true) ? "ok" : "ko");
+            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
     }
 }
 
