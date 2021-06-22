@@ -628,7 +628,7 @@ void IA::Player::levelOne(void)
                 state = 1;
             }
         }
-        for (int i = 0; i <= 125; i++) {
+        for (int i = 0; i < 125; i++) {
             this->setObject("food");
         }
 

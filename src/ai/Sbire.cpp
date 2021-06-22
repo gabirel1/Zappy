@@ -18,9 +18,9 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
-    // for (int i = 0; i < 25; i++) {
-    //     // this->
-    // }
+    for (int i = 0; i < 25; i++) {
+        this->take("food");
+    }
     // recolté 25 food
     broadcast("here " + _teamName);
 }
