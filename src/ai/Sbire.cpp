@@ -9,20 +9,20 @@
 
 IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)  : _socket(port, addr),  _teamName(teamName), _addr(addr), _port(port),  _toStop(false)
 {
-    std::cout << _socket.receiveMessage(_toStop) << std::endl;
+    std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
     _socket.sendMessage(_teamName);
-    std::string tmp = _socket.receiveMessage(_toStop);
+    std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
     if (tmp.empty() || tmp == "ko\n")
         exit(84);
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
+    broadcast("here " + _teamName);
     for (int i = 0; i < 25; i++) {
         this->take("food");
     }
     // recolté 25 food
-    broadcast("here " + _teamName);
 }
 
 IA::Sbire::~Sbire()
@@ -31,7 +31,7 @@ IA::Sbire::~Sbire()
 
 void IA::Sbire::loop() {
     while (!_toStop) {
-        std::string tmp = _socket.receiveMessage(_toStop);
+        std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
         if (tmp == "dead\n" || _toStop) {
             _toStop = false;
             std::cout << "dead" << std::endl;
@@ -49,20 +49,20 @@ void IA::Sbire::broadcast(const std::string &msg)
     if (_toStop)
         return;
     _socket.sendMessage("Broadcast " + msg);
-    tmp = _socket.receiveMessage(_toStop);
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1) {
         if (tmp == "ko\n") {
             std::cout << "problem sending message" << std::endl;
             return;
-        } if (tmp == "dead\n") {
+        } else if (tmp == "dead\n") {
             _toStop = true;
             return;
-        } if (tmp == "ok\n") {
+        } else if (tmp == "ok\n") {
             std::cout << "message sent !!" << std::endl;
             return;
         }
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
         usleep(100000);
-        _socket.receiveMessage(_toStop);
     }
 }
 
@@ -73,19 +73,19 @@ void IA::Sbire::take(const std::string &res)
     if (_toStop)
         return;
     _socket.sendMessage("Take " + res);
-    tmp = _socket.receiveMessage(_toStop);
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1) {
         if (tmp == "ko\n") {
             std::cout <<  _clientNum << " didn't take " << res << std::endl;
             return;
-        } if (tmp == "dead\n") {
+        }else if (tmp == "dead\n") {
             _toStop = true;
             return;
-        } if (tmp == "ok\n") {
+        }else if (tmp == "ok\n") {
             std::cout << _clientNum << " took " << res << std::endl;
             return;
         }
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
         usleep(100000);
-        _socket.receiveMessage(_toStop);
     }
 }

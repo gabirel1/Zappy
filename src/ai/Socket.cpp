@@ -29,10 +29,10 @@ void Socket::sendMessage(const std::string order) const
     usleep(10000);
 }
 
-std::string Socket::receiveMessage(bool &ts)
+std::string Socket::receiveMessage(bool &ts, int clientNum)
 {
     if (ts) {
-        std::cout << "dude you're dead" << std::endl; 
+        std::cout << clientNum << " dude you're dead" << std::endl; 
     }
     int cpy = dup(_fd);
     std::string result;
