@@ -31,6 +31,8 @@ game_board_t *game UNSD)
         if (strcmp(tmp->uuid, player->uuid) == 0)
             dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
     }
+    free_tab(player->params);
+    player->params = NULL;
 }
 
 int f_set(char *request[], server_t *server, game_board_t *g_board UNSD, \
@@ -50,6 +52,6 @@ client_t *client)
         return ERROR;
     player->cooldown = 7;
     player->on_cd = &set;
-    player->params = request;
+    player->params = copy_tab(player->params, request);
     return SUCCESS;
 }

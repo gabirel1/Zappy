@@ -184,10 +184,10 @@ void IA::Player::loop()
             //         std::cout << _clientNum << " LVL 2" << std::endl;
             //     }
             // }
-            if (_toStop)
-                std::cout << _clientNum << " dead" << std::endl;
         }
     }
+    if (_toStop)
+        std::cout << _clientNum << " dead" << std::endl;
 }
 
 void IA::Player::look()
@@ -198,8 +198,10 @@ void IA::Player::look()
     int nbr = 0;
 
     waitResponse(tmp);
-    if (tmp == "dead\n")
+    if (tmp == "dead\n") {
+        std::cout << "dead waitResponse" << std::endl;
         return;
+    }
     if (tmp == "ko\n")
     {
         std::cout << "no look" << std::endl;
@@ -283,8 +285,10 @@ void IA::Player::take(std::string res)
         return;
     _socket.sendMessage("Take " + res);
     waitResponse(tmp);
-    if (tmp == "dead\n")
+    if (tmp == "dead\n") {
+        std::cout << " dead take" << std::endl;
         return;
+    }
     if (tmp == "ko\n")
     {
         std::cout << _clientNum << " didn't take " + res << std::endl;
@@ -304,6 +308,7 @@ void IA::Player::move(std::string dir)
     if (tmp == "dead\n")
     {
         _toStop = true;
+        std::cout << " dead move" << std::endl;
         return;
     }
     if (tmp == "ko\n")
@@ -356,6 +361,7 @@ void IA::Player::broadcast(const std::string &msg)
     if (tmp == "dead\n")
     {
         _toStop = true;
+        std::cout << " dead move" << std::endl;
         std::cerr << "-------------------------" << msg << " end dead -------------------------" << std::endl;
         return;
     }
@@ -435,6 +441,7 @@ void IA::Player::waitResponse(std::string &tmp)
         {
             _toStop = true;
             tmp = "dead\n";
+            std::cout << "dead main" << std::endl;
             return;
         }
         if (!tmp.empty())
@@ -467,8 +474,10 @@ void IA::Player::inventory()
     std::string tmp;
 
     waitResponse(tmp);
-    if (tmp == "dead\n")
+    if (tmp == "dead\n") {
+        std::cout << "inventory dead" << std::endl;
         return;
+    }
     if (tmp == "ko\n" || tmp.empty())
     {
         std::cout << "no inventory" << std::endl;
@@ -515,8 +524,10 @@ void IA::Player::incantation()
     _socket.sendMessage("Incantation");
     tmp = _socket.receiveMessage(_toStop, _clientNum);
     waitResponse(tmp);
-    if (tmp == "dead\n")
+    if (tmp == "dead\n") {
+        std::cout << "dead incantation" << std::endl;
         return;
+    }
     if (tmp == "ko\n")
     {
         std::cout << _clientNum << " didn't lvl up " << std::endl;
@@ -545,8 +556,10 @@ void IA::Player::setObject(const std::string &res)
         return;
     _socket.sendMessage("Set " + res);
     waitResponse(tmp);
-    if (tmp == "dead\n")
+    if (tmp == "dead\n") {
+        std::cout << "dead setObject" << std::endl;
         return;
+    }
     if (tmp == "ko\n")
     {
         std::cout << _clientNum << " didn't took down " + res << std::endl;
