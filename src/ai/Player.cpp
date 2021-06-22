@@ -69,7 +69,7 @@ void IA::Player::loop()
             std::cout << "lvl pb" << std::endl;
             if (!tmp.empty())
             {
-                bool test = treatMessageBroadcast(tmp);
+                treatMessageBroadcast(tmp);
                 // if (test)
                     // std::cerr << "===============================finished team from loop ===============================" << std::endl;
             }
