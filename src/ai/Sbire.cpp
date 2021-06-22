@@ -53,6 +53,7 @@ void IA::Sbire::broadcast(const std::string &msg)
     while (1) {
         if (tmp == "ko\n") {
             std::cout << "problem sending message" << std::endl;
+            return;
         } else if (tmp == "dead\n") {
             _toStop = true;
             return;
@@ -76,6 +77,7 @@ void IA::Sbire::take(const std::string &res)
     while (1) {
         if (tmp == "ko\n") {
             std::cout <<  _clientNum << " didn't take " << res << std::endl;
+            return;
         }else if (tmp == "dead\n") {
             _toStop = true;
             return;

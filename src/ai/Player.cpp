@@ -429,7 +429,7 @@ void IA::Player::waitResponse(std::string &tmp)
         if (toAppend)
             tmp.append(save);
         std::cerr << "++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
-        if (tmp == "ok\n")
+        if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n")
         {
