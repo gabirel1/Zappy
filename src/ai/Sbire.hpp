@@ -26,6 +26,7 @@ class IA::Sbire {
         int _level;
         void loop();
         void broadcast(const std::string &msg);
+        void take(const std::string &msg);  
         bool _toStop;
         std::pair<float, float> _position;
 };
