@@ -24,20 +24,30 @@ char *inventory(game_board_t *game UNSD, player_t *player)
     return ret;
 }
 
-int f_inventory(UNSD char *request[], server_t *server, game_board_t *g_board, \
-client_t *client)
+void send_inventory(player_t *player, server_t *server UNSD, \
+game_board_t *g_board UNSD)
+{
+    char *response = inventory(g_board, player);
+
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "%s\n", response);
+    }
+}
+
+int f_inventory(UNSD char *request[], server_t *server, \
+game_board_t *g_board UNSD, client_t *client)
 {
     player_t *player = NULL;
-    char *response = NULL;
 
     if (!FD_ISSET(client->fd, &server->write_fd_set))
         return ERROR;
     player = get_player_by_uuid(client->uuid);
-    if (player == NULL || player->cooldown != 0) {
+    if (player == NULL) {
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    response = inventory(g_board, player);
-    dprintf(client->fd, "%s\n", response);
+    player->on_cd = &send_inventory;
+    player->cooldown = 1;
     return SUCCESS;
 }

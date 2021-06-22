@@ -7,13 +7,22 @@
 
 #include "server/server.h"
 
-void hatch(player_t *player, server_t *server)
+void hatch(player_t *player, server_t *server, game_board_t *g UNSD)
 {
     player->is_egg = false;
     player->on_cd = NULL;
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true)
             edi(tmp->fd, player->player_number, server);
+    }
+}
+
+void send_ok(player_t *player, server_t *server UNSD, \
+game_board_t *g_board UNSD)
+{
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "ok\n");
     }
 }
 
@@ -27,6 +36,7 @@ int fork_player(game_board_t *game UNSD, player_t *player, server_t *server)
     new_player->cooldown = 600;
     new_player->on_cd = &hatch;
     player->cooldown = 42;
+    player->on_cd = &send_ok;
     add_player(new_player);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true) {
@@ -57,6 +67,5 @@ client_t *client)
             pfk(tmp->fd, player->player_number, server);
         }
     }
-    dprintf(client->fd, "ok\n");
     return SUCCESS;
 }

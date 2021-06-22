@@ -34,20 +34,30 @@ char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
     return ret;
 }
 
-int f_look(UNSD char *request[], server_t *server, game_board_t *g_board, \
+void send_look(player_t *player, server_t *server UNSD, \
+game_board_t *g_board UNSD)
+{
+    char *response = look(g_board, player);
+
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "%s\n", response);
+    }
+}
+
+int f_look(UNSD char *request[], server_t *server, game_board_t *g_board UNSD, \
 client_t *client)
 {
     player_t *player = NULL;
-    char *response = NULL;
 
     if (!FD_ISSET(client->fd, &server->write_fd_set))
         return ERROR;
     player = get_player_by_uuid(client->uuid);
-    if (player == NULL || player->cooldown != 0) {
+    if (player == NULL) {
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    response = look(g_board, player);
-    dprintf(client->fd, "%s\n", response);
+    player->on_cd = &send_look;
+    player->cooldown = 7;
     return SUCCESS;
 }

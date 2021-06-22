@@ -48,7 +48,8 @@ struct timeval end, server_t *server)
 
     if (tmp->cooldown == 0) {
         gettimeofday(&(tmp->clock), NULL);
-        (tmp->on_cd != NULL) ? tmp->on_cd(tmp, server) : 0;
+        (tmp->on_cd != NULL) ? tmp->on_cd(tmp, server, board) : 0;
+        tmp->on_cd = NULL;
     }
     gettimeofday(&end, NULL);
     secs = (double)(end.tv_usec - tmp->clock.tv_usec) / 1000000 + \
