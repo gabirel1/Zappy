@@ -9,9 +9,9 @@
 
 IA::Player::Player(int port, const std::string &addr, const std::string &teamName) : _nbTeam(1), _toStop(false), _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
 {
-    std::cout << _socket.receiveMessage(_toStop) << std::endl;
+    std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
     _socket.sendMessage(_teamName);
-    std::string tmp = _socket.receiveMessage(_toStop);
+    std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
     if (tmp.empty() || tmp == "ko\n")
         exit(84);
     std::size_t idx = tmp.find('\n');
@@ -37,7 +37,7 @@ void IA::Player::loop()
 
     for (int i = 0; _toStop != true; i++)
     {
-        tmp = _socket.receiveMessage(_toStop);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
         if (tmp == "dead\n" || _toStop)
         {
             std::cout << _clientNum << " dead" << std::endl;
@@ -69,9 +69,9 @@ void IA::Player::loop()
             std::cout << "lvl pb" << std::endl;
             if (!tmp.empty())
             {
-                bool test = treatMessageBroadcast(tmp);
-                if (test)
-                    std::cerr << "===============================finished team from loop ===============================" << std::endl;
+                treatMessageBroadcast(tmp);
+                // if (test)
+                    // std::cerr << "===============================finished team from loop ===============================" << std::endl;
             }
 
             //     std::cout << "=======================================" << _clientNum << "there is " << _nbTeam << " in " << _teamName << "=======================================   " << _level << std::endl;
@@ -413,12 +413,23 @@ void IA::Player::getOtherInput(std::string &tmp)
 
 void IA::Player::waitResponse(std::string &tmp)
 {
-    std::string other;
+    std::string save;
     bool test = false;
-    tmp = _socket.receiveMessage(_toStop);
+    bool toAppend = false;
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1)
     {
-        if (tmp == "ok\n" || tmp == "ko\n")
+        if (tmp.find('\n') == tmp.npos) {
+            toAppend = true;
+            save = tmp;
+            usleep(100000);
+            tmp = _socket.receiveMessage(_toStop, _clientNum);
+            continue;
+        }
+        if (toAppend)
+            tmp.append(save);
+        std::cerr << "++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
+        if (tmp == "ok\n")
             break;
         if (tmp == "dead\n")
         {
@@ -432,7 +443,7 @@ void IA::Player::waitResponse(std::string &tmp)
                 break;
             else
             {
-                std::cerr << "===============================finished team from waitResponse" << _clientNum << " ===============================" << std::endl;
+                // std::cerr << "===============================finished team from waitResponse" << _clientNum << " ===============================" << std::endl;
                 getOtherInput(tmp);
             }
         }
@@ -442,8 +453,8 @@ void IA::Player::waitResponse(std::string &tmp)
             if (!tmp.empty())
                 return;
         }
-        tmp = _socket.receiveMessage(_toStop);
         usleep(100000);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
 }
 
@@ -502,7 +513,7 @@ void IA::Player::incantation()
     if (_toStop)
         return;
     _socket.sendMessage("Incantation");
-    tmp = _socket.receiveMessage(_toStop);
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
     waitResponse(tmp);
     if (tmp == "dead\n")
         return;
@@ -623,15 +634,15 @@ void IA::Player::levelOne(void)
     {
         if (state == 0)
         {
+            for (int i = 0; i < 125; i++)
+            {
+                this->setObject("food");
+            }
             for (int i = 0; i < 6; i++)
             {
                 this->forkPlayer();
                 state = 1;
             }
-        }
-        for (int i = 0; i < 125; i++)
-        {
-            this->setObject("food");
         }
 
         return;

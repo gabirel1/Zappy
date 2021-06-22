@@ -34,7 +34,7 @@ class Socket {
         ~Socket();
 
         void sendMessage(const std::string) const;
-        std::string receiveMessage(bool &);
+        std::string receiveMessage(bool &, int);
 
     protected:
     private:
