@@ -10,6 +10,7 @@
 #include "IA.hpp"
 #include "Tile.hpp"
 #include <unordered_map>
+#include "Sbire.hpp"
 
 class IA::Player {
     public:

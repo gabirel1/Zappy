@@ -20,7 +20,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
     // std::cout << "client name = " << _clientNum << " team name = " << _teamName << " X = " << _position.first << " Y =" << _position.second << std::endl;
     initInventory();
-    state =     0;
+    state = 0;
     // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // usleep(100000);
     // broadcast("team");
@@ -387,7 +387,7 @@ void IA::Player::forkPlayer()
     pid = fork();
     if (pid == 0)
     {
-        Player newPlayer(_port, _addr, _teamName);
+        Sbire newPlayer(_port, _addr, _teamName);
         exit(0);
     }
     else if (pid != -1)
@@ -481,7 +481,7 @@ void IA::Player::parseInventory(std::size_t idx, std::string tmp, std::size_t la
     if (tmp[last] == ' ')
         last += 1;
     else if (tmp[last] == ',')
-        last += 1;
+        last += 2;
     std::size_t idxTest = tmp.find(' ', last + 1);
     if (idx != tmp.npos)
         addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, idx - idxTest).c_str()));
@@ -602,6 +602,22 @@ void IA::Player::levelOne(void)
 
     this->look();
     this->inventory();
+    if (state == 1)
+    {
+        if (_nbTeam == 6)
+        {
+            this->clearTile();
+            this->setObject("linemate");
+            this->broadcast("evolve");
+            this->incantation();
+            this->state = 2;
+        }
+        return;
+    }
+    if (state == 2) {
+        return;
+    }
+
     if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9 && this->_inventory[DFOOD].second >= 160)
     {
         if (state == 0)
@@ -612,27 +628,15 @@ void IA::Player::levelOne(void)
                 state = 1;
             }
         }
-        // for (int i = 0; i <= 125; i++) {
-        //     this->setObject("food");
-        // }
+        for (int i = 0; i <= 125; i++) {
+            this->setObject("food");
+        }
 
         return;
     }
     if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9)
     {
         std::cout << "all value has been aquire" << std::endl;
-
-        if (_nbTeam == 6)
-        {
-            this->clearTile();
-            this->setObject("linemate");
-            this->broadcast("evolve");
-            this->incantation();
-        }
-        if (state == 1)
-        {
-            return;
-        }
 
         this->look();
         if (_tile[2].getResources()[DFOOD].second != 0)
@@ -867,7 +871,7 @@ void IA::Player::levelTwo(void)
     this->setObject("linemate");
     this->setObject("deraumere");
     this->setObject("sibur");
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
@@ -918,7 +922,7 @@ void IA::Player::levelTree(void)
     this->setObject("pĥiras");
     this->setObject("pĥiras");
 
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
@@ -935,7 +939,7 @@ void IA::Player::levelFour(void)
 
     this->setObject("pĥiras");
 
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
@@ -954,7 +958,7 @@ void IA::Player::levelFive(void)
     this->setObject("mendiane");
     this->setObject("mendiane");
 
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
@@ -973,7 +977,7 @@ void IA::Player::levelSix(void)
 
     this->setObject("pĥiras");
 
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
@@ -999,7 +1003,7 @@ void IA::Player::levelSeven(void)
 
     this->setObject("thystame");
 
-    // brodcast incantation
+    this->broadcast("evolve");
     this->incantation();
 }
 
