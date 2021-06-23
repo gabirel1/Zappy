@@ -54,13 +54,13 @@ struct timeval end, server_t *server)
     gettimeofday(&end, NULL);
     secs = (double)(end.tv_usec - tmp->clock.tv_usec) / 1000000 + \
     (double)(end.tv_sec - tmp->clock.tv_sec);
-    if (secs > 1 / board->freq) {
+    if (secs > (double) 1 / (double) board->freq) {
         tmp->cooldown -= (tmp->cooldown > 0) ? 1 : 0;
         gettimeofday(&(tmp->clock), NULL);
     }
     secs = (double)(end.tv_usec - tmp->life_clock.tv_usec) / 1000000 + \
     (double)(end.tv_sec - tmp->life_clock.tv_sec);
-    if (secs > 126 / board->freq && tmp->is_egg == false) {
+    if (secs > (double) ((double) 126 / (double) board->freq) && tmp->is_egg == false) {
         player_death(tmp, server);
         gettimeofday(&(tmp->life_clock), NULL);
     }

@@ -9,12 +9,12 @@
 
 void move_player(game_board_t *game, player_t *to_move)
 {
-    if (to_move->orientation == NORTH) {
+    if (to_move->orientation == SOUTH) {
         to_move->posy -= 1;
         if (to_move->posy < 0)
             to_move->posy += game->height;
     }
-    if (to_move->orientation == SOUTH) {
+    if (to_move->orientation == NORTH) {
         to_move->posy += 1;
         to_move->posy %= game->height;
     }
