@@ -30,9 +30,8 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     player->is_egg_used = false;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = (rand() % 4) + 1;
-    player->cooldown = 0;
     player->hp = 10;
-    player->on_cd = NULL;
+    player->inventory[FOOD] = 10;
     gettimeofday(&(player->life_clock), NULL);
     gettimeofday(&(player->clock), NULL);
     uuid_unparse_lower(new_uuid, player->uuid);
