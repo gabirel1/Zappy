@@ -35,6 +35,8 @@ void level_up(player_t *player, server_t *server, game_board_t *g UNSD)
     if (player->level < 8)
         player->level += 1;
     player->on_cd = NULL;
+    for (int i = 0; i <= THYSTAME; i += 1)
+        g->map[player->posy][player->posx].resources[i] = 0;
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true) {
             pie(tmp->fd, (int [2]) {player->posx, player->posy}, \

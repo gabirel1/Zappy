@@ -152,6 +152,7 @@ player_t *init_player(char *team_uuid, int posx, int posy);
 player_t *get_player_by_number(int player_id);
 player_t *get_free_egg_player(char *team_uuid);
 player_t *get_free_player(char *team_uuid);
+int get_number_of_players(void);
 
 team_t **team_container(void);
 team_t *get_team_by_uuid(char *uuid);
