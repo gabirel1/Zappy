@@ -13,7 +13,7 @@ game_board_t *game)
     server->read_fd_set = server->active_fd_set;
     server->write_fd_set = server->active_fd_set;
     if (select(FD_SETSIZE, &server->read_fd_set, &server->write_fd_set, \
-    NULL, &server->timeout) == -1) {
+    NULL, NULL) == -1) {
         fprintf(stderr, "Error while waiting for client\n");
         return ERROR;
     }

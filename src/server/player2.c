@@ -34,7 +34,7 @@ int *get_player_numbers(int to_skip)
     int *to_ret = malloc(sizeof(int) * ((total > 0) ? total : 1));
 
     memset(to_ret, -15, (((total > 0) ? total : 1) * sizeof(int)));
-    for (player_t *tmp; tmp; tmp = tmp->next) {
+    for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
         if (tmp->player_number == to_skip)
             continue;
         to_ret[index++] = tmp->player_number;
