@@ -84,8 +84,8 @@ int setup_server(server_t server, server_info_t *server_info, game_info_t *game)
     }
     FD_ZERO(&server.active_fd_set);
     FD_SET(server.serverfd, &server.active_fd_set);
-    server.timeout.tv_sec = 1;
-    server.timeout.tv_usec = 0;
+    server.timeout.tv_sec = 0;
+    server.timeout.tv_usec = 10;
     return (launch_server(server, server_info, game));
 }
 
@@ -107,6 +107,5 @@ int create_server(server_info_t *server_info, game_info_t *game)
     server.server_address.sin_family = AF_INET;
     server.server_address.sin_addr.s_addr = inet_addr("0.0.0.0");
     server.server_address.sin_port = htons(server_info->port);
-    *server_container() = &server;
     return (setup_server(server, server_info, game));
 }
