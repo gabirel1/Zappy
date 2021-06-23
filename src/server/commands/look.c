@@ -9,7 +9,7 @@
 
 tile_t *look_south(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    tile_t *ret = malloc(sizeof(tile_t) * ((player->level + 1) * \
     (player->level + 1)));
     int posx = 0;
     int posy = 0;
@@ -33,7 +33,7 @@ tile_t *look_south(game_board_t *game, player_t *player)
 
 tile_t *look_north(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    tile_t *ret = malloc(sizeof(tile_t) * ((player->level + 1) * \
     (player->level + 1)));
     int posx = 0;
     int posy = 0;
@@ -58,7 +58,7 @@ tile_t *look_north(game_board_t *game, player_t *player)
 
 tile_t *look_east(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    tile_t *ret = malloc(sizeof(tile_t) * ((player->level + 1) * \
     (player->level + 1)));
     int posx = 0;
     int posy = 0;
@@ -83,12 +83,14 @@ tile_t *look_east(game_board_t *game, player_t *player)
 
 tile_t *look_west(game_board_t *game, player_t *player)
 {
-    tile_t *ret = my_malloc(sizeof(tile_t) * ((player->level + 1) * \
+    tile_t *ret = malloc(sizeof(tile_t) * ((player->level + 1) * \
     (player->level + 1)));
     int posx = 0;
     int posy = 0;
     int index = 0;
 
+    memset(ret, 0, sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1)));
     for (int i = 0; i < player->level + 1; i += 1) {
         for (int j = player->posy + i; j <= player->posy - i; j += 1) {
             posy = j;
@@ -125,5 +127,6 @@ char *look(game_board_t *game, player_t *player)
     if (ret[strlen(ret) - 1] != ' ')
         ret = my_strcat(ret, " ");
     ret = my_strcat(ret, "]");
+    free(tiles);
     return ret;
 }

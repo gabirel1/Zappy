@@ -23,7 +23,7 @@ int pic(int fd, int first_player, int *player_numbers, server_t *server)
     }
     dprintf(fd, "pic %d %d %d %d", player->posx, player->posy, player->level, \
     first_player);
-    for (int index = 0; index < get_number_of_players(); index++) {
+    for (int index = 0; index < get_number_of_players() - 1; index++) {
         dprintf(fd, " %d", player_numbers[index]);
     }
     dprintf(fd, "\n");

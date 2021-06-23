@@ -67,7 +67,7 @@ int game_loop(struct timeval *start, game_board_t *game)
     gettimeofday(&end, NULL);
     secs = (double)(end.tv_usec - start->tv_usec) / 1000000 + \
     (double)(end.tv_sec - start->tv_sec);
-    if (secs > 20 / game->freq) {
+    if (secs > (double) 20 / (double) game->freq) {
         update_resources(game, generate_resources(game->width, game->height));
         gettimeofday(start, NULL);
         return SUCCESS;
