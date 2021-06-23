@@ -143,6 +143,7 @@ bool add_client(client_t *next);
 bool delete_client(client_t *client);
 client_t *get_client_by_socket(int fd);
 void init_new_client(client_t *client);
+void del_user_on_close(client_t *client, server_t *server);
 
 player_t **player_container(void);
 player_t *get_player_by_uuid(char *uuid);
