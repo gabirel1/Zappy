@@ -85,7 +85,8 @@ void update_cooldown(game_board_t *board, server_t *server)
     for (team_t *tmp = *team_container(); tmp; tmp = tmp->next) {
         for (player_t *player = *player_container(); player; \
         player = player->next) {
-            if (strcmp(player->team_uuid, tmp->team_uuid) == 0)
+            if (strcmp(player->team_uuid, tmp->team_uuid) == 0 && \
+            player->level == 8)
                 number += 1;
         }
         if (number == 6)
