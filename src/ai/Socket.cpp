@@ -31,27 +31,26 @@ void Socket::sendMessage(const std::string order) const
 
 std::string Socket::receiveMessage(bool &ts, int clientNum)
 {
-    if (ts) {
+    if (ts)
         std::cout << clientNum << " dude you're dead" << std::endl; 
-    }
-    int cpy = dup(_fd);
+    // int cpy = dup(_fd);
     std::string result;
     char buffer[4096] = {0};
     usleep(10000);
 
     fd_set read_fds;
     FD_ZERO(&read_fds);
-    FD_SET(cpy, &read_fds);
+    FD_SET(_fd, &read_fds);
     struct timeval tv{0, 100};
     // // tv.tv_usec = 10000;
     
-    if (select(cpy + 1, &read_fds, NULL, NULL, &tv) < 0) {
+    if (select(_fd + 1, &read_fds, NULL, NULL, &tv) < 0) {
         perror("select");
         return ("");
     }
-    if (FD_ISSET(cpy, &read_fds)) {
-        read(cpy, buffer, 1048);
-        close(cpy);
+    if (FD_ISSET(_fd, &read_fds)) {
+        read(_fd, buffer, 1048);
+        // close(cpy);
         if (std::string(buffer) == "dead\n")
             ts = true;
         // std::cout << buffer << std::endl;
