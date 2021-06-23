@@ -40,7 +40,7 @@ game_board_t *game, int i)
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {
             fprintf(stderr, "Error while reading from client\n");
-            delete_client_from_list(get_client_by_socket(i));
+            del_user_on_close(get_client_by_socket(i), server);
             return ERROR;
         }
         printf("[%s]\n", buff);
