@@ -66,6 +66,7 @@ game_info_t *game_info)
     server_loop(&server, res, server_in, game) == SUCCESS) {
         game_loop(&start, game);
     }
+    printf("%d\n", my_handler(12, false));
     return SUCCESS;
 }
 

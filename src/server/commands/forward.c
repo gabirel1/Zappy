@@ -31,13 +31,13 @@ int forward_next(game_board_t *game, player_t *player)
 void forward(player_t *player, server_t *server, game_board_t *game)
 {
     switch (player->orientation) {
-        case NORTH :
+        case SOUTH :
             if (player->posy > 0)
                 player->posy -= 1;
             else
                 player->posy = game->height - 1;
             break;
-        case SOUTH :
+        case NORTH :
             if (player->posy < game->height - 1)
                 player->posy += 1;
             else

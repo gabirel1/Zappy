@@ -20,14 +20,6 @@ void hatch(player_t *player, server_t *server, game_board_t *g UNSD)
 void send_ok(player_t *player, server_t *server UNSD, \
 game_board_t *g_board UNSD)
 {
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "ok\n");
-    }
-}
-
-int fork_player(game_board_t *game UNSD, player_t *player, server_t *server)
-{
     player_t *new_player = init_player(player->team_uuid, \
     player->posx, player->posy);
 
@@ -35,17 +27,24 @@ int fork_player(game_board_t *game UNSD, player_t *player, server_t *server)
     new_player->orientation = player->orientation;
     new_player->cooldown = 600;
     new_player->on_cd = &hatch;
-    player->cooldown = 42;
-    player->on_cd = &send_ok;
     add_player(new_player);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, "ok\n");
         if (tmp->is_graphic == true) {
+            pfk(tmp->fd, player->player_number, server);
             enw(tmp->fd, new_player->player_number, \
             player->player_number, server);
             eht(tmp->fd, new_player->player_number, \
             server);
         }
     }
+}
+
+int fork_player(game_board_t *game UNSD, player_t *player, server_t *server UNSD)
+{
+    player->cooldown = 42;
+    player->on_cd = &send_ok;
     return SUCCESS;
 }
 
@@ -61,11 +60,6 @@ client_t *client)
     fork_player(g_board, player, server) == ERROR) {
         dprintf(client->fd, "ko\n");
         return ERROR;
-    }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true) {
-            pfk(tmp->fd, player->player_number, server);
-        }
     }
     return SUCCESS;
 }
