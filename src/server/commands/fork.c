@@ -41,7 +41,8 @@ game_board_t *g_board UNSD)
     }
 }
 
-int fork_player(game_board_t *game UNSD, player_t *player, server_t *server UNSD)
+int fork_player(game_board_t *game UNSD, player_t *player, \
+server_t *server UNSD)
 {
     player->cooldown = 42;
     player->on_cd = &send_ok;

@@ -113,7 +113,6 @@ char *look(game_board_t *game, player_t *player)
     char *ret = my_strdup("[ ");
     char **ressources = ressources_container();
 
-    // printf("%d %d %d\n", player->posx, player->posy, length);
     if (player->orientation == SOUTH)
         tiles = look_south(game, player);
     if (player->orientation == NORTH)

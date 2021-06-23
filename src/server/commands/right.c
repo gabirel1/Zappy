@@ -33,8 +33,8 @@ game_board_t *g_board UNSD)
     }
 }
 
-int move_right(UNSD char *request[], server_t *server, game_board_t *g_board UNSD, \
-client_t *client)
+int move_right(UNSD char *request[], server_t *server, game_board_t \
+*g_board UNSD, client_t *client)
 {
     player_t *player = NULL;
 

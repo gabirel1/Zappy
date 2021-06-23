@@ -60,7 +60,8 @@ struct timeval end, server_t *server)
     }
     secs = (double)(end.tv_usec - tmp->life_clock.tv_usec) / 1000000 + \
     (double)(end.tv_sec - tmp->life_clock.tv_sec);
-    if (secs > (double) ((double) 126 / (double) board->freq) && tmp->is_egg == false) {
+    if (secs > (double) ((double) 126 / (double) board->freq) && \
+    tmp->is_egg == false) {
         player_death(tmp, server);
         gettimeofday(&(tmp->life_clock), NULL);
     }

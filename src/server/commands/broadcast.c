@@ -21,8 +21,8 @@ game_board_t *g_board UNSD)
     player->params = NULL;
 }
 
-int f_broadcast_text(char *request[], server_t *server, game_board_t *g_board UNSD, \
-client_t *client)
+int f_broadcast_text(char *request[], server_t *server, game_board_t \
+*g_board UNSD, client_t *client)
 {
     player_t *player = NULL;
 

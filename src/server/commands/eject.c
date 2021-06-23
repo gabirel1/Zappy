@@ -44,8 +44,8 @@ void eject(player_t *player, server_t *server UNSD, game_board_t *game UNSD)
     }
 }
 
-int f_eject(UNSD char *request[], server_t *server, game_board_t *g_board UNSD, \
-client_t *client)
+int f_eject(UNSD char *request[], server_t *server, game_board_t \
+*g_board UNSD, client_t *client)
 {
     player_t *player = NULL;
 
