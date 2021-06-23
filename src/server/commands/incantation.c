@@ -7,6 +7,16 @@
 
 #include "server/server.h"
 
+static const int requirements[7][7] = {
+    {1, 2, 2, 4, 4, 6, 6},
+    {1, 1, 2, 1, 1, 1, 2},
+    {0, 1, 0, 1, 2, 2, 2},
+    {0, 1, 1, 2, 1, 3, 2},
+    {0, 0, 0, 0, 3, 0, 2},
+    {0, 0, 2, 1, 0, 1, 2},
+    {0, 0, 0, 0, 0, 0, 1},
+};
+
 int get_players_tile(player_t *player)
 {
     int number = 0;
@@ -41,25 +51,8 @@ void level_up(player_t *player, server_t *server, game_board_t *g UNSD)
     }
 }
 
-int **required(void)
-{
-    static int requirements[7][7] = {
-        {1, 2, 2, 4, 4, 6, 6},
-        {1, 1, 2, 1, 1, 1, 2},
-        {0, 1, 0, 1, 2, 2, 2},
-        {0, 1, 1, 2, 1, 3, 2},
-        {0, 0, 0, 0, 3, 0, 2},
-        {0, 0, 2, 1, 0, 1, 2},
-        {0, 0, 0, 0, 0, 0, 1},
-    };
-
-    return (int **)requirements;
-}
-
 int incantation(game_board_t *game UNSD, player_t *player)
 {
-    int **requirements = required();
-
     for (int i = 0; i < 7; i += 1) {
         if (i == 0 && get_players_tile(player) < \
         requirements[i][player->level - 1])
