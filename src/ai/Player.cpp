@@ -650,15 +650,12 @@ void IA::Player::levelOne(void)
             {
                 this->setObject("food");
             }
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 this->forkPlayer();
                 usleep(10000);
                 state = 1;
             }
-        }
-        for (int i = 0; i <= 125; i++) {
-            this->setObject("food");
         }
 
         return;
