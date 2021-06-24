@@ -649,6 +649,7 @@ void IA::Player::levelOne(void)
             for (int i = 0; i < 125; i++)
             {
                 this->setObject("food");
+                usleep(10000);
             }
             for (int i = 0; i < 5; i++)
             {
@@ -744,6 +745,7 @@ void IA::Player::levelOne(void)
         {
             std::cout << "food has been taken" << std::endl;
             this->take("food");
+            usleep(10000);
         }
     }
     this->inventory();
@@ -1048,6 +1050,7 @@ void IA::Player::clearTile(void)
     {
         std::cout << "food has been taken" << std::endl;
         this->take("food");
+        usleep(10000);
     }
     for (int f = _tile[0].getResources()[DLINEMATE].second; f > 0; f--)
     {
