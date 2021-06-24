@@ -18,6 +18,11 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
+    // tmp = _socket.receiveMessage();
+    while (tmp != "ok\n") {
+        usleep(1000);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
+    }
     broadcast("here " + _teamName);
     for (int i = 0; i < 25; i++) {
         this->take("food");
@@ -34,7 +39,7 @@ void IA::Sbire::loop() {
         std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
         if (tmp == "dead\n" || _toStop) {
             _toStop = false;
-            std::cout << "dead" << std::endl;
+            std::cout << _clientNum << "dead" << std::endl;
             break;
         }
         //  attendre le brocast

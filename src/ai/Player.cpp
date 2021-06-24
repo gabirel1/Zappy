@@ -522,7 +522,7 @@ void IA::Player::incantation()
     if (_toStop)
         return;
     _socket.sendMessage("Incantation");
-    tmp = _socket.receiveMessage(_toStop, _clientNum);
+    // tmp = _socket.receiveMessage(_toStop, _clientNum);
     waitResponse(tmp);
     if (tmp == "dead\n") {
         std::cout << "dead incantation" << std::endl;
@@ -533,8 +533,8 @@ void IA::Player::incantation()
         std::cout << _clientNum << " didn't lvl up " << std::endl;
         return;
     }
-    std::cout << tmp << std::endl;
     _level += 1;
+    std::cout << tmp << std::endl;
 }
 
 void IA::Player::initInventory()
@@ -894,6 +894,7 @@ void IA::Player::levelTwo(void)
     std::cout << _clientNum << " LVL 2" << std::endl;
 
     this->clearTile();
+    std::cout << "end clear tile" << std::endl;
     this->setObject("linemate");
     this->setObject("deraumere");
     this->setObject("sibur");
@@ -945,6 +946,8 @@ void IA::Player::levelTree(void)
 
     this->setObject("sibur");
 
+    look();
+    inventory();
     this->setObject("pĥiras");
     this->setObject("pĥiras");
 
