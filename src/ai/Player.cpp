@@ -948,8 +948,8 @@ void IA::Player::levelTree(void)
 
     look();
     inventory();
-    this->setObject("pĥiras");
-    this->setObject("pĥiras");
+    this->setObject("phiras");
+    this->setObject("phiras");
 
     this->broadcast("evolve");
     this->incantation();
@@ -966,7 +966,7 @@ void IA::Player::levelFour(void)
     this->setObject("sibur");
     this->setObject("sibur");
 
-    this->setObject("pĥiras");
+    this->setObject("phiras");
 
     this->broadcast("evolve");
     this->incantation();
@@ -1004,7 +1004,7 @@ void IA::Player::levelSix(void)
     this->setObject("sibur");
     this->setObject("sibur");
 
-    this->setObject("pĥiras");
+    this->setObject("phiras");
 
     this->broadcast("evolve");
     this->incantation();
@@ -1027,8 +1027,8 @@ void IA::Player::levelSeven(void)
     this->setObject("mendiane");
     this->setObject("mendiane");
 
-    this->setObject("pĥiras");
-    this->setObject("pĥiras");
+    this->setObject("phiras");
+    this->setObject("phiras");
 
     this->setObject("thystame");
 
