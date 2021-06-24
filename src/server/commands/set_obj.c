@@ -48,10 +48,12 @@ client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    if ((resource_id = get_resources_number_by_name(request[0])) == ERROR)
+    if ((resource_id = get_resources_number_by_name(request[0])) == ERROR) {
+        dprintf(client->fd, "ko\n");
         return ERROR;
+    }
     player->cooldown = 7;
-    player->on_cd = &set;
     player->params = copy_tab(player->params, request);
+    player->on_cd = &set;
     return SUCCESS;
 }
