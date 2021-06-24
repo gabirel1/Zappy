@@ -208,16 +208,18 @@ void IA::Player::look()
         return;
     }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1), ++nbr)
-        parseSpace(tmp.find(',', idx + 1), tmp, idx, nbr);
+        parseSpace(tmp.find(',', idx + 1), tmp, ((idx == 1) ? idx + 1 : idx), nbr);
     for (const auto &e : _tile)
         for (const auto &t : e.getResources())
             std::cout << e.getCaseNbr() << " and " << t.first << " = " << t.second << std::endl;
 }
 
+// [ Player Food Test]
+
 void IA::Player::parseSpace(std::size_t idx, std::string tmp, std::size_t last, int nbr)
 {
     Tile tile(nbr);
-    for (std::size_t tmpIdx = tmp.find(' ', last); 1; tmpIdx = tmp.find(' ', tmpIdx + 1))
+    for (std::size_t tmpIdx = tmp.find(' ', last + 1); 1; tmpIdx = tmp.find(' ', tmpIdx + 1))
     {
         std::size_t test = tmp.find(' ', tmpIdx + 1);
         if (tmpIdx == tmp.npos)
@@ -255,7 +257,7 @@ IA::resources IA::getResourcesFromString(const std::string &tmp)
         return THYSTAME;
     if (tmp == "player")
         return NONE;
-    return (IA::resources::FOOD);
+    return (IA::resources::NONE);
 }
 
 std::ostream &operator<<(std::ostream &os, const IA::resources &res)
@@ -400,6 +402,9 @@ void IA::Player::forkPlayer()
     {
         // broadcast("team");
         return;
+    } else if (pid == -1) {
+        std::cout << "Error on fork" << std::endl;
+        exit (84);
     }
 }
 
@@ -946,13 +951,14 @@ void IA::Player::levelTree(void)
 
     this->setObject("sibur");
 
-    look();
-    inventory();
     this->setObject("phiras");
     this->setObject("phiras");
 
     this->broadcast("evolve");
-    this->incantation();
+    while (this->_level == 3) {
+        this->look();
+        this->incantation();
+    }
 }
 
 void IA::Player::levelFour(void)
