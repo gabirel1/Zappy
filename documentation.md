@@ -69,3 +69,20 @@
 |'sgt\n'         |`sgt T\n`                                   |
 |'sst T\n'       |`sst T\n`                                   |
 
+
+**AI Commands / Responses**
+
+|Command         |Response                                    |
+|----------------|--------------------------------------------|
+|'Forward'       |`ok`                                        |
+|'Right'         |`ok`                                        |
+|'Left'          |`ok`                                        |
+|'Look'          |`[tile1, tile2,...]`                        |
+|'Inventory'     |`[linemate n, sibur n,...]`                 |
+|'Broadcast text'|`ok`                                        |
+|'Connect_nbr'   |`value`                                     |
+|'Fork'          |`ok`                                        |
+|'Take object'   |`ok/ko`                                     |
+|'Set object'    |`ok/ko`                                     |
+|'Incantation'   |`k/ko` (k being the current player's level  |
+
