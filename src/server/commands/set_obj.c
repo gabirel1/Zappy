@@ -48,6 +48,7 @@ client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
+    printf("%d\n", get_resources_number_by_name(request[0]));
     if ((resource_id = get_resources_number_by_name(request[0])) == ERROR)
         return ERROR;
     player->cooldown = 7;

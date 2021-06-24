@@ -124,6 +124,12 @@ typedef struct func_s
 #define TILE_CONTENT g_board->map[y_index][x_index]
 #define TILE_CONTENT_R g_board->map[y_index][x_index].resources
 
+#define SEND_RES_GR if (tmp->is_graphic == true) \
+            pgt(tmp->fd, player->player_number, resource_id, server);
+#define SEND_RES_CLI if (strcmp(tmp->uuid, player->uuid) == 0) \
+            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
+
+#define SEND_RES SEND_RES_GR SEND_RES_CLI
 server_t **server_container(void);
 char *my_strdup(char *cpy);
 int get_tab_len(char *tab[]);

@@ -13,12 +13,10 @@ game_board_t *game UNSD)
     char **ressources = ressources_container();
     char *object = player->params[0];
     bool ok = false;
-    bool passed = false;
     int resource_id = get_resources_number_by_name(object);
 
     for (int i = 0; ressources[i]; i += 1) {
         if (strcmp(object, ressources[i]) == 0) {
-            passed = true;
             if (game->map[player->posy][player->posx].resources[i] == 0)
                 break;
             game->map[player->posy][player->posx].resources[i] -= 1;
@@ -27,13 +25,8 @@ game_board_t *game UNSD)
             break;
         }
     }
-    if (passed == false)
-        ok = false;
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true)
-            pgt(tmp->fd, player->player_number, resource_id, server);
-        if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
+        SEND_RES
     }
     free_tab(player->params);
     player->params = NULL;
