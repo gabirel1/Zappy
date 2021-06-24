@@ -38,6 +38,7 @@
 >- Incantation
 
 
+
 ## Server resources :
 
 **Symbols / Meanings**
@@ -55,6 +56,8 @@
 | q6             | resource 6 (food) quantity        | i              | resource number                     |
 
 
+## Commands / Responses :
+
 **Server Commands / Responses**
 
 |Command         |Response                                    |
@@ -68,6 +71,8 @@
 |'pin n\n'       |`pin n X Y q0 q1 q2 q3 q4 q5 q6\n`          |
 |'sgt\n'         |`sgt T\n`                                   |
 |'sst T\n'       |`sst T\n`                                   |
+
+
 
 
 **AI Commands / Responses**
@@ -84,5 +89,30 @@
 |'Fork'          |`ok`                                        |
 |'Take object'   |`ok/ko`                                     |
 |'Set object'    |`ok/ko`                                     |
-|'Incantation'   |`k/ko` (k being the current player's level  |
+|'Incantation'   |`k/ko` (k being the current player's level) |
+
+
+
+
+**Graphical events**
+
+|Server               |Detail                                         |
+|---------------------|-----------------------------------------------|
+|'pnw #n X Y O L N\n' |connection of a new player                     |
+|'pex n\n'            |explusion                                      |
+|'pbc n M\n'          |broadcast                                      |
+|'pic X Y L n n ...\n'|start of an incantation (by the first player)  |
+|'pie X Y R\n'        |end of an incantation                          |
+|'pfk n\n'            |egg laying by the player                       |
+|'pdr n i\n'          |resource dropping                              |
+|'pgt n i\n'          |resource collecting                            |
+|'pdi n\n'            |death of a player                              |
+|'enw e n X Y\n'      |an egg was laid by a player                    |
+|'eht e\n'            |egg hatching                                   |
+|'ebo e\n'            |player connection for an egg                   |
+|'edi e\n'            |death of an hatched egg                        |
+|'seg N\n'            |end of game                                    |
+|'smg M\n'            |message from the server                        |
+|'suc\n'              |unknown command                                |
+|'sbp\n'              | command parameter                             |
 
