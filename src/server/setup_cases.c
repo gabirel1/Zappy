@@ -11,8 +11,8 @@ int x_case(game_info_t *g_info)
 {
     printf("opt x == %s\n", optarg);
     if (is_full_digits(optarg) == false ||
-    (atoi(optarg) < 10 || atoi(optarg) > 30)) {
-        printf("-x option only accepts integer values between 10 and 30\n");
+    atoi(optarg) <= 0) {
+        printf("-x option only accepts positive integer values above 0\n");
         return ERROR;
     }
     g_info->width = atoi(optarg);
@@ -23,8 +23,8 @@ int y_case(game_info_t *g_info)
 {
     printf("opt y == %s\n", optarg);
     if (is_full_digits(optarg) == false ||
-    (atoi(optarg) < 10 || atoi(optarg) > 30)) {
-        printf("-y option only accepts integer values between 10 and 30\n");
+    atoi(optarg) <= 0) {
+        printf("-y option only accepts positive integer values above 0\n");
         return ERROR;
     }
     g_info->height = atoi(optarg);
@@ -46,8 +46,8 @@ int f_case(game_info_t *game_info)
 {
     printf("opt f == %s\n", optarg);
     if (is_full_digits(optarg) == false
-    || atoi(optarg) < 2 || atoi(optarg) > 10000) {
-        printf("-f option only accepts integer values between 2 and 10000\n");
+    || atoi(optarg) <= 0) {
+        printf("-f option only accepts positive integer values above 0\n");
         return ERROR;
     }
     game_info->freq = atoi(optarg);
