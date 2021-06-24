@@ -208,7 +208,7 @@ void IA::Player::look()
         return;
     }
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1), ++nbr)
-        parseSpace(tmp.find(',', idx + 1), tmp, ((idx == 1) ? idx + 1 : idx), nbr);
+        parseSpace(tmp.find(',', idx + 1), tmp, idx, nbr);
     for (const auto &e : _tile)
         for (const auto &t : e.getResources())
             std::cout << e.getCaseNbr() << " and " << t.first << " = " << t.second << std::endl;
@@ -219,7 +219,7 @@ void IA::Player::look()
 void IA::Player::parseSpace(std::size_t idx, std::string tmp, std::size_t last, int nbr)
 {
     Tile tile(nbr);
-    for (std::size_t tmpIdx = tmp.find(' ', last + 1); 1; tmpIdx = tmp.find(' ', tmpIdx + 1))
+    for (std::size_t tmpIdx = tmp.find(' ', last); 1; tmpIdx = tmp.find(' ', tmpIdx + 1))
     {
         std::size_t test = tmp.find(' ', tmpIdx + 1);
         if (tmpIdx == tmp.npos)
@@ -1052,6 +1052,7 @@ void IA::Player::levelHeigt(void)
 void IA::Player::clearTile(void)
 {
     this->look();
+    std::cerr << "-------------------------- look finished " << _level << " --------------------------" << std::endl;
     for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
     {
         std::cout << "food has been taken" << std::endl;
