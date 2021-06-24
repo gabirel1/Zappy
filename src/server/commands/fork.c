@@ -34,7 +34,6 @@ game_board_t *g_board UNSD)
         if (strcmp(tmp->uuid, player->uuid) == 0)
             dprintf(tmp->fd, "ok\n");
         if (tmp->is_graphic == true) {
-            pfk(tmp->fd, player->player_number, server);
             enw(tmp->fd, new_player->player_number, \
             player->player_number, server);
             eht(tmp->fd, new_player->player_number, \
@@ -46,6 +45,11 @@ game_board_t *g_board UNSD)
 int fork_player(game_board_t *game UNSD, player_t *player, \
 server_t *server UNSD)
 {
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true) {
+            pfk(tmp->fd, player->player_number, server);
+        }
+    }
     player->cooldown = 42;
     player->on_cd = &send_ok;
     return SUCCESS;
