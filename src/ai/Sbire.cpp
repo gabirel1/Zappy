@@ -27,7 +27,6 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
         // std::cout << "-----------------------took foood-----------------------" << std::endl;
         this->take("food");
     }
-    exit(84);
     broadcast("here " + _teamName);
     // recolté 25 food
 }
