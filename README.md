@@ -1,4 +1,6 @@
- ```
+Zappy's Documentation
+
+```
  ______   _______  _______  __   __  __   __  _______  __    _  _______  _______  _______  ___   _______  __    _ 
 |      | |       ||       ||  | |  ||  |_|  ||       ||  |  | ||       ||   _   ||       ||   | |       ||  |  | |
 |  _    ||   _   ||       ||  | |  ||       ||    ___||   |_| ||_     _||  |_|  ||_     _||   | |   _   ||   |_| |
@@ -116,3 +118,45 @@
 |'suc\n'              |unknown command                                |
 |'sbp\n'              | command parameter                             |
 
+
+## How to use :
+
+- Download the Repository
+- Go to the root folder of the repository
+- type ```make``` in your shell
+- launch the server ```./zappy_server```
+- launch the graphical client and connect to the server
+- launch the AI ```./zappy_ai -p port -n team_name```
+
+
+# Server Usage :
+
+```
+./zappy_server –help
+USAGE: ./zappy_server -p port -x width -y height -n name1 name2 ... -c clientsNb -f freq
+       port is the port number
+       width is the width of the world
+       height is the height of the world
+       nameX is the name of the team X
+       clientsNb is the number of authorized clients per team
+       freq is the reciprocal of time unit for execution of actions
+```
+
+# AI Usage :
+
+```
+./zappy_ai –help
+USAGE: ./zappy_ai -p port -n name -h machine
+       port is the port number
+       name is the name of the team
+       machine is the name of the machine; localhost by default
+```
+
+# GRAPHICAL CLIENT Usage :
+
+```
+./zappy_gui –help
+USAGE: ./zappy_ai -p port -h machine
+        port is the port number
+        machine is the name of the machine; localhost by default
+```

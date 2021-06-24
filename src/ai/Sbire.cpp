@@ -23,10 +23,12 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
         usleep(1000);
         tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
-    broadcast("here " + _teamName);
     for (int i = 0; i < 25; i++) {
+        // std::cout << "-----------------------took foood-----------------------" << std::endl;
         this->take("food");
     }
+    exit(84);
+    broadcast("here " + _teamName);
     // recolté 25 food
 }
 
@@ -90,6 +92,7 @@ void IA::Sbire::take(const std::string &res)
             std::cout << _clientNum << " took " << res << std::endl;
             return;
         }
+        // std::cout << _clientNum << " " << std::endl;
         tmp = _socket.receiveMessage(_toStop, _clientNum);
         usleep(100000);
     }
