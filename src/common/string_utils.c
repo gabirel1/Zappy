@@ -17,6 +17,18 @@ char *my_strcat(char *s1, char *s2)
     return ret;
 }
 
+char *my_strcat_m(char *s1, char *s2, bool to_free)
+{
+    char *ret = malloc(strlen(s1) + strlen(s2) + 1);
+
+    memset(ret, 0, strlen(s1) + strlen(s2) + 1);
+    strcpy(ret, s1);
+    strcpy(ret + strlen(s1), s2);
+    if (to_free)
+        free(s1);
+    return ret;
+}
+
 char *convert_digit(char *dest, int i)
 {
     if (i <= -10)

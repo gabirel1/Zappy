@@ -10,8 +10,8 @@
 char *add_inventory(char *ret, char *ressources, int nb)
 {
     for (int i = 0; i < nb; i += 1) {
-        ret = my_strcat(ret, ressources);
-        ret = my_strcat(ret, " ");
+        ret = my_strcat_m(ret, ressources, true);
+        ret = my_strcat_m(ret, " ", true);
     }
     return ret;
 }
@@ -21,7 +21,7 @@ char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
     for (int i = 0; i < length; i += 1) {
         for (player_t *tmp = *player_container(); tmp; tmp = tmp->next) {
             if (tmp->posx == tiles[i].posx && tmp->posy == tiles[i].posy) {
-                ret = my_strcat(ret, "player ");
+                ret = my_strcat_m(ret, "player ", true);
             }
         }
         for (int j = 0; j <= THYSTAME; j += 1) {
@@ -29,7 +29,7 @@ char *look_tiles(tile_t *tiles, int length, char *ret, char **ressources)
                 ret = add_inventory(ret, ressources[j], tiles[i].resources[j]);
         }
         if (i < length - 1)
-            ret = my_strcat(ret, ",");
+            ret = my_strcat_m(ret, ",", true);
     }
     return ret;
 }
@@ -43,6 +43,7 @@ game_board_t *g_board UNSD)
         if (strcmp(tmp->uuid, player->uuid) == 0)
             dprintf(tmp->fd, "%s\n", response);
     }
+    free(response);
 }
 
 int f_look(UNSD char *request[], server_t *server, game_board_t *g_board UNSD, \

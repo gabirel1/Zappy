@@ -9,17 +9,17 @@
 
 char *inventory(game_board_t *game UNSD, player_t *player)
 {
-    char *ret = my_strdup("[ ");
+    char *ret = strdup("[ ");
     char **ressources = ressources_container();
 
     for (int i = 0; i <= THYSTAME; i += 1) {
-        ret = my_strcat(ret, ressources[i]);
-        ret = my_strcat(ret, " ");
-        ret = my_strcat(ret, my_itoa(player->inventory[i]));
+        ret = my_strcat_m(ret, ressources[i], true);
+        ret = my_strcat_m(ret, " ", true);
+        ret = my_strcat_m(ret, my_itoa(player->inventory[i]), true);
         if (i != THYSTAME)
-            ret = my_strcat(ret, ", ");
+            ret = my_strcat_m(ret, ", ", true);
     }
-    ret = my_strcat(ret, " ]");
+    ret = my_strcat_m(ret, " ]", true);
     player->cooldown = 1;
     return ret;
 }
@@ -33,6 +33,7 @@ game_board_t *g_board UNSD)
         if (strcmp(tmp->uuid, player->uuid) == 0)
             dprintf(tmp->fd, "%s\n", response);
     }
+    free(response);
 }
 
 int f_inventory(UNSD char *request[], server_t *server, \
