@@ -28,6 +28,16 @@ int forward_next(game_board_t *game, player_t *player)
     return SUCCESS;
 }
 
+void send_moved(player_t *player, server_t *server)
+{
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            ppo_second(tmp->fd, player, server);
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
+    }
+}
+
 void forward(player_t *player, server_t *server, game_board_t *game)
 {
     switch (player->orientation) {
@@ -47,12 +57,7 @@ void forward(player_t *player, server_t *server, game_board_t *game)
             if (forward_next(game, player) == ERROR)
                 return;
     }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true)
-            ppo_second(tmp->fd, player, server);
-        if (strcmp(tmp->uuid, player->uuid) == 0)
-            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
-    }
+    send_moved(player, server);
 }
 
 int move_forward(UNSD char *request[], server_t *server, \

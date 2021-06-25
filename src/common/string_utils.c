@@ -57,6 +57,5 @@ void *my_malloc_m(size_t size)
     void *pointer = malloc(size);
 
     memset(pointer, 0, size);
-
     return pointer;
 }
