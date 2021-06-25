@@ -7,6 +7,16 @@
 
 #include "server/server.h"
 
+void send_set(player_t *player, int resource_id, server_t *server, bool ok)
+{
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            pdr(tmp->fd, player->player_number, resource_id, server);
+        if (strcmp(tmp->uuid, player->uuid) == 0)
+            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
+    }
+}
+
 void set(player_t *player, server_t *server UNSD, \
 game_board_t *game UNSD)
 {
@@ -25,12 +35,7 @@ game_board_t *game UNSD)
             break;
         }
     }
-    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true)
-            pdr(tmp->fd, player->player_number, resource_id, server);
-        if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
-    }
+    send_set(player, resource_id, server, ok);
     free_tab(player->params);
     player->params = NULL;
 }

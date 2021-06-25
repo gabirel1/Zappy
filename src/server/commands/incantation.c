@@ -51,8 +51,7 @@ void level_up(player_t *player, server_t *server, game_board_t *g UNSD)
         if (strcmp(tmp->uuid, player->uuid) == 0)
             dprintf(tmp->fd, "%d\n", player->level);
     }
-    // for (player_t *player = *player_container(); player; player = player->next)
-        printf("[player %d: level %d]\n", player->player_number, player->level);
+    printf("[player %d: level %d]\n", player->player_number, player->level);
 }
 
 int incantation(game_board_t *game UNSD, player_t *player)

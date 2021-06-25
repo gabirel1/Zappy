@@ -55,12 +55,26 @@ client_t *client, server_t *server)
     return ERROR;
 }
 
+int check_if_passed(char *buff, game_board_t *game, \
+client_t *client, server_t *server)
+{
+    int res = 0;
+
+    res = check_first_client_send(buff, game, client, server);
+    if (res == ERROR && client->is_ia == true)
+        (FD_IS_SET) ? dprintf(client->fd, "ko\n") : 0;
+    if (res == ERROR && client->is_graphic == true)
+        suc(client->fd, server);
+    if (res == TEAM_FULL)
+        return TEAM_FULL;
+    return ERROR;
+}
+
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
 client_t *client)
 {
     char **tab = str_to_word_array(buff, " \n");
     bool passed = false;
-    int res = 0;
 
     if (tab[0] == NULL) {
         free_tab(tab);
@@ -75,12 +89,5 @@ client_t *client)
     free_tab(tab);
     if (passed)
         return SUCCESS;
-    res = check_first_client_send(buff, game, client, server);
-    if (res == ERROR && client->is_ia == true)
-        (FD_IS_SET) ? dprintf(client->fd, "ko\n") : 0;
-    if (res == ERROR && client->is_graphic == true)
-        suc(client->fd, server);
-    if (res == TEAM_FULL)
-        return TEAM_FULL;
-    return ERROR;
+    return (check_if_passed(buff, game, client, server));
 }
