@@ -14,8 +14,10 @@ void hatch(player_t *player, server_t *server, game_board_t *g UNSD)
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true)
             edi(tmp->fd, player->player_number, server);
-        if (strcmp(tmp->uuid, player->uuid) == 0)
+        if (strcmp(tmp->uuid, player->uuid) == 0) {
+            fprintf(stderr, "sent okay to %d\n", player->player_number);
             dprintf(tmp->fd, "ok\n");
+        }
     }
 }
 
