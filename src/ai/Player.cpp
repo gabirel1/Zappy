@@ -199,11 +199,14 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
 {
     std::string tmp;
 
-    if (msg.find("message") != msg.npos)
+    if (msg.find("message") != msg.npos) {
         tmp = msg.substr(msg.find(',') + 2);
+        std::reverse(tmp.begin(), tmp.end());
+    }
     else
         tmp = msg;
-    if (tmp.find("here") != tmp.npos)
+
+    if (tmp.find("here") != tmp.npos && tmp.find(_teamName) != tmp.npos)
     {
         std::cerr << "####################################################team nb = " << _nbTeam<< "####################################################"<< std::endl;
         _nbTeam += 1;
