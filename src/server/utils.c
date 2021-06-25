@@ -48,6 +48,8 @@ char **copy_tab(char **dest, char **src)
     int index = 0;
 
     dest = malloc(sizeof(char *) * (len + 1));
+    if (!dest)
+        return NULL;
     for (; index < len; index++)
         dest[index] = strdup(src[index]);
     dest[index] = NULL;

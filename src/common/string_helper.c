@@ -11,6 +11,8 @@ char *my_strdup(char *cpy)
 {
     char *ret = my_malloc(strlen(cpy) + 1);
 
+    if (!ret)
+        return NULL;
     memset(ret, 0, strlen(cpy) + 1);
     strcpy(ret, cpy);
     return ret;

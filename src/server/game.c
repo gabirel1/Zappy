@@ -19,6 +19,8 @@ int *generate_resources(int width, int height)
 
     if (!resources)
         resources = my_malloc(sizeof(int) * (THYSTAME + 1));
+    if (!resources)
+        return NULL;
     for (int i = 0; i < THYSTAME + 1; i += 1) {
         resources[i] = width * height * densities[i];
         if (resources[i] == 0)
@@ -44,13 +46,19 @@ game_board_t *create_game_board(game_info_t *game_info)
     game_board_t *board = my_malloc(sizeof(game_board_t));
     int *resources = generate_resources(game_info->width, game_info->height);
 
+    if (!board)
+        return NULL;
     board->width = game_info->width;
     board->height = game_info->height;
     board->freq = game_info->freq;
     board->teams = *team_container();
     board->map = my_malloc(sizeof(tile_t *) * (board->height + 1));
+    if (!board->map)
+        return NULL;
     for (int i = 0; i < board->height; i += 1) {
         board->map[i] = my_malloc(sizeof(tile_t) * (board->width));
+        if (!board->map[i])
+            return NULL;
         board->map[i + 1] = NULL;
         for (int j = 0; j < board->width; j += 1)
             board->map[i][j] = create_tile(j, i);

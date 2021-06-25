@@ -11,6 +11,8 @@ char *my_strcat(char *s1, char *s2)
 {
     char *ret = my_malloc(strlen(s1) + strlen(s2) + 1);
 
+    if (!ret)
+        return NULL;
     memset(ret, 0, strlen(s1) + strlen(s2) + 1);
     strcpy(ret, s1);
     strcpy(ret + strlen(s1), s2);
@@ -21,6 +23,8 @@ char *my_strcat_m(char *s1, char *s2, bool to_free)
 {
     char *ret = malloc(strlen(s1) + strlen(s2) + 1);
 
+    if (!ret)
+        return NULL;
     memset(ret, 0, strlen(s1) + strlen(s2) + 1);
     strcpy(ret, s1);
     strcpy(ret + strlen(s1), s2);
@@ -42,6 +46,8 @@ char *my_itoa(int i)
     char *dest = my_malloc(sizeof(char) * 12);
     char *s = dest;
 
+    if (!dest)
+        return NULL;
     for (int k = 0; k < 12; k += 1)
         dest[k] = 0;
     if (i < 0)
@@ -56,7 +62,8 @@ void *my_malloc_m(size_t size)
 {
     void *pointer = malloc(size);
 
+    if (!pointer)
+        return NULL;
     memset(pointer, 0, size);
-
     return pointer;
 }
