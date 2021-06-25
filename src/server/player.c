@@ -31,7 +31,7 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     strcpy(player->team_uuid, team_uuid);
     player->orientation = (rand() % 4) + 1;
     player->hp = 10;
-    player->inventory[FOOD] = 10;
+    player->inventory[FOOD] = 155;
     gettimeofday(&(player->life_clock), NULL);
     gettimeofday(&(player->clock), NULL);
     uuid_unparse_lower(new_uuid, player->uuid);

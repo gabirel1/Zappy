@@ -116,6 +116,7 @@ typedef struct func_s
 } __attribute__((packed)) func_t;
 
 #define FD_IS_SET FD_ISSET(client->fd, &server->write_fd_set)
+#define FD_TMP_IS_SET FD_ISSET(tmp->fd, &server->write_fd_set)
 
 #define CALL_MOV if (strcmp(tmp->uuid, to_move->uuid) == 0) \
             dprintf(tmp->fd, "movement: %d\n", to_move->posy * \

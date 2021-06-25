@@ -649,8 +649,6 @@ void IA::Player::levelOne(void)
 {
     srand(time(NULL));
 
-    this->look();
-    this->inventory();
     if (state == 1)
     {
         if (_nbTeam == 6)
@@ -666,6 +664,8 @@ void IA::Player::levelOne(void)
     if (state == 2) {
         return;
     }
+    this->look();
+    this->inventory();
 
     if (this->_inventory[DTHYSTAME].second >= 1 && this->_inventory[DPHIRAS].second >= 5 && this->_inventory[DMENDIANE].second >= 5 && this->_inventory[DSIBUR].second >= 10 && this->_inventory[DDERAUMERE].second >= 8 && this->_inventory[DLINEMATE].second >= 9 && this->_inventory[DFOOD].second >= 160)
     {

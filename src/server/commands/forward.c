@@ -51,7 +51,7 @@ void forward(player_t *player, server_t *server, game_board_t *game)
         if (tmp->is_graphic == true)
             ppo_second(tmp->fd, player, server);
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "ok\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
     }
 }
 
@@ -64,7 +64,7 @@ game_board_t *g_board UNSD, client_t *client)
         return ERROR;
     player = get_player_by_uuid(client->uuid);
     if (player == NULL) {
-        dprintf(client->fd, "ko\n");
+        (FD_IS_SET) ? dprintf(client->fd, "ko\n") : 0;
         return ERROR;
     }
     player->on_cd = &forward;
