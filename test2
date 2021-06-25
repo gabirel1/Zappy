@@ -4932,23 +4932,87 @@ tmp =
 ==93108== 
 ==93108== For lists of detected and suppressed errors, rerun with: -s
 ==93108== ERROR SUMMARY: 7 errors from 7 contexts (suppressed: 0 from 0)
-ate deraumere sibur mendiane phiras thystame ]
-++++++++++++++++++++++++++++++++++++
-1821 ++++++++++++++++++++++++++++++++++++[ food 23, linemate 9, deraumere 8, sibur 10, mendiane 5, phiras 5, thystame 1 ]
-++++++++++++++++++++++++++++++++++++
-1822 ++++++++++++++++++++++++++++++++++++[ player player player player player player food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ]
-++++++++++++++++++++++++++++++++++++
-1823 ++++++++++++++++++++++++++++++++++++[ food 23, linemate 9, deraumere 8, sibur 10, mendiane 5, phiras 5, thystame 1 ]
-++++++++++++++++++++++++++++++++++++
-1824 ++++++++++++++++++++++++++++++++++++[ player player player player player player food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ]
-++++++++++++++++++++++++++++++++++++
-1825 ++++++++++++++++++++++++++++++++++++[ food 22, linemate 9, deraumere 8, sibur 10, mendiane 5, phiras 5, thystame 1 ]
-++++++++++++++++++++++++++++++++++++
-1826 ++++++++++++++++++++++++++++++++++++[ player player player player player player food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ]
-++++++++++++++++++++++++++++++++++++
-1827 ++++++++++++++++++++++++++++++++++++[ food 22, linemate 9, deraumere 8, sibur 10, mendiane 5, phiras 5, thystame 1 ]
-++++++++++++++++++++++++++++++++++++
-1828 ++++++++++++++++++++++++++++++++++++[ player player player player player player food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ]
+==93223== 
+==93223== HEAP SUMMARY:
+==93223==     in use at exit: 512 bytes in 6 blocks
+==93223==   total heap usage: 20,270 allocs, 20,264 frees, 8,608,569 bytes allocated
+==93223== 
+==93223== LEAK SUMMARY:
+==93223==    definitely lost: 0 bytes in 0 blocks
+==93223==    indirectly lost: 0 bytes in 0 blocks
+==93223==      possibly lost: 0 bytes in 0 blocks
+==93223==    still reachable: 512 bytes in 6 blocks
+==93223==         suppressed: 0 bytes in 0 blocks
+==93223== Reachable blocks (those to which a pointer was found) are not shown.
+==93223== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==93223== 
+==93223== For lists of detected and suppressed errors, rerun with: -s
+==93223== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==93224== 
+==93224== HEAP SUMMARY:
+==93224==     in use at exit: 512 bytes in 6 blocks
+==93224==   total heap usage: 20,271 allocs, 20,265 frees, 8,612,671 bytes allocated
+==93224== 
+==93224== LEAK SUMMARY:
+==93224==    definitely lost: 0 bytes in 0 blocks
+==93224==    indirectly lost: 0 bytes in 0 blocks
+==93224==      possibly lost: 0 bytes in 0 blocks
+==93224==    still reachable: 512 bytes in 6 blocks
+==93224==         suppressed: 0 bytes in 0 blocks
+==93224== Reachable blocks (those to which a pointer was found) are not shown.
+==93224== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==93224== 
+==93224== For lists of detected and suppressed errors, rerun with: -s
+==93224== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==93228== 
+==93228== HEAP SUMMARY:
+==93228==     in use at exit: 512 bytes in 6 blocks
+==93228==   total heap usage: 20,272 allocs, 20,266 frees, 8,616,773 bytes allocated
+==93228== 
+==93228== LEAK SUMMARY:
+==93228==    definitely lost: 0 bytes in 0 blocks
+==93228==    indirectly lost: 0 bytes in 0 blocks
+==93228==      possibly lost: 0 bytes in 0 blocks
+==93228==    still reachable: 512 bytes in 6 blocks
+==93228==         suppressed: 0 bytes in 0 blocks
+==93228== Reachable blocks (those to which a pointer was found) are not shown.
+==93228== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==93228== 
+==93228== For lists of detected and suppressed errors, rerun with: -s
+==93228== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==93229== 
+==93229== HEAP SUMMARY:
+==93229==     in use at exit: 512 bytes in 6 blocks
+==93229==   total heap usage: 20,275 allocs, 20,269 frees, 8,620,877 bytes allocated
+==93229== 
+==93229== LEAK SUMMARY:
+==93229==    definitely lost: 0 bytes in 0 blocks
+==93229==    indirectly lost: 0 bytes in 0 blocks
+==93229==      possibly lost: 0 bytes in 0 blocks
+==93229==    still reachable: 512 bytes in 6 blocks
+==93229==         suppressed: 0 bytes in 0 blocks
+==93229== Reachable blocks (those to which a pointer was found) are not shown.
+==93229== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==93229== 
+==93229== For lists of detected and suppressed errors, rerun with: -s
+==93229== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==93230== 
+==93230== HEAP SUMMARY:
+==93230==     in use at exit: 512 bytes in 6 blocks
+==93230==   total heap usage: 20,276 allocs, 20,270 frees, 8,624,979 bytes allocated
+==93230== 
+==93230== LEAK SUMMARY:
+==93230==    definitely lost: 0 bytes in 0 blocks
+==93230==    indirectly lost: 0 bytes in 0 blocks
+==93230==      possibly lost: 0 bytes in 0 blocks
+==93230==    still reachable: 512 bytes in 6 blocks
+==93230==         suppressed: 0 bytes in 0 blocks
+==93230== Reachable blocks (those to which a pointer was found) are not shown.
+==93230== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==93230== 
+==93230== For lists of detected and suppressed errors, rerun with: -s
+==93230== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+ food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ,food linemate deraumere sibur mendiane phiras thystame ]
 ++++++++++++++++++++++++++++++++++++
 1829 ++++++++++++++++++++++++++++++++++++[ food 22, linemate 9, deraumere 8, sibur 10, mendiane 5, phiras 5, thystame 1 ]
 ++++++++++++++++++++++++++++++++++++
