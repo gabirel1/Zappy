@@ -37,7 +37,7 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
         this->take("food");
     }
     std::cerr << "sjkdddddddddddddddddddddddddddflhjsdfhkjhsdjkhsdjkhfskdjhfsdjhkjsdhjksdjfhkjshdfkjhdskjfhkjsdhksdhfjksdhfjksdfhksdjhfsdjhkdsf" << std::endl;
-    broadcast("here " + _teamName);
+    broadcast("here" + _teamName);
     loop();
     // recolté 25 food
 }
@@ -63,10 +63,12 @@ void IA::Sbire::broadcast(const std::string &msg)
 {
     std::string tmp;
 
-    std::cerr << "'''''''''''''''''''''''''''''''''''''''''broadcast " << msg << std::endl;
     if (_toStop)
         return;
-    _socket.sendMessage("Broadcast " + msg);
+    tmp = msg;
+    std::reverse(tmp.begin(), tmp.end());
+    _socket.sendMessage("Broadcast " + tmp);
+    tmp.clear();
     tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1) {
         if (tmp.find("ko") != tmp.npos) {
