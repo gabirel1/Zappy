@@ -49,7 +49,7 @@ public class TCPTestClient {
 							Array.Copy(bytes, 0, incommingData, 0, length); 						
 							// Convert byte array to string message. 						
 							string serverMessage = Encoding.ASCII.GetString(incommingData); 						
-							Debug.Log("server message received as: " + serverMessage);
+							// Debug.Log("server message received as: " + serverMessage);
 							if (serverMessage == "WELCOME\n")
 							{
 								SendMessage("GRAPHIC\n");

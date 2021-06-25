@@ -19,14 +19,36 @@ public class MainSceneUI : MonoBehaviour
 
     private GameObject savedWhitePlane;
 
+    private Tile selectedTile = null;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
+    void updateCountFromTile(Tile tile)
+    {
+        _tileInfosFoodCount.text = tile.getResourceCountByType(ResourceType.FOOD).ToString();
+        _tileInfosLinemateCount.text = tile.getResourceCountByType(ResourceType.LINEMATE).ToString();
+        _tileInfosDeraumereCount.text = tile.getResourceCountByType(ResourceType.DERAUMERE).ToString();
+        _tileInfosSiburCount.text = tile.getResourceCountByType(ResourceType.SIBUR).ToString();
+        _tileInfosMendianeCount.text = tile.getResourceCountByType(ResourceType.MENDIANE).ToString();
+        _tileInfosPhirasCount.text = tile.getResourceCountByType(ResourceType.PHIRAS).ToString();
+        _tileInfosThystameCount.text = tile.getResourceCountByType(ResourceType.THYSTAME).ToString();
+    }
+
     void handleClick()
     {
+        if (selectedTile != null)
+        {
+            updateCountFromTile(selectedTile);
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            _tileInfos.GetComponent<CanvasGroup>().alpha = 0;
+            selectedTile = null;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,6 +57,12 @@ public class MainSceneUI : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100))
             {
                 GameObject gameObject = hit.transform.gameObject;
+                Debug.Log(gameObject.name);
+                if (gameObject.name == "Minotaure")
+                {
+                    Utils.followTrontorian = gameObject;
+                    return;
+                }
                 if (gameObject.name != "Plane")
                 {
                     return;
@@ -55,16 +83,11 @@ public class MainSceneUI : MonoBehaviour
                 {
                     return;
                 }
+                selectedTile = tile;
                 _tileInfos.GetComponent<CanvasGroup>().alpha = 1;
                 _tileInfosCasePos.text = "Case " + (gameObject.transform.position.x - 0.5f) + ", " + (gameObject.transform.position.z - 0.5);
 
-                _tileInfosFoodCount.text = tile.getResourceCountByType(ResourceType.FOOD).ToString();
-                _tileInfosLinemateCount.text = tile.getResourceCountByType(ResourceType.LINEMATE).ToString();
-                _tileInfosDeraumereCount.text = tile.getResourceCountByType(ResourceType.DERAUMERE).ToString();
-                _tileInfosSiburCount.text = tile.getResourceCountByType(ResourceType.SIBUR).ToString();
-                _tileInfosMendianeCount.text = tile.getResourceCountByType(ResourceType.MENDIANE).ToString();
-                _tileInfosPhirasCount.text = tile.getResourceCountByType(ResourceType.PHIRAS).ToString();
-                _tileInfosThystameCount.text = tile.getResourceCountByType(ResourceType.THYSTAME).ToString();
+                updateCountFromTile(tile);
             }
         }
     }

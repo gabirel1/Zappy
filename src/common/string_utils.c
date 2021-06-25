@@ -51,3 +51,12 @@ char *my_itoa(int i)
     *convert_digit(s, i) = '\0';
     return (dest);
 }
+
+void *my_malloc_m(size_t size)
+{
+    void *pointer = malloc(size);
+
+    memset(pointer, 0, size);
+
+    return pointer;
+}

@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+
+public enum TrontorianState
+{
+    IDLE = 0,
+    WALK = 1,
+    JUMP = 2
+}
 
 public class Trontorian
 {
@@ -11,8 +19,12 @@ public class Trontorian
     public Vector3 position { get; private set; }
     public Vector3 positionToGo { get; set; }
     public GameObject gameObject { get; private set; }
+    public GameObject sphere { get; private set; }
     public bool waitForNextAction { get; set; }
-    public bool isIdling = true;
+    public TrontorianState state = TrontorianState.IDLE;
+    public bool isDead = false;
+
+    public Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>();
 
     public Trontorian(int uid, float x, float y, int orientation, int level, string team)
     {
@@ -23,18 +35,55 @@ public class Trontorian
         this.team = team;
         this.gameObject = Utils.createTrontorianObject(this.position);
         setOrientation(orientation);
+        initAnimations();
+        playAnimation("Idle", true);
+
+        this.sphere = Utils.createSphere(new Vector3(gameObject.transform.position.x, 5, gameObject.transform.position.y), new Vector3(0.1f, 0.1f, 0.1f), Utils.teamColors[team]);
+    }
+
+    private void initAnimations()
+    {
+        Animation anim = this.gameObject.GetComponent<Animation>();
+        AnimationClip clip = Utils.findAnimationByName("Walk");
+        anim.AddClip(clip, clip.name);
+        clips["Walk"] = clip;
+        clip = Utils.findAnimationByName("Idle");
+        anim.AddClip(clip, clip.name);
+        clips["Idle"] = clip;
+        clip = Utils.findAnimationByName("Jump");
+        anim.AddClip(clip, clip.name);
+        clips["Jump"] = clip;
+        clip = Utils.findAnimationByName("Death1");
+        anim.AddClip(clip, clip.name);
+        clips["Death1"] = clip;
+    }
+
+    private void playAnimation(string animationName, bool loop)
+    {
+        Animation anim = gameObject.GetComponent<Animation>();
+        AnimationClip clip = clips[animationName];
+        if (clip == null)
+        {
+            Debug.Log("Unable to play animation " + animationName);
+            return;
+        }
+        anim.Stop();
+        anim.clip = clip;
+        if (loop)
+        {
+            anim.wrapMode = WrapMode.Loop;
+        }
+        else
+        {
+            anim.wrapMode = WrapMode.Once;
+        }
+        anim.Play();
     }
 
     public void move()
     {
-        isIdling = false;
-        Animation anim = gameObject.GetComponent<Animation>();
-        AnimationClip clip = Utils.findAnimationByName("Walk");
-        anim.Stop();
-        anim.AddClip(clip, clip.name);
-        anim.clip = clip;
-        anim.wrapMode = WrapMode.Loop;
-        anim.Play();
+        state = TrontorianState.WALK;
+        playAnimation("Walk", true);
         switch (orientation)
         {
             case 1: // N
@@ -55,19 +104,26 @@ public class Trontorian
 
     public void idle()
     {
-        if (isIdling)
+        if (state == TrontorianState.IDLE || state == TrontorianState.JUMP)
         {
             return;
         }
-        isIdling = true;
-        AnimationClip clip = Utils.findAnimationByName("Idle");
-        Animation anim = gameObject.GetComponent<Animation>();
-        anim.Stop();
-        anim.clip = clip;
-        anim.wrapMode = WrapMode.Loop;
-        anim.Play();
+        state = TrontorianState.IDLE;
+        playAnimation("Idle", true);
     }
-    
+
+    public void jump()
+    {
+        state = TrontorianState.JUMP;
+        playAnimation("Jump", true);
+    }
+
+    public void stopJump()
+    {
+        state = TrontorianState.IDLE;
+        playAnimation("Idle", true);
+    }
+
     public void updatePosition()
     {
         var x = gameObject.transform.position.x;
@@ -92,6 +148,12 @@ public class Trontorian
     public void setOrientation(int orientation)
     {
         this.orientation = orientation;
-        gameObject.transform.eulerAngles = new Vector3(0, (orientation - 1) * 90, 0);
+        this.gameObject.transform.eulerAngles = new Vector3(0, (orientation - 1) * 90, 0);
+    }
+
+    public void Kill()
+    {
+        playAnimation("Death1", false);
+        this.isDead = true;
     }
 }

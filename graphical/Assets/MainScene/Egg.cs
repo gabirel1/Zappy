@@ -17,6 +17,7 @@ public class Egg
         this.gameObject.transform.eulerAngles = new Vector3(-90, this.gameObject.transform.eulerAngles.y, this.gameObject.transform.eulerAngles.z);
         this.gameObject.transform.localScale = new Vector3(1, 1, 1);
         this.particle = Utils.createObject(position, "Particles/eggEffect");
+        this.particle.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
     }
 
     public void Destroy()

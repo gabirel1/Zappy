@@ -28,8 +28,15 @@ public class Tile
     public void addResourceByType(ResourceType type)
     {
         Vector3 pos = new Vector3(position.x + Random.Range(-0.4f, 0.4f), 0.05f, position.z + Random.Range(-0.4f, 0.4f));
-        GameObject gameObject = Utils.createObject(pos, Utils.resourceAssets[(int)type]);
-        resourceList.Add(new Resource(type, gameObject));
+        int count = getResourceCountByType(type);
+        if (count < 20) {
+            GameObject gameObject = Utils.createObject(pos, Utils.resourceAssets[(int)type]);
+            resourceList.Add(new Resource(type, gameObject));
+        }
+        else
+        {
+            resourceList.Add(new Resource(type, null));
+        }
     }
 
     public void removeResourceByType(ResourceType type)
@@ -38,7 +45,10 @@ public class Tile
         {
             if (resourceList[i].type == type)
             {
-                Object.Destroy(resourceList[i].gameObject);
+                if (resourceList[i].gameObject != null)
+                {
+                    Object.Destroy(resourceList[i].gameObject);
+                }
                 resourceList.RemoveAt(i);
                 break;
             }
