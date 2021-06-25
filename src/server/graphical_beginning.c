@@ -59,7 +59,7 @@ int ia_send_first_batch(game_board_t *g_board, \
 client_t *client, server_t *server)
 {
     player_t *player = get_player_by_uuid(client->uuid);
-    team_t *team = (player) ? get_team_by_uuid(player->team_uuid) : NULL;
+    team_t *team = (player != NULL) ? get_team_by_uuid(player->team_uuid) : NULL;
 
     if (team == NULL) {
         printf("no team found\n");
