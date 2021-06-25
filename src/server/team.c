@@ -18,9 +18,13 @@ team_t *init_team(char team_uuid[37], char *team_name, int max_client)
 {
     team_t *new_team = my_malloc(sizeof(team_t));
 
+    if (!new_team)
+        return NULL;
     memset(new_team, 0, sizeof(team_t));
     strcpy(new_team->team_uuid, team_uuid);
     new_team->team_name = my_strdup(team_name);
+    if (!new_team->team_name)
+        return NULL;
     new_team->client_max = max_client;
 
     return new_team;

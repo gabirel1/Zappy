@@ -12,6 +12,10 @@ int new_connection(server_t *server, int i)
     client_t *new = my_malloc(sizeof(client_t));
     size_t len = sizeof(server->server_address);
 
+    if (!new) {
+        close(i);
+        return 0;
+    }
     new->fd = accept(i, (struct sockaddr *) &server->server_address, \
     (socklen_t *) &len);
     if (new->fd == -1) {

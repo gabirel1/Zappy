@@ -20,14 +20,14 @@ player_t *init_player(char *team_uuid, int posx, int posy)
     uuid_t new_uuid;
     static int nb = 1;
 
+    if (!player)
+        return NULL;
     uuid_generate(new_uuid);
     memset(player, 0, sizeof(player_t));
     player->posx = posx;
     player->posy = posy;
     player->player_number = nb++;
     player->level = 1;
-    player->is_egg = false;
-    player->is_egg_used = false;
     strcpy(player->team_uuid, team_uuid);
     player->orientation = (rand() % 4) + 1;
     player->hp = 10;

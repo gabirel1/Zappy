@@ -13,6 +13,8 @@ char **ressources_container(void)
 
     if (ptr == NULL) {
         ptr = my_malloc(sizeof(char *) * (THYSTAME + 2));
+        if (!ptr)
+            return NULL;
         ptr[0] = my_strdup("food");
         ptr[1] = my_strdup("linemate");
         ptr[2] = my_strdup("deraumere");
@@ -29,6 +31,8 @@ int get_resources_number_by_name(char *name)
 {
     char **resources = ressources_container();
 
+    if (!resources)
+        return ERROR;
     for (int index = 0; resources[index]; index++) {
         if (strcmp(resources[index], name) == 0) {
             return index;

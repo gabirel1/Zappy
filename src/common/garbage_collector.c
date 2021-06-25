@@ -18,6 +18,8 @@ void add_garbage(garbage_t **garbage, void *ptr)
 {
     garbage_t *cp = malloc(sizeof(garbage_t));
 
+    if (!cp)
+        return;
     cp->pointer = ptr;
     cp->next = *garbage;
     *garbage = cp;
@@ -41,6 +43,8 @@ void *my_realloc(ssize_t size, void *obj)
     void *ptr = my_malloc(size);
     size_t len = sizeof(obj);
 
+    if (!ptr)
+        return NULL;
     if (obj) {
         memcpy(ptr, obj, len);
     }
@@ -52,6 +56,8 @@ void *my_malloc(ssize_t size)
     void *pointer = malloc(size);
     char *cpy = pointer;
 
+    if (!pointer)
+        return NULL;
     add_garbage(get_garbage_list(), pointer);
     for (ssize_t i = 0; i < size; i += 1)
         cpy[i] = 0;

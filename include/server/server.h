@@ -130,6 +130,12 @@ typedef struct func_s
             && tmp->is_ia == true) \
             dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
 
+#define TILES_SIZE sizeof(tile_t) * ((player->level + 1) * \
+    (player->level + 1))
+
+#define MALLOC_CHECK if (!ret) \
+    return NULL;
+
 #define SEND_RES SEND_RES_GR SEND_RES_CLI
 server_t **server_container(void);
 char *my_strdup(char *cpy);
