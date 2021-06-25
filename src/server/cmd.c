@@ -62,8 +62,12 @@ client_t *client)
     bool passed = false;
     int res = 0;
 
+    if (tab[0] == NULL) {
+        free_tab(tab);
+        return ERROR;
+    }
     for (int i = 0; func_tab[i].cmd; i += 1) {
-        if (strcmp(func_tab[i].cmd, tab[0]) == 0) {
+        if (strcmp(tab[0], func_tab[i].cmd) == 0) {
             passed = true;
             func_tab[i].fun(&tab[1], server, game, client);
         }

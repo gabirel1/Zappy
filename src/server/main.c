@@ -15,6 +15,7 @@ int main(int ac, char *av[])
 
     srand(time(NULL));
     signal(SIGINT, my_sighandler);
+    signal(SIGPIPE, SIG_IGN);
     setup_default(&server_info, &game_info);
     if ((res = setup_infos(ac, av, &server_info, &game_info)) == ERROR) {
         return help_func(FAILURE);
