@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,9 +7,6 @@ public class MainScene : MonoBehaviour
     public RectTransform _loadingIcon;
 
     public TCPTestClient socketClient;
-
-    private float map_x = 0;
-    private float map_y = 0;
 
     void generateMap(float w, float h)
     {
@@ -53,7 +49,7 @@ public class MainScene : MonoBehaviour
         GameObject pot2 = Utils.createPrefabObject(new Vector3(w + 3, 0, 3), "Nokobot/GreekTemple/01_Prefabs/Vases/Vase_02");
         pot2.transform.Rotate(new Vector3(0, 10, 0));   
         GameObject pot3 = Utils.createPrefabObject(new Vector3(-w / 4, 0, 4), "Nokobot/GreekTemple/01_Prefabs/Vases/Vase_01");
-        pot3.transform.Rotate(new Vector3(0, 4, 0));   
+        pot3.transform.Rotate(new Vector3(0, 4, 0));
     }
 
     private float waitTime = 0.05f;
