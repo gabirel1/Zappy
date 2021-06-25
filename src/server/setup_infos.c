@@ -10,7 +10,7 @@
 int p_case(server_info_t *server_info)
 {
     printf("opt p == %s\n", optarg);
-    if (is_full_digits(optarg) == false) {
+    if (is_full_digits(optarg) == false || atoi(optarg) <= 0) {
         printf("-p option only accepts valid ports\n");
         return ERROR;
     }
@@ -18,21 +18,26 @@ int p_case(server_info_t *server_info)
     return SUCCESS;
 }
 
-void n_case_next(server_info_t *s_info, char *name)
+int n_case_next(server_info_t *s_info, char *name)
 {
     uuid_t tmp;
     char buffer[37] = {0};
     team_t *new_team = NULL;
 
-    printf("opt n nb ==  %s\n", name);
+    printf("opt n nb ==  '%s'\n", name);
     uuid_generate(tmp);
     uuid_unparse_lower(tmp, buffer);
 
+    if (get_team_by_name(name) != NULL || strcmp(name, "") == 0) {
+        printf("-n option only accepts teams with different numbers\n");
+        return ERROR;
+    }
     new_team = init_team(buffer, name, s_info->max_client);
     if (add_team(new_team) == false) {
         printf("error while adding a team\n");
-        return;
+        return ERROR;
     }
+    return SUCCESS;
 }
 
 int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
@@ -52,7 +57,8 @@ int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
             optind = index - 1;
             break;
         }
-        n_case_next(s_info, av[index]);
+        if (n_case_next(s_info, av[index]) == ERROR)
+            return ERROR;
         count++;
     }
     g_info->teams = *team_container();
