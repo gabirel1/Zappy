@@ -30,17 +30,13 @@ bool Parse::parsing(UNSD int ac, char **av)
         std::string nextLine(av[i + 1]);
 
         if (line == "-p" && _port == 0) {
-            std::cout << "1" << std::endl;
             if (std::regex_match(nextLine, match, nb))
             {
                 _port = std::stoi(nextLine);
                 i += 1;
             }
             else
-            {
-                std::cout << "Bad port" << std::endl;
-                return (false);
-            }
+                throw error::ErrorAI("Port arg is wrong", "-p");
         } else if (line == "-n" && _name.length() == 0) {
             std::cout << "2" << std::endl;
             if (std::regex_match(nextLine, match, word))
@@ -49,10 +45,7 @@ bool Parse::parsing(UNSD int ac, char **av)
                 i += 1;
             }
             else
-            {
-                std::cout << "Bad name 1" << std::endl;
-                return (false);
-            }
+                throw error::ErrorAI("Name arg is wrong", "-p");
         } else if (line == "-h" && _machine == "localhost") {
             std::cout << "3" << std::endl;
             if (std::regex_match(nextLine, match, word))
@@ -61,18 +54,14 @@ bool Parse::parsing(UNSD int ac, char **av)
                 i += 1;
             }
             else
-            {
-                std::cout << "Bad machine" << std::endl;
-                return (false);
-            }
-        
-        } else {
-            std::cout << "Bad arg" << std::endl;
-            return (false);
-        }
+                throw error::ErrorAI("Machine arg is missing", "-p");
+        } else
+                throw error::ErrorAI("wrong arg", line);
     }
-    if (_port == 0 || _name.length() == 0)
-        return (false);
+    if (_port == 0)
+        throw error::ErrorAI("wrong port", "-p");
+    if (_name.length() == 0)
+        throw error::ErrorAI("wrong name", "-n");
     std::cout << _port << " " << _name << " " << _machine << std::endl;
     return (true);
 }

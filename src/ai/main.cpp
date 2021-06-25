@@ -13,12 +13,20 @@ int main(int ac, char **av)
 {
     Parse pars;
 
-    if (ac == 7 || ac == 5) {
-        if (pars.parsing(ac, av) == false)
-            return(84);
+    try {
+        if (ac == 7 || ac == 5) {
+            if (pars.parsing(ac, av) == false)
+                return(84);
+        }
+        else
+            throw error::ErrorAI("wrong number of arguments", "main.cpp");
+    } catch (const error::ErrorAI &e) {
+        std::cout << e.what() << " " << e.where() << std::endl;
+        return (84);
+    } catch (const std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return (84);
     }
-    else
-        return(84);
 
     IA::Player newPlayer(pars.getPort(), pars.getMachine(), pars.getName());
 

@@ -28,6 +28,7 @@
 #include <uuid/uuid.h>
 #include <signal.h>
 #include <regex>
+#include "Error.hpp"
 #define UNSD __attribute__((unused))
 
 class Parse {
