@@ -28,7 +28,7 @@ int forward_next(game_board_t *game, player_t *player)
     return SUCCESS;
 }
 
-void send_moved(player_t *player, server_t *server)
+void send_moved(player_t *player, server_t *server UNSD, game_board_t *game UNSD)
 {
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)
