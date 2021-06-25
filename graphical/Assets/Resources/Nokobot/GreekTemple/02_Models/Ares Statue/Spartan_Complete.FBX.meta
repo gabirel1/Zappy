@@ -1,0 +1,267 @@
+fileFormatVersion: 2
+guid: cada8102060aeda4eb68c40207d37687
+timeCreated: 1516406711
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Body
+    100002: Bracer
+    100004: Cape
+    100006: Cape_Pin
+    100008: Chest_Plate_Bottom
+    100010: Chest_Plate_Middle
+    100012: Chest_Plate_Top
+    100014: Helmet
+    100016: helmet_Base_Broom
+    100018: helmet_Broom
+    100020: Leg_armor
+    100022: Sandal
+    100024: shield
+    100026: Skirt
+    100028: Skirt_Armor
+    100030: //RootNode
+    100032: Spear
+    400000: Body
+    400002: Bracer
+    400004: Cape
+    400006: Cape_Pin
+    400008: Chest_Plate_Bottom
+    400010: Chest_Plate_Middle
+    400012: Chest_Plate_Top
+    400014: Helmet
+    400016: helmet_Base_Broom
+    400018: helmet_Broom
+    400020: Leg_armor
+    400022: Sandal
+    400024: shield
+    400026: Skirt
+    400028: Skirt_Armor
+    400030: //RootNode
+    400032: Spear
+    2100000: Body
+    2100002: shield
+    2100004: Spear
+    2100006: helmet
+    2100008: Sandals
+    2100010: Bracer
+    2100012: Leg_Armor
+    2100014: Skirt
+    2100016: Skirt_Armor
+    2100018: Helmet_Broom
+    2100020: Chest_Plate_Bottom
+    2100022: Chest_Plate_Top
+    2100024: Chest_Plate_Middle
+    2100026: Cape_Pin
+    2100028: Cape
+    2100030: helmet_Base_Broom
+    2300000: Body
+    2300002: Bracer
+    2300004: Cape
+    2300006: Cape_Pin
+    2300008: Chest_Plate_Bottom
+    2300010: Chest_Plate_Middle
+    2300012: Chest_Plate_Top
+    2300014: Helmet
+    2300016: helmet_Base_Broom
+    2300018: helmet_Broom
+    2300020: Leg_armor
+    2300022: Sandal
+    2300024: shield
+    2300026: Skirt
+    2300028: Skirt_Armor
+    2300030: Spear
+    3300000: Body
+    3300002: Bracer
+    3300004: Cape
+    3300006: Cape_Pin
+    3300008: Chest_Plate_Bottom
+    3300010: Chest_Plate_Middle
+    3300012: Chest_Plate_Top
+    3300014: Helmet
+    3300016: helmet_Base_Broom
+    3300018: helmet_Broom
+    3300020: Leg_armor
+    3300022: Sandal
+    3300024: shield
+    3300026: Skirt
+    3300028: Skirt_Armor
+    3300030: Spear
+    4300000: Body
+    4300002: shield
+    4300004: Spear
+    4300006: Helmet
+    4300008: Sandal
+    4300010: Bracer
+    4300012: Leg_armor
+    4300014: Skirt
+    4300016: Skirt_Armor
+    4300018: helmet_Broom
+    4300020: Chest_Plate_Bottom
+    4300022: Chest_Plate_Top
+    4300024: Chest_Plate_Middle
+    4300026: Cape_Pin
+    4300028: Cape
+    4300030: helmet_Base_Broom
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2100000, guid: 2b86c330dd93e8c4cbef26bdd873ef52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bracer
+    second: {fileID: 2100000, guid: ad3931a93d34ff548ad5b9d22034a4d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cape
+    second: {fileID: 2100000, guid: 2e2aaaff5885d7d49b3fac01c4208bb5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cape_Pin
+    second: {fileID: 2100000, guid: 131eecc8bf489084ba0b604f4d8441ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chest_Plate_Bottom
+    second: {fileID: 2100000, guid: ae60afaef37eb6441aa06fad2c76159e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chest_Plate_Middle
+    second: {fileID: 2100000, guid: ee9c2e2829824594d9708b79995b915b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chest_Plate_Top
+    second: {fileID: 2100000, guid: cb4f71b1b9834184bb4f09435fbe5afc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Helmet_Broom
+    second: {fileID: 2100000, guid: c02f2642deec8b749a21105e32343a9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leg_Armor
+    second: {fileID: 2100000, guid: 8f17bdd0c1fc14c41b8727e9146dc6d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sandals
+    second: {fileID: 2100000, guid: 19ce4bbfa3e416444a2c599076941079, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skirt
+    second: {fileID: 2100000, guid: 509e503f25667c248b2f6c627bb8fe58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skirt_Armor
+    second: {fileID: 2100000, guid: a495cce05a1a0e14ea6e01d6aee148be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Spear
+    second: {fileID: 2100000, guid: 3865e28109a5958428dc0a1195a8b05c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: helmet
+    second: {fileID: 2100000, guid: 2e514f5ce6fdad54daf8265b24075252, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: helmet_Base_Broom
+    second: {fileID: 2100000, guid: c404ec51e59c2c140ac0700d8c916120, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: shield
+    second: {fileID: 2100000, guid: 7faca1c57558d534fb7373bc801ae247, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.35
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
