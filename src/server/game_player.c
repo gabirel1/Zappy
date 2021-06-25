@@ -33,7 +33,7 @@ void player_death(player_t *player, server_t *server)
     player_death_next(player_number, server);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0) {
-            dprintf(tmp->fd, "dead\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "dead\n") : 0;
             stop_client(tmp->fd, server, &player_number);
             delete_player(player);
             delete_client(tmp);
