@@ -24,6 +24,11 @@ game_board_t *g_board UNSD)
             player->orientation = SOUTH;
             break;
     }
+}
+
+void send_left(player_t *player, server_t *server, \
+game_board_t *g_board UNSD)
+{
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)
             (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
@@ -42,8 +47,9 @@ game_board_t *g_board UNSD, client_t *client)
         dprintf(client->fd, "ko\n");
         return ERROR;
     }
-    player->on_cd = &left;
+    player->on_cd = &send_left;
     player->cooldown = 7;
+    left(player, server, g_board);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true)
             ppo_second(tmp->fd, player, server);
