@@ -7,6 +7,23 @@
 
 #include "server/server.h"
 
+void update_client_timeout(server_t *server)
+{
+    struct timeval end = { 0 };
+    double secs = 0;
+
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        gettimeofday(&end, NULL);
+        secs = (double)(end.tv_usec - tmp->timeout.tv_usec) / 1000000 + \
+        (double)(end.tv_sec - tmp->timeout.tv_sec);
+        if (secs > 25 && tmp->is_graphic == false && tmp->is_ia == false) {
+            FD_CLR(tmp->fd, &(server->active_fd_set));
+            delete_client(tmp);
+            printf("Client disconnected\n");
+        }
+    }
+}
+
 int server_loop(server_t *server, int res, server_info_t *server_in, \
 game_board_t *game)
 {
@@ -26,5 +43,6 @@ game_board_t *game)
             stop_client(i, server, &res);
     }
     update_cooldown(game, server);
+    update_client_timeout(server);
     return SUCCESS;
 }

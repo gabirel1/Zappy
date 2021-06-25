@@ -77,8 +77,9 @@ typedef struct client_s
     bool is_graphic;
     bool is_ia;
     char uuid[37];
+    struct timeval timeout;
     struct client_s *next;
-} __attribute__((packed)) client_t;
+} client_t;
 
 typedef enum orientation
 {
@@ -88,9 +89,11 @@ typedef enum orientation
     WEST
 } orientation_t;
 
+typedef int inventory_t[THYSTAME + 1];
+
 typedef struct player_s
 {
-    int inventory[THYSTAME + 1];
+    inventory_t inventory;
     orientation_t orientation;
     int posx;
     int posy;
@@ -178,6 +181,7 @@ bool delete_team(team_t *team);
 team_t *get_team_by_name(char *name);
 char *get_team_name_by_uuid(char uuid[37]);
 
+bool check_fd(int fd);
 char *read_from_fd(int fd, fd_set *fd_set);
 int interpret_cmd(char *buff, server_t *server, game_board_t *game, \
 client_t *client);

@@ -7,6 +7,25 @@
 
 #include "server/server.h"
 
+bool check_fd(int fd)
+{
+    int tmp = dup(fd);
+    char buffer[1024] = { 0 };
+
+    while (read(tmp, buffer, 1024) == 1024) {
+        for (int i = 0; i < 1024; i += 1)
+            if (buffer[i] == '\n')
+                return true;
+        memset(buffer, 0, 1024);
+    }
+    for (int i = 0; buffer[i]; i += 1) {
+        if (buffer[i] == '\n')
+            return true;
+    }
+    close(tmp);
+    return false;
+}
+
 char *read_from_fd(int fd, fd_set *fd_set)
 {
     char *buff = NULL;
