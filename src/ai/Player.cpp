@@ -654,12 +654,10 @@ void IA::Player::levelOne(void)
             for (int i = 0; i < 125; i++)
             {
                 this->setObject("food");
-                usleep(10000);
             }
             for (int i = 0; i < 5; i++)
             {
                 this->forkPlayer();
-                usleep(10000);
                 state = 1;
             }
         }
@@ -692,10 +690,10 @@ void IA::Player::levelOne(void)
             std::cout << "-------------" << std::endl;
             int r = rand() % 2 + 0;
             std::cout << "-------------" << r << std::endl;
-            if (r == 0)
-                this->move("Left");
-            else if (r == 1)
-                this->move("Right");
+            // if (r == 0)
+            //     this->move("Left");
+            // else if (r == 1)
+            //     this->move("Right");
             this->move("Forward");
         }
         // while (1 < -1)
@@ -746,11 +744,10 @@ void IA::Player::levelOne(void)
     }
     if (_tile[0].getResources()[DFOOD].second != 0)
     {
-        for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+        for (int f = _tile[0].getResources()[DFOOD].second; f > 0 && f < 100; f--)
         {
             std::cout << "food has been taken" << std::endl;
             this->take("food");
-            usleep(10000);
         }
     }
     this->inventory();
@@ -883,10 +880,10 @@ void IA::Player::levelOne(void)
                                 int r = rand() % 2 + 0;
                                 std::cout << "-------------" << r << std::endl;
 
-                                if (r == 0)
-                                    this->move("Left");
-                                else if (r == 1)
-                                    this->move("Right");
+                                // if (r == 0)
+                                //     this->move("Left");
+                                // else if (r == 1)
+                                //     this->move("Right");
                                 this->move("Forward");
                             }
                         }
