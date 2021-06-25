@@ -9,11 +9,17 @@
 
 IA::Player::Player(int port, const std::string &addr, const std::string &teamName) : _nbTeam(1), _toStop(false), _socket(port, addr), _level(1), _teamName(teamName), _addr(addr), _port(port)
 {
-    std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
-    _socket.sendMessage(_teamName);
     std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
-    if (tmp.empty() || tmp == "ko\n")
-        exit(84);
+    while (tmp.empty())
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cout << tmp << std::endl;
+    _socket.sendMessage(_teamName);
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cerr << "[" << tmp << "]" << std::endl;
+    while (tmp.empty() || std::count(tmp.begin(), tmp.end(), '\n') != 2) {
+        tmp += _socket.receiveMessage(_toStop, _clientNum);
+        usleep(100000);
+    }
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
@@ -24,6 +30,8 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     // broadcast(std::string("iam here " + std::to_string(_clientNum) + " from team " + _teamName));
     // usleep(100000);
     // broadcast("team");
+    // while (1)
+    //     inventory();
     loop();
 }
 
@@ -342,9 +350,10 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
     //     // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
     //     return (true);
     // } else
-    if (tmp.find("here") != tmp.npos)
+    if (tmp.find("here") != tmp.npos && tmp.find(_teamName) != tmp.npos)
     {
         _nbTeam += 1;
+        // std::cerr << "####################################################team nb = " << _nbTeam << std::endl;
         return (true);
     }
     std::cout << "message from server: [" << tmp << "]" << std::endl;
@@ -355,7 +364,7 @@ void IA::Player::broadcast(const std::string &msg)
 {
     if (_toStop)
         return;
-    std::cerr << "-------------------------" << msg << " debut-------------------------" << std::endl;
+    // std::cerr << "-------------------------" << msg << " debut-------------------------" << std::endl;
     _socket.sendMessage("Broadcast " + msg);
     std::string tmp;
 
@@ -364,17 +373,17 @@ void IA::Player::broadcast(const std::string &msg)
     {
         _toStop = true;
         std::cout << " dead move" << std::endl;
-        std::cerr << "-------------------------" << msg << " end dead -------------------------" << std::endl;
+        // std::cerr << "-------------------------" << msg << " end dead -------------------------" << std::endl;
         return;
     }
     if (tmp == "ko\n")
     {
         std::cout << "klskldlksdproblem in sending message" << std::endl;
-        std::cerr << "-------------------------" << msg << " end ko-------------------------" << std::endl;
+        // std::cerr << "-------------------------" << msg << " end ko-------------------------" << std::endl;
         return;
     }
     std::cout << "message sent !!" << std::endl;
-    std::cerr << "-------------------------" << msg << " end -------------------------" << std::endl;
+    // std::cerr << "-------------------------" << msg << " end -------------------------" << std::endl;
 }
 
 void IA::Player::forkPlayer()
@@ -425,21 +434,24 @@ void IA::Player::getOtherInput(std::string &tmp)
 void IA::Player::waitResponse(std::string &tmp)
 {
     std::string save;
+    static int tmpTest  = 0;
     bool test = false;
     bool toAppend = false;
     tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1)
     {
+        if (toAppend) {
+            tmp.append(save);
+            toAppend = false;
+        }
         if (tmp.find('\n') == tmp.npos) {
             toAppend = true;
             save = tmp;
-            usleep(100000);
+            // usleep(100000);
             tmp = _socket.receiveMessage(_toStop, _clientNum);
             continue;
         }
-        if (toAppend)
-            tmp.append(save);
-        std::cerr << "++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
+        std::cerr << tmpTest << " ++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n")
@@ -465,7 +477,7 @@ void IA::Player::waitResponse(std::string &tmp)
             if (!tmp.empty())
                 return;
         }
-        usleep(100000);
+        // usleep(100000);
         tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
 }
@@ -654,12 +666,10 @@ void IA::Player::levelOne(void)
             for (int i = 0; i < 125; i++)
             {
                 this->setObject("food");
-                usleep(10000);
             }
             for (int i = 0; i < 5; i++)
             {
                 this->forkPlayer();
-                usleep(10000);
                 state = 1;
             }
         }
@@ -692,10 +702,10 @@ void IA::Player::levelOne(void)
             std::cout << "-------------" << std::endl;
             int r = rand() % 2 + 0;
             std::cout << "-------------" << r << std::endl;
-            if (r == 0)
-                this->move("Left");
-            else if (r == 1)
-                this->move("Right");
+            // if (r == 0)
+            //     this->move("Left");
+            // else if (r == 1)
+            //     this->move("Right");
             this->move("Forward");
         }
         // while (1 < -1)
@@ -746,11 +756,10 @@ void IA::Player::levelOne(void)
     }
     if (_tile[0].getResources()[DFOOD].second != 0)
     {
-        for (int f = _tile[0].getResources()[DFOOD].second; f > 0; f--)
+        for (int f = _tile[0].getResources()[DFOOD].second; f > 0 && f < 100; f--)
         {
             std::cout << "food has been taken" << std::endl;
             this->take("food");
-            usleep(10000);
         }
     }
     this->inventory();
@@ -883,10 +892,10 @@ void IA::Player::levelOne(void)
                                 int r = rand() % 2 + 0;
                                 std::cout << "-------------" << r << std::endl;
 
-                                if (r == 0)
-                                    this->move("Left");
-                                else if (r == 1)
-                                    this->move("Right");
+                                // if (r == 0)
+                                //     this->move("Left");
+                                // else if (r == 1)
+                                //     this->move("Right");
                                 this->move("Forward");
                             }
                         }
@@ -946,19 +955,19 @@ void IA::Player::levelTwo(void)
 
 void IA::Player::levelTree(void)
 {
-    std::cout << _clientNum << " LVL 3" << std::endl;
-    this->clearTile();
-    this->setObject("linemate");
-    this->setObject("linemate");
-
-    this->setObject("sibur");
-
-    this->setObject("phiras");
-    this->setObject("phiras");
-
-    this->broadcast("evolve");
     while (this->_level == 3) {
-        this->look();
+        std::cout << _clientNum << " LVL 3" << std::endl;
+        this->clearTile();
+        this->setObject("linemate");
+        this->setObject("linemate");
+
+        this->setObject("sibur");
+
+        this->setObject("phiras");
+        this->setObject("phiras");
+
+        this->broadcast("evolve");
+            this->look();
         this->incantation();
     }
 }
@@ -1057,7 +1066,7 @@ void IA::Player::clearTile(void)
     {
         std::cout << "food has been taken" << std::endl;
         this->take("food");
-        usleep(10000);
+        // usleep(10000);
     }
     for (int f = _tile[0].getResources()[DLINEMATE].second; f > 0; f--)
     {

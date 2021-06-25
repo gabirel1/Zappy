@@ -9,30 +9,33 @@
 
 IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)  : _socket(port, addr),  _teamName(teamName), _addr(addr), _port(port),  _toStop(false)
 {
-    std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
-    _socket.sendMessage(_teamName);
     std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
-    if (tmp.empty()) {
-        usleep(10000);
+    while (tmp.empty())
         tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cout << tmp << std::endl;
+    _socket.sendMessage(_teamName);
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cerr << "[" << tmp << "]" << std::endl;
+    while (tmp.empty() || std::count(tmp.begin(), tmp.end(), '\n') != 2) {
+        tmp += _socket.receiveMessage(_toStop, _clientNum);
+        usleep(100000);
     }
-    std::cerr << "value clientNum{{{{" << tmp  << "}}}}" << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
-    tmp = _socket.receiveMessage(_toStop, _clientNum);
-    std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
-    while (tmp != "ok\n") {
-        std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
+    // std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
+    while (tmp.find("ok") == tmp.npos) {
+        // std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
         tmp = _socket.receiveMessage(_toStop, _clientNum);
-        usleep(10000);
     }
-    broadcast("here " + _teamName);
+    // std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
     for (int i = 0; i < 25; i++) {
         std::cout << "-----------------------took foood-----------------------" << std::endl;
         this->take("food");
     }
+    broadcast("here " + _teamName);
+    loop();
     // recolté 25 food
 }
 
@@ -60,6 +63,7 @@ void IA::Sbire::broadcast(const std::string &msg)
     if (_toStop)
         return;
     _socket.sendMessage("Broadcast " + msg);
+    std::cerr << "'''''''''''''''''''''''''''''''''''''''''broadcast " << msg << std::endl;
     tmp = _socket.receiveMessage(_toStop, _clientNum);
     while (1) {
         if (tmp == "ko\n") {
@@ -72,8 +76,8 @@ void IA::Sbire::broadcast(const std::string &msg)
             std::cout << "message sent !!" << std::endl;
             return;
         }
-        tmp = _socket.receiveMessage(_toStop, _clientNum);
         usleep(100000);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
 }
 
@@ -97,7 +101,7 @@ void IA::Sbire::take(const std::string &res)
             return;
         }
         // std::cout << _clientNum << " " << std::endl;
-        tmp = _socket.receiveMessage(_toStop, _clientNum);
         usleep(100000);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
 }

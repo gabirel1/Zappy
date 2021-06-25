@@ -35,11 +35,11 @@ int tell_graphical_ia_is_here(server_t *server, client_t *client_ia)
 {
     player_t *player = NULL;
     char *team_name = NULL;
-    bool found = false;
+    // bool found = false;
 
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_graphic == true) {
-            found = true;
+            // found = true;
             player = get_player_by_uuid(client_ia->uuid);
             if (player == NULL)
                 continue;
@@ -52,7 +52,8 @@ int tell_graphical_ia_is_here(server_t *server, client_t *client_ia)
             }
         }
     }
-    return (found == false) ? ERROR : SUCCESS;
+    // return (found == false) ? ERROR : SUCCESS;
+    return SUCCESS;
 }
 
 int ia_send_first_batch(game_board_t *g_board, \
