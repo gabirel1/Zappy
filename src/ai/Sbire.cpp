@@ -9,14 +9,24 @@
 
 IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)  : _socket(port, addr),  _teamName(teamName), _addr(addr), _port(port),  _toStop(false)
 {
+    std::cout << "111111111111111" << std::endl;
+    
     std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
+    std::cout << "222222222222222" << std::endl;
+
     _socket.sendMessage(_teamName);
+    std::cout << "333333333333333" << std::endl;
+
     std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cout << "444444444444444" << std::endl;
+
     if (tmp.empty()) {
         usleep(10000);
         tmp = _socket.receiveMessage(_toStop, _clientNum);
     }
-    std::cerr << "value clientNum{{{{" << tmp  << "}}}}" << std::endl;
+    std::cout << "555555555555555" << std::endl;
+
+    std::cout << "value clientNum{{{{" << tmp  << "}}}}" << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
