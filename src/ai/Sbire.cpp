@@ -12,20 +12,25 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
     std::cout << _socket.receiveMessage(_toStop, _clientNum) << std::endl;
     _socket.sendMessage(_teamName);
     std::string tmp = _socket.receiveMessage(_toStop, _clientNum);
-    if (tmp.empty() || tmp == "ko\n")
-        exit(84);
+    if (tmp.empty()) {
+        usleep(10000);
+        tmp = _socket.receiveMessage(_toStop, _clientNum);
+    }
+    std::cerr << "value clientNum{{{{" << tmp  << "}}}}" << std::endl;
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
     _position.first = atof(tmp.substr(idx + 1, tmp.find(' ', idx + 1)).c_str());
     _position.second = atof(tmp.substr(tmp.find(' ', idx + 1), tmp.find('\n', idx + 1)).c_str());
-    // tmp = _socket.receiveMessage();
+    tmp = _socket.receiveMessage(_toStop, _clientNum);
+    std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
     while (tmp != "ok\n") {
-        usleep(1000);
+        std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
         tmp = _socket.receiveMessage(_toStop, _clientNum);
+        usleep(10000);
     }
     broadcast("here " + _teamName);
     for (int i = 0; i < 25; i++) {
-        // std::cout << "-----------------------took foood-----------------------" << std::endl;
+        std::cout << "-----------------------took foood-----------------------" << std::endl;
         this->take("food");
     }
     // recolté 25 food
