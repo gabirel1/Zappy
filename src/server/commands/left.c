@@ -25,9 +25,6 @@ game_board_t *g_board UNSD)
             break;
     }
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
-        if (tmp->is_graphic == true) {
-            ppo_second(tmp->fd, player, server);
-        }
         if (strcmp(tmp->uuid, player->uuid) == 0)
             (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
     }
@@ -47,5 +44,9 @@ game_board_t *g_board UNSD, client_t *client)
     }
     player->on_cd = &left;
     player->cooldown = 7;
+    for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        if (tmp->is_graphic == true)
+            ppo_second(tmp->fd, player, server);
+    }
     return SUCCESS;
 }

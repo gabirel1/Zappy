@@ -298,29 +298,4 @@ client_t *client);
 int f_incantation(char *request[], server_t *server, game_board_t *g_board, \
 client_t *client);
 
-static const func_t func_tab[] = {
-    {"msz", &msz},
-    {"bct", &bct},
-    {"mct", &mct},
-    {"tna", &tna},
-    {"ppo", &ppo},
-    {"plv", &plv},
-    {"pin", &pin},
-    {"sgt", &sgt},
-    {"sst", &sst},
-    {"Forward", &move_forward},
-    {"Right", &move_right},
-    {"Left", &move_left},
-    {"Look", &f_look},
-    {"Inventory", &f_inventory},
-    {"Broadcast", &f_broadcast_text},
-    {"Connect_nbr", &f_connect_nbr},
-    {"Fork", &f_fork},
-    {"Eject", &f_eject},
-    {"Take", &f_take},
-    {"Set", &f_set},
-    {"Incantation", &f_incantation},
-    {NULL, NULL}
-};
-
 #endif /* !SERVER_H_ */
