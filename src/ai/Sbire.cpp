@@ -31,7 +31,8 @@ IA::Sbire::Sbire(int port, const std::string &addr, const std::string &teamName)
     }
     // std::cerr <<"=============================================[tmp = " << tmp << "]============================================="  << std::endl;
     for (int i = 0; i < 25; i++) {
-        std::cout << "-----------------------took foood-----------------------" << std::endl;
+        std::cout << "-----------------------took foood-----------------------" << i << std::endl;
+        usleep(1000);
         this->take("food");
     }
     broadcast("here " + _teamName);
