@@ -69,11 +69,20 @@ struct timeval end, server_t *server)
 
 void send_end(team_t *team, server_t *server)
 {
+    player_t *player = NULL;
+    int useless = 0;
+
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
+        player = NULL;
         if (tmp->is_graphic == true)
             seg(team->team_name, tmp->fd, server);
+        if (tmp->is_ia == true) {
+            player = get_player_by_uuid(tmp->uuid);
+            stop_client(tmp->fd, server, &useless);
+            delete_client_from_list(tmp);
+            (player != NULL) ? delete_player(player) : 0;
+        }
     }
-    my_handler(12, true);
 }
 
 void update_cooldown(game_board_t *board, server_t *server)
