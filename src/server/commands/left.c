@@ -29,7 +29,7 @@ game_board_t *g_board UNSD)
             ppo_second(tmp->fd, player, server);
         }
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "ok\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
     }
 }
 

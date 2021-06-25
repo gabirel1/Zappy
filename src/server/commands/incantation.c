@@ -49,7 +49,7 @@ void level_up(player_t *player, server_t *server, game_board_t *g UNSD)
             get_player_numbers(player->player_number), server);
         }
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "%d\n", player->level);
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "%d\n", player->level) : 0;
     }
     printf("[player %d: level %d]\n", player->player_number, player->level);
 }

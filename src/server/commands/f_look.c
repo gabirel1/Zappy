@@ -41,7 +41,7 @@ game_board_t *g_board UNSD)
 
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "%s\n", response);
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "%s\n", response) : 0;
     }
     free(response);
 }

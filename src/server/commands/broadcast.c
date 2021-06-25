@@ -8,12 +8,12 @@
 #include "server/server.h"
 
 void broadcast_message(player_t *player, server_t *server, \
-game_board_t *g_board UNSD)
+game_board_t *board UNSD)
 {
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (tmp->is_ia == true)
-            dprintf(tmp->fd, "message %d, %s\n", \
-            player->posy * g_board->width + player->posx, player->params[0]);
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "message %d, %s\n", \
+            player->posy * board->width + player->posx, player->params[0]) : 0;
         else if (tmp->is_graphic == true)
             pbc(tmp->fd, player->player_number, player->params[0], server);
     }
