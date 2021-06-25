@@ -109,7 +109,6 @@ typedef struct player_s
     struct player_s *next;
 } player_t;
 
-
 typedef struct func_s
 {
     char *cmd;
