@@ -18,7 +18,7 @@ IA::Player::Player(int port, const std::string &addr, const std::string &teamNam
     std::cerr << "[" << tmp << "]" << std::endl;
     while (tmp.empty() || std::count(tmp.begin(), tmp.end(), '\n') != 2) {
         tmp += _socket.receiveMessage(_toStop, _clientNum);
-        usleep(100000);
+        // usleep(100000);
     }
     std::size_t idx = tmp.find('\n');
     _clientNum = atoi(tmp.substr(0, idx).c_str());
@@ -350,10 +350,10 @@ bool IA::Player::treatMessageBroadcast(const std::string &msg)
     //     // std::cout << "{" << tmp.substr(tmp.find(':') + 1, tmp.find('\n') - tmp.find(':') - 1) << "}" << std::endl;
     //     return (true);
     // } else
-    if (tmp.find("here") != tmp.npos && tmp.find(_teamName) != tmp.npos)
+    if (tmp.find("here") != tmp.npos /*&& tmp.find(_teamName) != tmp.npos*/)
     {
+        std::cerr << "####################################################team nb = " << _nbTeam<< "####################################################"<< std::endl;
         _nbTeam += 1;
-        // std::cerr << "####################################################team nb = " << _nbTeam << std::endl;
         return (true);
     }
     std::cout << "message from server: [" << tmp << "]" << std::endl;
@@ -444,14 +444,14 @@ void IA::Player::waitResponse(std::string &tmp)
             tmp.append(save);
             toAppend = false;
         }
-        if (tmp.find('\n') == tmp.npos) {
+        if (tmp.find('\n') == tmp.npos || (tmp.find('[') != tmp.npos && tmp.find(']') == tmp.npos)) {
             toAppend = true;
             save = tmp;
             // usleep(100000);
             tmp = _socket.receiveMessage(_toStop, _clientNum);
             continue;
         }
-        std::cerr << tmpTest << " ++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
+        std::cerr << tmpTest++ << " ++++++++++++++++++++++++++++++++++++" << tmp << "++++++++++++++++++++++++++++++++++++" << std::endl;
         if (tmp == "ok\n" || tmp == "ko\n")
             break;
         if (tmp == "dead\n")
@@ -500,6 +500,8 @@ void IA::Player::inventory()
         std::cout << "no inventory" << std::endl;
         return;
     }
+    if (tmp.find('[') != tmp.npos && tmp.find(']') == tmp.npos)
+        return (inventory());
     for (std::size_t idx = 1; idx != tmp.npos; idx = tmp.find(',', idx + 1))
         parseInventory(tmp.find(',', idx + 1), tmp, idx);
     for (const auto &i : _inventory)
@@ -520,10 +522,16 @@ void IA::Player::parseInventory(std::size_t idx, std::string tmp, std::size_t la
     else if (tmp[last] == ',')
         last += 2;
     std::size_t idxTest = tmp.find(' ', last + 1);
-    if (idx != tmp.npos)
-        addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, idx - idxTest).c_str()));
-    else
-        addToInventory(getResourcesFromString(tmp.substr(last, idxTest - last)), atoi(tmp.substr(idxTest, tmp.find(']') - idxTest).c_str()));
+    if (idx != tmp.npos) {
+        auto test1 = getResourcesFromString(tmp.substr(last, idxTest - last));
+        auto test2 = atoi(tmp.substr(idxTest, idx - idxTest).c_str());
+        addToInventory(test1, test2);
+    }
+    else {
+        auto test1 = getResourcesFromString(tmp.substr(last, idxTest - last));
+        auto test2 = atoi(tmp.substr(idxTest, tmp.find(']') - idxTest).c_str());
+        addToInventory(test1, test2);
+    }
 }
 
 void IA::Player::clearInventory()
