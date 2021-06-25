@@ -57,6 +57,7 @@ void forward(player_t *player, server_t *server, game_board_t *game)
             if (forward_next(game, player) == ERROR)
                 return;
     }
+    send_moved(player, server);
 }
 
 int move_forward(UNSD char *request[], server_t *server, \
@@ -73,6 +74,5 @@ game_board_t *g_board UNSD, client_t *client)
     }
     player->on_cd = &forward;
     player->cooldown = 7;
-    send_moved(player, server);
     return SUCCESS;
 }
