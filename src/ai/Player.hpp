@@ -11,6 +11,7 @@
 #include "Tile.hpp"
 #include <unordered_map>
 #include "Sbire.hpp"
+#include <algorithm>
 
 class IA::Player {
     public:

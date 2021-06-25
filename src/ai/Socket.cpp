@@ -49,8 +49,10 @@ std::string Socket::receiveMessage(bool &ts, int clientNum)
         return ("");
     }
     if (FD_ISSET(_fd, &read_fds)) {
-        read(_fd, buffer, 1048);
+        int readNb = read(_fd, buffer, 1048);
         // close(cpy);
+        if (readNb == - 1)
+            exit(84);
         if (std::string(buffer) == "dead\n")
             ts = true;
         // std::cout << buffer << std::endl;

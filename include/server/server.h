@@ -125,7 +125,8 @@ typedef struct func_s
 
 #define SEND_RES_GR if (tmp->is_graphic == true) \
             pgt(tmp->fd, player->player_number, resource_id, server);
-#define SEND_RES_CLI if (strcmp(tmp->uuid, player->uuid) == 0) \
+#define SEND_RES_CLI if (strcmp(tmp->uuid, player->uuid) == 0 \
+            && tmp->is_ia == true) \
             dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
 
 #define SEND_RES SEND_RES_GR SEND_RES_CLI
