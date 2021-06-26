@@ -7,7 +7,7 @@
 
 #include "server/server.h"
 
-void left(player_t *player, server_t *server, \
+void left(player_t *player, UNSD server_t *server, \
 game_board_t *g_board UNSD)
 {
     switch (player->orientation) {
