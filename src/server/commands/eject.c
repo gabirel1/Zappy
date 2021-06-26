@@ -40,7 +40,7 @@ void eject(player_t *player, server_t *server UNSD, game_board_t *game UNSD)
     }
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "ok\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
     }
 }
 

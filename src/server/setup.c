@@ -18,6 +18,7 @@ int new_connection(server_t *server, int i)
     }
     new->fd = accept(i, (struct sockaddr *) &server->server_address, \
     (socklen_t *) &len);
+    gettimeofday(&(new->timeout), NULL);
     if (new->fd == -1) {
         fprintf(stderr, "Error while accepting new client\n");
         return ERROR;
@@ -41,6 +42,10 @@ game_board_t *game, int i)
         if (new_connection(server, i) == ERROR)
             return ERROR;
     } else {
+        printf("WESH\n");
+        // if (!check_fd(i))
+        //     return SUCCESS;
+        printf("SHEM\n");
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {
             fprintf(stderr, "Error while reading from client\n");

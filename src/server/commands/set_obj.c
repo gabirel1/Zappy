@@ -13,7 +13,8 @@ void send_set(player_t *player, int resource_id, server_t *server, bool ok)
         if (tmp->is_graphic == true)
             pdr(tmp->fd, player->player_number, resource_id, server);
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, (ok == true) ? "ok\n" : "ko\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, \
+            (ok == true) ? "ok\n" : "ko\n") : 0;
     }
 }
 

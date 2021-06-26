@@ -28,6 +28,7 @@ client_t *client, server_t *server)
     for (team_t *tmp = *team_container(); tmp; tmp = tmp->next) {
         dprintf(client->fd, "tna %s\n", tmp->team_name);
     }
+    sgt(NULL, server, g_board, client);
     return SUCCESS;
 }
 

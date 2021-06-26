@@ -16,7 +16,7 @@ void hatch(player_t *player, server_t *server, game_board_t *g UNSD)
             edi(tmp->fd, player->player_number, server);
         if (strcmp(tmp->uuid, player->uuid) == 0) {
             fprintf(stderr, "sent okay to %d\n", player->player_number);
-            dprintf(tmp->fd, "ok\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
         }
     }
 }
@@ -34,7 +34,7 @@ game_board_t *g_board UNSD)
     add_player(new_player);
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)
-            dprintf(tmp->fd, "ok\n");
+            (FD_TMP_IS_SET) ? dprintf(tmp->fd, "ok\n") : 0;
         if (tmp->is_graphic == true) {
             enw(tmp->fd, new_player->player_number, \
             player->player_number, server);
