@@ -16,6 +16,7 @@ IA::Tile::Tile(int nbr): _caseNbr(nbr)
     _resourcesReal.push_back(std::make_pair(MENDIANE, 0));
     _resourcesReal.push_back(std::make_pair(PHIRAS, 0));
     _resourcesReal.push_back(std::make_pair(THYSTAME, 0));
+    _resourcesReal.push_back(std::make_pair(PLAYER, 0));
 }
 
 IA::Tile::~Tile()

@@ -28,7 +28,15 @@ int main(int ac, char **av)
         return (84);
     }
 
-    IA::Player newPlayer(pars.getPort(), pars.getMachine(), pars.getName());
+    try {
+        IA::Player newPlayer(pars.getPort(), pars.getMachine(), pars.getName());
+    } catch (const error::ErrorAI &e) {
+        std::cout << e.what() << " " << e.where() << std::endl;
+        return (0);
+    } catch (const std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return (84);
+    } 
 
     // for (int i = 0; i > -1; i++) {
     //     std::cout << newPlayer.move("Forward") << std::endl;

@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include "Sbire.hpp"
 #include <algorithm>
+#include "Error.hpp"
 
 class IA::Player {
     public:
@@ -33,6 +34,8 @@ class IA::Player {
         std::vector <std::pair<resources, int>> _inventory;
         std::unordered_map<std::string, requirements> _levels;
         std::vector <Tile> _tile;
+        bool _hasFork;
+        void eject();
         void forkPlayer();
         void loop();
         void look();

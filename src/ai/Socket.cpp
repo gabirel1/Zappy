@@ -33,7 +33,6 @@ std::string Socket::receiveMessage(bool &ts, int clientNum)
 {
     if (ts)
         std::cout << clientNum << " dude you're dead" << std::endl; 
-    // int cpy = dup(_fd);
     std::string result;
     char buffer[4096] = {0};
     usleep(10000);
@@ -42,7 +41,6 @@ std::string Socket::receiveMessage(bool &ts, int clientNum)
     FD_ZERO(&read_fds);
     FD_SET(_fd, &read_fds);
     struct timeval tv{0, 100};
-    // // tv.tv_usec = 10000;
     
     if (select(_fd + 1, &read_fds, NULL, NULL, &tv) < 0) {
         perror("select");
@@ -50,12 +48,11 @@ std::string Socket::receiveMessage(bool &ts, int clientNum)
     }
     if (FD_ISSET(_fd, &read_fds)) {
         int readNb = read(_fd, buffer, 1048);
-        // close(cpy);
         if (readNb == - 1)
-            exit(84);
-        if (std::string(buffer) == "dead\n")
-            ts = true;
-        // std::cout << buffer << std::endl;
+            throw error::ErrorAI("can't read in socket", "");
+        std::string tmp(buffer);
+        if (tmp.find("dead") != tmp.npos)
+            throw error::ErrorAI(std::to_string(clientNum) + " is dead", "");
         return (buffer);
     }
     return ("");
