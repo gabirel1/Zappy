@@ -42,10 +42,9 @@ int n_case_next(server_info_t *s_info, char *name)
 
 int n_case(game_info_t *g_info, server_info_t *s_info, int ac, char *av[])
 {
-    int index = 0;
+    int index = optind - 1;
     int count = 0;
 
-    index = optind - 1;
     for (team_t *tmp = *team_container(); tmp; tmp = tmp->next) {
         if (delete_team(tmp) == false) {
             printf("error while deleting team\n");
