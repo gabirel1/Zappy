@@ -154,9 +154,8 @@ USAGE: ./zappy_ai -p port -n name -h machine
 
 # GRAPHICAL CLIENT Usage :
 
+To compile from sources, use this command
 ```
-./zappy_gui –help
-USAGE: ./zappy_ai -p port -h machine
-        port is the port number
-        machine is the name of the machine; localhost by default
+make -C src/graphical UNITY_PATH=YOUR_PATH_TO_UNITY_BINARY
 ```
+Then you can launch the graphical client binary.
