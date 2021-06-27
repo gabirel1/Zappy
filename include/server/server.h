@@ -213,6 +213,7 @@ int *get_player_numbers(int to_skip);
 
 int game_loop(struct timeval *start, game_board_t *game);
 void update_cooldown(game_board_t *board, server_t *server);
+void fill_game_board_info(game_board_t *board, game_info_t *game_info);
 
 int seg(char *team_name, int fd, server_t *server);
 int smg(char *message, int fd, server_t *server);

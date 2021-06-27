@@ -48,10 +48,7 @@ game_board_t *create_game_board(game_info_t *game_info)
 
     if (!board)
         return NULL;
-    board->width = game_info->width;
-    board->height = game_info->height;
-    board->freq = game_info->freq;
-    board->teams = *team_container();
+    fill_game_board_info(board, game_info);
     board->map = my_malloc(sizeof(tile_t *) * (board->height + 1));
     if (!board->map)
         return NULL;
