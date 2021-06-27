@@ -27,9 +27,8 @@ int new_connection(server_t *server, int i)
     FD_SET(new->fd, &server->active_fd_set);
     init_new_client(new);
     add_client(new);
-    if (FD_ISSET(new->fd, &server->active_fd_set)) {
+    if (FD_ISSET(new->fd, &server->active_fd_set))
         dprintf(new->fd, "WELCOME\n");
-    }
     return SUCCESS;
 }
 
@@ -42,10 +41,6 @@ game_board_t *game, int i)
         if (new_connection(server, i) == ERROR)
             return ERROR;
     } else {
-        printf("WESH\n");
-        // if (!check_fd(i))
-        //     return SUCCESS;
-        printf("SHEM\n");
         buff = read_from_fd(i, &(server->read_fd_set));
         if (!buff) {
             fprintf(stderr, "Error while reading from client\n");
