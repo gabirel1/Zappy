@@ -61,16 +61,16 @@ public class MainCamera : MonoBehaviour
                 switch (Utils.followTrontorian.transform.localEulerAngles.y)
                 {
                     case 0:
-                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z - 1.5f);
+                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z - 2f);
                         break;
                     case 90:
-                        transform.localPosition = new Vector3(trontorianPos.x - 1.5f, trontorianPos.y + 1, trontorianPos.z);
+                        transform.localPosition = new Vector3(trontorianPos.x - 2f, trontorianPos.y + 1, trontorianPos.z);
                         break;
                     case 180:
-                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z + 1.5f);
+                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z + 2f);
                         break;
                     default:
-                        transform.localPosition = new Vector3(trontorianPos.x + 1.5f, trontorianPos.y + 1, trontorianPos.z);
+                        transform.localPosition = new Vector3(trontorianPos.x + 2f, trontorianPos.y + 1, trontorianPos.z);
                         break;
                 }
                 transform.localEulerAngles = Utils.followTrontorian.transform.localEulerAngles;

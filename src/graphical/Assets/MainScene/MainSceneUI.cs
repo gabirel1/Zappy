@@ -17,6 +17,11 @@ public class MainSceneUI : MonoBehaviour
     public TextMeshProUGUI _tileInfosPhirasCount;
     public TextMeshProUGUI _tileInfosThystameCount;
 
+    public TextMeshProUGUI _nbPlayers;
+    public TextMeshProUGUI _mapSize;
+    public TextMeshProUGUI _nbEnts;
+    public TextMeshProUGUI _fNumber;
+
     public TMP_Dropdown _teamDropdown;
 
     private GameObject savedWhitePlane;
@@ -27,7 +32,6 @@ public class MainSceneUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     void updateCountFromTile(Tile tile)
@@ -170,9 +174,27 @@ public class MainSceneUI : MonoBehaviour
         updateCountFromTeam(teamName);
     }
 
+    private void mapInfos()
+    {
+        int totalCount = 0;
+        for (int i = 0; i < Utils.tileList.Count; i++)
+        {
+            Tile tile = Utils.tileList[i];
+            totalCount += tile.resourceList.Count;
+        }
+        _nbEnts.text = totalCount + " Entités";
+        if (Utils.trontorianList.Count > 1)
+            _nbPlayers.text = Utils.trontorianList.Count.ToString() + " Joueurs";
+        else
+            _nbPlayers.text = Utils.trontorianList.Count.ToString() + " Joueur";
+        _mapSize.text = "Taille : " + Utils.map_x.ToString() + " x " + Utils.map_y.ToString();
+        _fNumber.text = Utils.sgt + "F";
+    }
+
     void Update()
     {
         handleClick();
+        mapInfos();
     }
 
     public void goBack()
