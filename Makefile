@@ -5,15 +5,15 @@
 ## Makefile
 ##
 
-all:	server ai
+all:	zappy_server zappy_ai
 
-server:
+zappy_server:
 	make -C ./src/server
 
-ai:
+zappy_ai:
 	make -C ./src/ai
 
-graphical:
+zappy_gui:
 	make -C ./src/graphical
 
 debug:
