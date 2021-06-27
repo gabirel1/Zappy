@@ -87,12 +87,13 @@ public class MainSceneUI : MonoBehaviour
 
     void handleClick()
     {
-        if (Utils.followTrontorian)
+        if (Utils.followTrontorian != null)
         {
             Trontorian trontorian = Utils.getTrontorianByUid(int.Parse(Utils.followTrontorian.name.Replace("Minotaur", "")));
             _tileInfos.GetComponent<CanvasGroup>().alpha = 1;
             _tileInfosCasePos.text = "Joueur : #" + trontorian.uid.ToString();
-
+            selectedTile = null;
+            selectedTeam = null;
             updateCountFromPlayer(trontorian);
             return;
         }

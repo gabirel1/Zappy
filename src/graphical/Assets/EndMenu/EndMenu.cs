@@ -9,8 +9,9 @@ public class EndMenu : MonoBehaviour
 {
 
     public TextMeshProUGUI teamName;
-    public GameObject animationGameObject;
     public RectTransform elDogitoBig;
+
+    private bool firstCheck = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,22 +31,13 @@ public class EndMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (animationGameObject.GetComponent<CanvasGroup>().alpha == 0)
+        if (elDogitoBig.GetComponent<CanvasGroup>().alpha > 0)
         {
-            if (elDogitoBig.GetComponent<CanvasGroup>().alpha < 1)
-            {
-                elDogitoBig.GetComponent<CanvasGroup>().alpha += 0.01f;
-            }
-            else
-            {
-                Wait(3, () => {
-                    SceneManager.LoadScene(0);
-                });
-            }
+            firstCheck = true;
         }
-        else if (animationGameObject.transform.position.y > 2370)
+        else if (firstCheck && elDogitoBig.GetComponent<CanvasGroup>().alpha == 0)
         {
-            animationGameObject.GetComponent<CanvasGroup>().alpha -= 0.01f;
+            SceneManager.LoadScene(0);
         }
     }
 }
