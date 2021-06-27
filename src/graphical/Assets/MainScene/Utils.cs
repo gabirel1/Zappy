@@ -13,9 +13,12 @@ public static class Utils
     public static int teamColorIdx = 0;
     public static Dictionary<int, Color> defaultTeamColors = new Dictionary<int, Color>();
     public static Dictionary<string, Color> teamColors = new Dictionary<string, Color>();
+    public static List<string> teamNames = new List<string>();
 
     public static float map_x = 0;
     public static float map_y = 0;
+
+    public static float sgt = 0;
 
     public static GameObject followTrontorian = null;
 
@@ -23,7 +26,7 @@ public static class Utils
 
     public static AnimationClip findAnimationByName(string name) {
         var clips = Resources.FindObjectsOfTypeAll<AnimationClip>();
-        AnimationClip clip = null;
+
         for (int i = 0; i < clips.Length; i++)
         {  
             if (clips[i].name == name)

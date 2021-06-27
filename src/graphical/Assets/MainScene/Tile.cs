@@ -27,7 +27,7 @@ public class Tile
 
     public void addResourceByType(ResourceType type)
     {
-        Vector3 pos = new Vector3(position.x + Random.Range(-0.4f, 0.4f), 0.05f, position.z + Random.Range(-0.4f, 0.4f));
+        Vector3 pos = new Vector3(position.x + Random.Range(-0.4f, 0.4f), 0.02f, position.z + Random.Range(-0.4f, 0.4f));
         int count = getResourceCountByType(type);
         if (count < 20) {
             GameObject gameObject = Utils.createObject(pos, Utils.resourceAssets[(int)type]);

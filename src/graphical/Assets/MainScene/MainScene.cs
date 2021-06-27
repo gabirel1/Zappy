@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainScene : MonoBehaviour
 {
     public RectTransform _loadingIcon;
+
+    public TMP_Dropdown _teamDropdown;
 
     public TCPTestClient socketClient;
 
@@ -42,12 +45,12 @@ public class MainScene : MonoBehaviour
 
         GameObject statusHydra = Utils.createPrefabObject(new Vector3(w + 3, 0, 7), "Nokobot/GreekTemple/01_Prefabs/Statues/Statue_Hydra");
         statusHydra.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        statusHydra.transform.Rotate(new Vector3(0, -80, 0));   
+        statusHydra.transform.Rotate(new Vector3(0, -80, 0));
 
         GameObject pot1 = Utils.createPrefabObject(new Vector3(w + 3, 0, 11), "Nokobot/GreekTemple/01_Prefabs/Vases/Vase_03");
-        pot1.transform.Rotate(new Vector3(-7, -23, -67));   
+        pot1.transform.Rotate(new Vector3(-7, -23, -67));
         GameObject pot2 = Utils.createPrefabObject(new Vector3(w + 3, 0, 3), "Nokobot/GreekTemple/01_Prefabs/Vases/Vase_02");
-        pot2.transform.Rotate(new Vector3(0, 10, 0));   
+        pot2.transform.Rotate(new Vector3(0, 10, 0));
         GameObject pot3 = Utils.createPrefabObject(new Vector3(-w / 4, 0, 4), "Nokobot/GreekTemple/01_Prefabs/Vases/Vase_01");
         pot3.transform.Rotate(new Vector3(0, 4, 0));
     }
@@ -96,16 +99,41 @@ public class MainScene : MonoBehaviour
         for (int i = 0; i < Utils.trontorianList.Count; i++)
         {
             GameObject trontorian = Utils.trontorianList[i].gameObject;
-            if (trontorian.transform.position != Utils.trontorianList[i].positionToGo)
+            if (trontorian == null)
             {
-                Utils.trontorianList[i].sphere.transform.position = new Vector3(trontorian.transform.position.x, 1.25f, trontorian.transform.position.z);
+                continue;
+            }
+            if (Vector3.Distance(trontorian.transform.position, Utils.trontorianList[i].positionToGo) > 0)
+            {
                 Utils.trontorianList[i].updatePosition();
             }
             else
             {
-                Utils.trontorianList[i].waitForNextAction = false;
-                Utils.trontorianList[i].idle();
+                if (Utils.trontorianList[i].nextPositionList.Count > 0)
+                {
+                    TrontorianPosition nextPos = Utils.trontorianList[i].nextPositionList[0];
+                    Utils.trontorianList[i].nextPositionList.RemoveAt(0);
+                    Utils.trontorianList[i].setOrientation(nextPos.orientation);
+                    if (nextPos.position != trontorian.transform.position)
+                    {
+                        if (Vector3.Distance(nextPos.position, Utils.trontorianList[i].positionToGo) > 2)
+                        {
+                            trontorian.transform.position = nextPos.position;
+                            Utils.trontorianList[i].positionToGo = nextPos.position;
+                        }
+                        else
+                        {
+                            Utils.trontorianList[i].move();
+                        }
+                    }
+                }
+                else
+                {
+                    Utils.trontorianList[i].waitForNextAction = false;
+                    Utils.trontorianList[i].idle();
+                }
             }
+            Utils.trontorianList[i].sphere.transform.position = new Vector3(trontorian.transform.position.x, 1.25f, trontorian.transform.position.z);
         }
     }
 
@@ -127,13 +155,13 @@ public class MainScene : MonoBehaviour
         }
     }
 
-    void checkServerMessages()
+    public void checkServerMessages()
     {
-        bool shouldSkip = false;
-
-        for (int idxMessage = 0; idxMessage < serverMessages.Count; idxMessage++)
-		{
-            string[] parts = serverMessages[idxMessage].Split(' ');
+        List<string> tmpServerMessages = new List<string>(serverMessages);
+        serverMessages.Clear();
+        for (int idxMessage = 0; idxMessage < tmpServerMessages.Count; idxMessage++)
+        {
+            string[] parts = tmpServerMessages[idxMessage].Split(' ');
             switch (parts[0])
             {
                 case "error":
@@ -147,14 +175,17 @@ public class MainScene : MonoBehaviour
                     break;
                 case "tna":
                     string teamName = parts[1];
-                    Utils.teamColors[teamName] = Utils.defaultTeamColors[Utils.teamColorIdx];  
+                    Utils.teamNames.Add(teamName);
+                    Utils.teamColors[teamName] = Utils.defaultTeamColors[Utils.teamColorIdx];
                     Utils.teamColorIdx++;
+                    _teamDropdown.options.Add(new TMP_Dropdown.OptionData(teamName));
                     break;
                 case "pnw":
                     Utils.trontorianList.Add(new Trontorian(int.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]), parts[6]));
                     break;
                 case "bct":
-                    try {
+                    try
+                    {
                         Tile tile = Utils.getTileByPos(new Vector3(float.Parse(parts[1]) + 0.5f, 0, float.Parse(parts[2]) + 0.5f));
 
                         for (int resourceIdx = 3; resourceIdx < 10; resourceIdx++)
@@ -168,126 +199,135 @@ public class MainScene : MonoBehaviour
                                 {
                                     tile.removeResourceByType(resourceType);
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 for (int i = 0; i < count; i++)
                                 {
                                     tile.addResourceByType(resourceType);
                                 }
                             }
                         }
-                    } catch {
-                        //
                     }
+                    catch { }
                     break;
                 case "pdi":
-                {
-                    int uid = int.Parse(parts[1]);
-                    for (int idx = 0; idx < Utils.trontorianList.Count; idx++)
                     {
-                        if (Utils.trontorianList[idx].uid == uid)
+                        int uid = int.Parse(parts[1]);
+                        for (int idx = 0; idx < Utils.trontorianList.Count; idx++)
                         {
-                            Utils.trontorianList[idx].Kill();
-                            break;
+                            if (Utils.trontorianList[idx].uid == uid)
+                            {
+                                Utils.trontorianList[idx].Kill();
+                                break;
+                            }
                         }
-                    }
-                    break;
-                }
-                case "ppo":
-                {
-                    int uid = int.Parse(parts[1]);
-                    Trontorian trontorian = Utils.getTrontorianByUid(uid);
-                    if (trontorian.waitForNextAction)
-                    {
-                        shouldSkip = true;
                         break;
                     }
-                    Vector3 newPos = new Vector3(float.Parse(parts[2]) + 0.5f, 0, float.Parse(parts[3]) + 0.5f);
-                    trontorian.setOrientation(int.Parse(parts[4]));
-                    if (newPos != trontorian.gameObject.transform.position)
+                case "ppo":
                     {
-                        if (Vector3.Distance(newPos, trontorian.positionToGo) > 2) {
-                            trontorian.gameObject.transform.position = newPos;
-                            trontorian.positionToGo = trontorian.gameObject.transform.position;
-                        } else {
-                            trontorian.waitForNextAction = true;
-                            trontorian.move();
-                        }
+                        int uid = int.Parse(parts[1]);
+                        Trontorian trontorian = Utils.getTrontorianByUid(uid);
+                        Vector3 newPos = new Vector3(float.Parse(parts[2]) + 0.5f, 0, float.Parse(parts[3]) + 0.5f);
+                        trontorian.nextPositionList.Add(new TrontorianPosition(newPos, int.Parse(parts[4])));
+                        break;
                     }
-                    break;
-                }
                 case "pdr":
                 case "pgt":
-                {
-                    socketClient.SendMessage("pin " + parts[1] + "\n");
-                    break;
-                }
+                    {
+                        socketClient.SendMessage("pin " + parts[1] + "\n");
+                        break;
+                    }
                 case "pin":
-                {
-                    int uid = int.Parse(parts[1]);
-                    for (int resourceIdx = 3; resourceIdx < 10; resourceIdx++)
                     {
-                        ResourceType resourceType = (ResourceType)(resourceIdx - 3);
-                        int count = int.Parse(parts[resourceIdx]);
-                        
+                        int uid = int.Parse(parts[1]);
+                        Trontorian trontorian = Utils.getTrontorianByUid(uid);
+                        for (int resourceIdx = 4; resourceIdx < 11; resourceIdx++)
+                        {
+                            ResourceType resourceType = (ResourceType)(resourceIdx - 4);
+                            int serverCount = int.Parse(parts[resourceIdx]);
+                            int count = serverCount - trontorian.getResourceCountByType(resourceType);
+                            if (count < 0)
+                            {
+                                for (int i = count; i < 0; i++)
+                                {
+                                    trontorian.removeResourceByType(resourceType);
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < count; i++)
+                                {
+                                    trontorian.addResourceByType(resourceType);
+                                }
+                            }
+                        }
+                        break;
                     }
-                    break;
-                }
                 case "pic":
-                {
-                    Vector3 pos = new Vector3(float.Parse(parts[1]) + 0.5f, 0, float.Parse(parts[2]) + 0.5f);
-                    Tile tile = Utils.getTileByPos(pos);
-                    Trontorian masterTrontorian = Utils.getTrontorianByUid(int.Parse(parts[4]));
-                    masterTrontorian.jump();
-                    for (int i = 5; i < parts.Length; i++)
                     {
-                        int uid = int.Parse(parts[i]);
-                        Trontorian otherTrontorian = Utils.getTrontorianByUid(int.Parse(parts[4]));
-                        otherTrontorian.jump();
+                        Vector3 pos = new Vector3(float.Parse(parts[1]) + 0.5f, 0, float.Parse(parts[2]) + 0.5f);
+                        Tile tile = Utils.getTileByPos(pos);
+                        Trontorian masterTrontorian = Utils.getTrontorianByUid(int.Parse(parts[4]));
+                        masterTrontorian.jump();
+                        for (int i = 5; i < parts.Length; i++)
+                        {
+                            int uid = int.Parse(parts[i]);
+                            Trontorian otherTrontorian = Utils.getTrontorianByUid(int.Parse(parts[4]));
+                            otherTrontorian.jump();
+                        }
+                        break;
                     }
-                    break;
-                }
                 case "pie":
-                {
-                    Vector3 pos = new Vector3(float.Parse(parts[1]) + 0.5f, 0, float.Parse(parts[2]) + 0.5f);
-                    for (int idx = 0; idx < Utils.trontorianList.Count; idx++)
                     {
-                        if (Utils.trontorianList[idx].position == pos)
+                        Vector3 pos = new Vector3(float.Parse(parts[1]) + 0.5f, 0, float.Parse(parts[2]) + 0.5f);
+                        for (int idx = 0; idx < Utils.trontorianList.Count; idx++)
                         {
-                            Utils.trontorianList[idx].stopJump();
+                            if (Utils.trontorianList[idx].position == pos)
+                            {
+                                Utils.trontorianList[idx].stopJump();
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
                 case "enw":
-                {
-                    Utils.eggList.Add(new Egg(int.Parse(parts[1]), int.Parse(parts[2]), new Vector3(float.Parse(parts[3]) + 0.5f, 0.1f, int.Parse(parts[4]) + 0.5f)));
-                    break;
-                }
-                case "edi":
-                case "eht":
-                {
-                    int uid = int.Parse(parts[1]);
-                    for (int i = 0; i < Utils.eggList.Count; i++)
                     {
-                        if (Utils.eggList[i].uid == uid)
-                        {
-                            Utils.eggList[i].Destroy();
-                            Utils.eggList.RemoveAt(i);
-                            break;
-                        }
+                        Utils.eggList.Add(new Egg(int.Parse(parts[1]), int.Parse(parts[2]), new Vector3(float.Parse(parts[3]) + 0.5f, 0.1f, int.Parse(parts[4]) + 0.5f)));
+                        break;
                     }
-                    break;
-                }
+                case "edi":
+                    {
+                        int uid = int.Parse(parts[1]);
+                        for (int i = 0; i < Utils.trontorianList.Count; i++)
+                        {
+                            if (Utils.trontorianList[i].uid == uid)
+                            {
+                                Utils.trontorianList[i].initGameObject();
+                            }
+                        }
+                        for (int i = 0; i < Utils.eggList.Count; i++)
+                        {
+                            if (Utils.eggList[i].uid == uid)
+                            {
+                                Utils.eggList[i].Destroy();
+                                Utils.eggList.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                case "sgt":
+                    {
+                        float sgt = float.Parse(parts[1]);
+                        Utils.sgt = sgt;
+                        break;
+                    }
                 case "seg":
-                {
-                    Utils.winnerTeamName = parts[1];
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                    break;
-                }
-            }
-            if (!shouldSkip)
-            {
-                serverMessages.RemoveAt(idxMessage);
+                    {
+                        Utils.winnerTeamName = parts[1];
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                        break;
+                    }
             }
         }
     }
@@ -312,7 +352,8 @@ public class MainScene : MonoBehaviour
         moveTrontorians();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         socketClient.clientReceiveThread.Abort();
     }
 }

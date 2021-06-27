@@ -10,6 +10,18 @@ public enum TrontorianState
     JUMP = 2
 }
 
+public class TrontorianPosition
+{
+    public Vector3 position;
+    public int orientation;
+
+    public TrontorianPosition(Vector3 position, int orientation)
+    {
+        this.position = position;
+        this.orientation = orientation;
+    }
+}
+
 public class Trontorian
 {
     public int uid { get; private set; }
@@ -18,11 +30,14 @@ public class Trontorian
     public int orientation { get; set; }
     public Vector3 position { get; private set; }
     public Vector3 positionToGo { get; set; }
-    public GameObject gameObject { get; private set; }
+    public List<TrontorianPosition> nextPositionList { get; set; } = new List<TrontorianPosition>();
+    public GameObject gameObject { get; private set; } = null;
     public GameObject sphere { get; private set; }
     public bool waitForNextAction { get; set; }
     public TrontorianState state = TrontorianState.IDLE;
     public bool isDead = false;
+
+    public List<Resource> inventory = new List<Resource>();
 
     public Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>();
 
@@ -33,12 +48,60 @@ public class Trontorian
         this.positionToGo = position;
         this.level = level;
         this.team = team;
+        this.orientation = orientation;
+
+        for (int i = 0; i < Utils.eggList.Count; i++)
+        {
+            if (Utils.eggList[i].uid == uid)
+            {
+                return;
+            }
+        }
+        initGameObject();
+    }
+
+    public void initGameObject()
+    {
         this.gameObject = Utils.createTrontorianObject(this.position);
+        this.gameObject.AddComponent<BoxCollider>();
+        this.gameObject.GetComponent<BoxCollider>().size = new Vector3(0.05f, 0.1f, 0.05f);
+
+        this.gameObject.name = "Minotaur" + this.uid.ToString();
         setOrientation(orientation);
         initAnimations();
         playAnimation("Idle", true);
 
         this.sphere = Utils.createSphere(new Vector3(gameObject.transform.position.x, 5, gameObject.transform.position.y), new Vector3(0.1f, 0.1f, 0.1f), Utils.teamColors[team]);
+    }
+
+    public int getResourceCountByType(ResourceType type)
+    {
+        int count = 0;
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].type == type)
+            {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
+    public void addResourceByType(ResourceType type)
+    {
+        inventory.Add(new Resource(type, null));
+    }
+
+    public void removeResourceByType(ResourceType type)
+    {
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].type == type)
+            {
+                inventory.RemoveAt(i);
+                break;
+            }
+        }
     }
 
     private void initAnimations()
@@ -98,7 +161,6 @@ public class Trontorian
             case 4: // W
                 positionToGo = new Vector3(gameObject.transform.position.x - 1f, 0, gameObject.transform.position.z);
                 break;
-
         }
     }
 
@@ -129,18 +191,25 @@ public class Trontorian
         var x = gameObject.transform.position.x;
         var z = gameObject.transform.position.z;
 
+        float delta = Utils.sgt / 140;
+        float distance = Vector3.Distance(gameObject.transform.position, positionToGo);
+        if (delta > distance)
+        {
+            delta = distance;
+        }
+
         if (gameObject.transform.position.x < positionToGo.x)
         {
-            x += 0.1f;
+            x += delta;
         } else if (gameObject.transform.position.x > positionToGo.x)
         {
-            x -= 0.1f;
+            x -= delta;
         } else if (gameObject.transform.position.z < positionToGo.z)
         {
-            z += 0.1f;
+            z += delta;
         } else if (gameObject.transform.position.z > positionToGo.z)
         {
-            z -= 0.1f;
+            z -= delta;
         }
         gameObject.transform.position = new Vector3(x, 0, z);
     }
@@ -154,6 +223,7 @@ public class Trontorian
     public void Kill()
     {
         playAnimation("Death1", false);
+        Object.Destroy(this.sphere);
         this.isDead = true;
     }
 }

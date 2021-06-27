@@ -11,13 +11,17 @@ public class MainCamera : MonoBehaviour
     }
     public float speed = 5.0f;
     private Vector3 mainPos;
+    private Vector3 mainAngles;
     // Update is called once per frame
     void Update()
     {
         if (Utils.followTrontorian == null)
         {
             if (transform.localPosition != mainPos)
+            {
                 transform.localPosition = mainPos;
+                transform.localEulerAngles = mainAngles;
+            }
             if (Input.GetKey(KeyCode.LeftShift))
                 speed = 20.0f;
             else
@@ -45,6 +49,7 @@ public class MainCamera : MonoBehaviour
                 }
             }
             mainPos = transform.localPosition;
+            mainAngles = transform.localEulerAngles;
         }
         else
         {
@@ -53,7 +58,22 @@ public class MainCamera : MonoBehaviour
             else
             {
                 Vector3 trontorianPos = Utils.followTrontorian.transform.position;
-                transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 20, trontorianPos.z - 10);
+                switch (Utils.followTrontorian.transform.localEulerAngles.y)
+                {
+                    case 0:
+                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z - 1.5f);
+                        break;
+                    case 90:
+                        transform.localPosition = new Vector3(trontorianPos.x - 1.5f, trontorianPos.y + 1, trontorianPos.z);
+                        break;
+                    case 180:
+                        transform.localPosition = new Vector3(trontorianPos.x, trontorianPos.y + 1, trontorianPos.z + 1.5f);
+                        break;
+                    default:
+                        transform.localPosition = new Vector3(trontorianPos.x + 1.5f, trontorianPos.y + 1, trontorianPos.z);
+                        break;
+                }
+                transform.localEulerAngles = Utils.followTrontorian.transform.localEulerAngles;
             }
         }
     }

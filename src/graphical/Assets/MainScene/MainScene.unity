@@ -3798,6 +3798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingIcon: {fileID: 333900068}
+  _teamDropdown: {fileID: 2093697783}
   serverMessages: []
 --- !u!4 &1373747749
 Transform:
@@ -4646,6 +4647,8 @@ MonoBehaviour:
   _tileInfosMendianeCount: {fileID: 988837372}
   _tileInfosPhirasCount: {fileID: 608114746}
   _tileInfosThystameCount: {fileID: 372417592}
+  _teamDropdown: {fileID: 2093697783}
+  _playerDropdown: {fileID: 0}
 --- !u!1 &2093697781
 GameObject:
   m_ObjectHideFlags: 0
@@ -4659,7 +4662,7 @@ GameObject:
   - component: {fileID: 2093697784}
   - component: {fileID: 2093697783}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: teamDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4672,7 +4675,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2093697781}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4684,7 +4687,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -66.5, y: 1.0455}
+  m_AnchoredPosition: {x: -66.5, y: 1.0455017}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2093697783
@@ -4739,13 +4742,21 @@ MonoBehaviour:
     m_Options:
     - m_Text: Equipe
       m_Image: {fileID: 0}
-    - m_Text: Team1
-      m_Image: {fileID: 0}
-    - m_Text: Team2
-      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1965637289}
+        m_TargetAssemblyTypeName: MainSceneUI, Assembly-CSharp
+        m_MethodName: OnTeamDropdownSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &2093697784
 MonoBehaviour:
