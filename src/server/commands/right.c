@@ -7,7 +7,7 @@
 
 #include "server/server.h"
 
-void right(player_t *player, server_t *server, \
+void right(player_t *player, UNSD server_t *server, \
 game_board_t *g_board UNSD)
 {
     switch (player->orientation) {
@@ -27,7 +27,7 @@ game_board_t *g_board UNSD)
 }
 
 void send_right(player_t *player, server_t *server, \
-game_board_t *g_board)
+UNSD game_board_t *g_board)
 {
     for (client_t *tmp = *client_container(); tmp; tmp = tmp->next) {
         if (strcmp(tmp->uuid, player->uuid) == 0)

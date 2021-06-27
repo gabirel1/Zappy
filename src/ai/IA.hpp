@@ -18,6 +18,7 @@
 #define DMENDIANE 4
 #define DPHIRAS 5
 #define DTHYSTAME 6
+#define DPLAYER 7
 
 namespace IA {
     typedef enum {
@@ -28,6 +29,7 @@ namespace IA {
         MENDIANE,
         PHIRAS,
         THYSTAME,
+        PLAYER,
         NONE
     } resources;
 

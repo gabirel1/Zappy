@@ -27,6 +27,7 @@
 #include <dlfcn.h>
 #include <uuid/uuid.h>
 #include <signal.h>
+#include "Error.hpp"
 
 class Socket {
     public:
