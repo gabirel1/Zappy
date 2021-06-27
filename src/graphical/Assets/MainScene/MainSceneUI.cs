@@ -95,8 +95,10 @@ public class MainSceneUI : MonoBehaviour
             selectedTile = null;
             selectedTeam = null;
             updateCountFromPlayer(trontorian);
+            _teamDropdown.enabled = false;
             return;
         }
+        _teamDropdown.enabled = true;
         if (selectedTile != null)
         {
             updateCountFromTile(selectedTile);
